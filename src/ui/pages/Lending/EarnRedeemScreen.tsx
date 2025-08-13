@@ -63,10 +63,21 @@ export default function EarnRedeemScreen() {
     });
   };
 
-  const isDisabled = useMemo(() => {
-    if (!stokenBalance) return true;
-    return loading || +withdrawAmount > (+stokenBalance.formatAmount || 0);
-  }, [loading, withdrawAmount]);
+  const { isDisabled, buttonText } = useMemo(() => {
+    let isDisabled = false,
+      buttonText = 'Redeem';
+    if (!stokenBalance) {
+      isDisabled = true;
+    } else if (poolData.baseData.config.paused) {
+      isDisabled = true;
+      buttonText = 'Pool is paused';
+    } else if (!+withdrawAmount) {
+      isDisabled = true;
+    } else if (+withdrawAmount > +stokenBalance.formatAmount) {
+      isDisabled = true;
+    }
+    return { isDisabled, buttonText };
+  }, [loading, withdrawAmount, poolData]);
 
   const data = [
     {
@@ -278,7 +289,7 @@ export default function EarnRedeemScreen() {
               loading={loading}
               disabled={isDisabled}
               preset="primary"
-              text={'Redeem'}
+              text={buttonText}
               full
               style={{ position: 'fixed', bottom: 16, left: 16, right: 16 }}
             />

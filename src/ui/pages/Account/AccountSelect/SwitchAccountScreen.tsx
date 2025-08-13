@@ -73,7 +73,7 @@ export function MyItem({ account, autoNav }: MyItemProps, ref) {
           cursor: 'pointer',
           transition: '.4s',
           ':hover': {
-            background: '#2E2E2F'
+            background: colors.main30
           }
         }}
         onClick={async (e) => {
@@ -258,7 +258,6 @@ export default function SwitchAccountScreen() {
   const keyring = useCurrentKeyring();
   const wallet = useWallet();
   const [keyword, setKeyword] = useState('');
-  const [isFocus, setIsFocus] = useState(false);
   let items = useMemo(() => {
     const _items: ItemData[] = keyring.accounts.map((v) => {
       return {

@@ -65,8 +65,18 @@ export default function EarnSupplyScreen() {
     });
   };
 
-  const isDisabled = useMemo(() => {
-    return loading || +supplyAmount <= 0 || +poolData.token.formatAmount < +supplyAmount;
+  const { isDisabled, buttonText } = useMemo(() => {
+    let isDisabled = false,
+      buttonText = 'Supply';
+    if (loading) {
+      isDisabled = true;
+    } else if (poolData.baseData.config.paused) {
+      isDisabled = true;
+      buttonText = 'Pool is paused';
+    } else if (+supplyAmount <= 0 || +poolData.token.formatAmount < +supplyAmount) {
+      isDisabled = true;
+    }
+    return { isDisabled, buttonText };
   }, [loading, supplyAmount, poolData]);
 
   const data = [
@@ -296,7 +306,7 @@ export default function EarnSupplyScreen() {
               loading={loading}
               disabled={isDisabled}
               preset="primary"
-              text={'Supply'}
+              text={buttonText}
               full
               style={{ position: 'fixed', bottom: 16, left: 16, right: 16 }}
             />

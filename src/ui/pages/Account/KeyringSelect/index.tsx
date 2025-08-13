@@ -10,6 +10,7 @@ import { accountActions } from '@/ui/state/accounts/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring, useKeyrings } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
 import './index.less';
@@ -45,7 +46,7 @@ function MyItem({ keyring, autoNav }: MyItemProps, ref) {
           padding: '0 16px',
           borderRadius: '10px',
           marginTop: '4px',
-          background: selected ? '#1E1E1F' : 'transparent',
+          background: selected ? colors.green_1 : 'transparent',
           cursor: 'pointer'
         }}
         onClick={async (e) => {

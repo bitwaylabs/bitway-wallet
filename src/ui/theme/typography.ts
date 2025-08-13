@@ -1,13 +1,13 @@
 const fonts = {
   ProtoMono: {
-    bold: 'Saira',
-    regular: 'Saira',
-    light: 'Saira'
+    bold: 'Poppins',
+    regular: 'Poppins',
+    light: 'Poppins'
   },
   Inter: {
-    bold: 'Saira',
-    regular: 'Saira',
-    light: 'Saira'
+    bold: 'Poppins',
+    regular: 'Poppins',
+    light: 'Poppins'
   }
 };
 

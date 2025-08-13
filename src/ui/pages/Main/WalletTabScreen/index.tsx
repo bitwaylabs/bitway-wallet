@@ -162,7 +162,7 @@ export default function WalletTabScreen() {
                   height: '22px'
                 }}
               />
-              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Saira]">
+              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Poppins]">
                 Receive
               </div>
             </div>
@@ -183,7 +183,9 @@ export default function WalletTabScreen() {
                   height: '22px'
                 }}
               />
-              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Saira]">Send</div>
+              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Poppins]">
+                Send
+              </div>
             </div>
           </div>
 
@@ -204,7 +206,7 @@ export default function WalletTabScreen() {
                 />
               </svg>
 
-              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Saira]">
+              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Poppins]">
                 Explorer
               </div>
             </div>
@@ -232,7 +234,7 @@ export default function WalletTabScreen() {
                   fill="#09090A"
                 />
               </svg>
-              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Saira]">
+              <div className="text-[#fff]/80 group-hover:text-[#fff] text-[12px] leading-[17px] font-[Poppins]">
                 Mempool
               </div>
             </div>

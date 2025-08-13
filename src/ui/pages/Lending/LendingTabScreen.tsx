@@ -315,6 +315,12 @@ export default function LendingTanScreen() {
       buttonText = 'Request Loan';
     if (loading) {
       isDisabled = true;
+    } else if (poolData?.baseData.config.paused) {
+      isDisabled = true;
+      buttonText = 'Pool is paused';
+    } else if (collateralAmount && +collateralAmount === +(satBalance?.formatAmount || '0')) {
+      isDisabled = true;
+      buttonText = 'Insufficient for Network Fees';
     } else if (!+collateralAmount || !+borrowAmount) {
       isDisabled = true;
     } else if (!dlcEventCount || +dlcEventCount?.count === 0) {
@@ -342,7 +348,7 @@ export default function LendingTanScreen() {
       )}`;
     } else if (+(requestFeeToken?.amount || '0') < +(poolData?.baseData.config.request_fee.amount || '0')) {
       isDisabled = true;
-      buttonText = 'Insufficient SIDE Balance';
+      buttonText = 'Insufficient BTW Balance';
     }
     return {
       isDisabled,
