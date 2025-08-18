@@ -64,14 +64,14 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             <Box position="absolute" bottom="2px" right="2px">
               {isSideChain && (
                 <ImageIcon
-                  url="https://api.side.one/static/token/logo/bitway.png"
+                  url="https://api.bitway.com/static/token/logo/bitway.png"
                   style={{ width: '16px', height: '16px', borderRadius: '50%' }}
                 />
               )}
 
               {isBitcoinChain && (
                 <ImageIcon
-                  url="https://api.side.one/static/token/logo/btc.svg"
+                  url="https://api.bitway.com/static/token/logo/btc.svg"
                   style={{ width: '16px', height: '16px' }}
                 />
               )}

@@ -111,7 +111,7 @@ export default function SelecAddressScreen() {
                       justifyContent: 'center',
                       borderRadius: '100%'
                     }}>
-                    <Image src="https://api.side.one/static/token/logo/btc.svg" size={28}></Image>
+                    <Image src="https://api.bitway.com/static/token/logo/btc.svg" size={28}></Image>
                   </Box>
 
                   <Column gap={'zero'}>
@@ -206,7 +206,7 @@ export default function SelecAddressScreen() {
                 full
                 key={item.value}>
                 <Row itemsCenter>
-                  <Image src="https://api.side.one/static/token/logo/bitway.png" size={32}></Image>
+                  <Image src="https://api.bitway.com/static/token/logo/bitway.png" size={32}></Image>
 
                   <Column gap={'zero'}>
                     <Text

@@ -19,7 +19,7 @@ const defaultBtcBalance: BalanceItem = {
   asset: {
     denom: 'sat',
     exponent: '8',
-    logo: 'https://api.side.one/static/token/logo/btc.svg',
+    logo: 'https://api.bitway.com/static/token/logo/btc.svg',
     name: 'Bitcoin',
     symbol: 'BTC',
     precision: 8,
@@ -40,7 +40,7 @@ function formatBitcoinItem(balance: string, denomPrice: string): BalanceItem {
       denom: 'sat',
       chain: CHAINS_ENUM.BTC,
       exponent: '8',
-      logo: 'https://api.side.one/static/token/logo/btc.svg',
+      logo: 'https://api.bitway.com/static/token/logo/btc.svg',
       name: 'Bitcoin',
       symbol: 'BTC',
       precision: 8,

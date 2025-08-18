@@ -356,7 +356,7 @@ export const BITCOIN_CHAINS_MAP: { [key: string]: TypeChain } = {
   [ChainType.BITCOIN_TESTNET]: {
     enum: ChainType.BITCOIN_TESTNET,
     label: 'Bitcoin',
-    icon: 'https://api.side.one/static/token/logo/btc.svg',
+    icon: 'https://api.bitway.com/static/token/logo/btc.svg',
     unit: 'tBTC',
     networkType: NetworkType.TESTNET,
     endpoints: ['https://wallet-api-testnet.unisat.io'],
@@ -370,7 +370,7 @@ export const BITCOIN_CHAINS_MAP: { [key: string]: TypeChain } = {
   [ChainType.BITCOIN_MAINNET]: {
     enum: ChainType.BITCOIN_MAINNET,
     label: 'Bitcoin',
-    icon: 'https://api.side.one/static/token/logo/btc.svg',
+    icon: 'https://api.bitway.com/static/token/logo/btc.svg',
     unit: 'BTC',
     networkType: NetworkType.MAINNET,
     endpoints: ['https://wallet-api.unisat.io'],
@@ -388,10 +388,10 @@ export const BITCOIN_CHAINS = Object.values(BITCOIN_CHAINS_MAP);
 export const DEFAULT_LOCKTIME = 5;
 
 // TESTNET
-export const SERVICE_BASE_URL_TESTNET = 'https://api.side.one/indexer-station-devnet';
+export const SERVICE_BASE_URL_TESTNET = 'https://api.bitway.com/indexer-station-devnet';
 
 // MAINNET
-export const SERVICE_BASE_URL_MAINNET = 'https://api.side.one/indexer-station-mainnet';
+export const SERVICE_BASE_URL_MAINNET = 'https://api.bitway.com/indexer-station-mainnet';
 export const SIDE_CHAIN_MAINNET: IChain = {
   chainID: 'sidechain-1',
   name: 'Bitway',
@@ -400,7 +400,7 @@ export const SIDE_CHAIN_MAINNET: IChain = {
   restUrl: 'https://rest.side.one',
   denom: 'uside',
   hdPath: "m/44'/118/0'/0/0",
-  logo: 'https://api.side.one/static/token/logo/bitway.png',
+  logo: 'https://api.bitway.com/static/token/logo/bitway.png',
   faucetUrl: '',
   explorerUrl: 'https://app.side.one/explorer'
 };

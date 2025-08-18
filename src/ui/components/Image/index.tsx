@@ -28,7 +28,7 @@ export function Image(props: ImageProps) {
     width,
     height
   } = props;
-  const unknownUrl = 'https://api.side.one/static/token/logo/unknown.svg';
+  const unknownUrl = 'https://api.bitway.com/static/token/logo/unknown.svg';
   const [isError, setError] = useState<boolean>(false);
   const handleOnError = () => {
     setError(true);
