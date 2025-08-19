@@ -9,7 +9,7 @@ import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
 
 import useGetBitcoinBalanceList from '../useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '../useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '../useGetBitwayBalanceList';
 import { useGetAllBridgeChains } from './useGetAllBridgeChains';
 
 export function useInitBridge() {
@@ -22,7 +22,7 @@ export function useInitBridge() {
   const { balanceList: bitcoinBalanceList, loading: bitcoinLoading } = useGetBitcoinBalanceList(
     currentAccount?.address
   );
-  const { balanceList: sideBalanceList, loading: sideLoading } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList, loading: sideLoading } = useGetBitwayBalanceList(currentAccount?.address);
 
   useQuery({
     queryKey: ['initBridgeData', { UNISAT_IO_API, UNISAT_SERVICE_ENDPOINT, address: fromAddress }],
@@ -41,7 +41,7 @@ export function useInitBridge() {
   useEffect(() => {
     if (!loading && (!fromAsset || fromAddress !== currentAccount.address) && bitcoinBalanceList.length > 0) {
       const btcAsset = bitcoinBalanceList.find((item) => item.denom === 'sat');
-      const sbtcAsset = sideBalanceList.find((item) => item.denom === 'sat');
+      const sbtcAsset = bitwayBalanceList.find((item) => item.denom === 'sat');
       dispatch(
         BridgeActions.update({
           fromChain: allBridgeChains.find((item) => item.isBitcoin),

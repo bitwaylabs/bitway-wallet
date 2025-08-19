@@ -4,7 +4,7 @@ import { Fragment, useMemo, useState } from 'react';
 import { Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import { Empty } from '@/ui/components/Empty';
 import { PoolDataItem, useGetPoolExchangeRate, useGetPoolsData } from '@/ui/hooks/lending';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
@@ -15,14 +15,14 @@ import { useNavigate } from '../MainRoute';
 export default function MyEarnsScreen() {
   const currentAccount = useCurrentAccount();
   const { data: allPoolsData } = useGetPoolsData();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const data = useMemo(() => {
     return allPoolsData.filter((item) => {
-      const token = sideBalanceList.find((o) => o.denom === item.baseData.total_ytokens.denom);
+      const token = bitwayBalanceList.find((o) => o.denom === item.baseData.total_ytokens.denom);
       return token?.amount && +token.amount > 0;
     });
-  }, [currentAccount.address, allPoolsData, sideBalanceList]);
+  }, [currentAccount.address, allPoolsData, bitwayBalanceList]);
 
   return (
     <Layout>
@@ -68,7 +68,7 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
   const currentAccount = useCurrentAccount();
   const navigate = useNavigate();
   const [isHover, setIsHover] = useState(false);
-  const { balanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount.address);
   const stokenBalance = balanceList.find((o) => o.denom === item.baseData.total_ytokens.denom);
   const { data: exchangeRate } = useGetPoolExchangeRate({ poolId: item.baseData.id || '' });
   const { depositedAmount } = useMemo(() => {

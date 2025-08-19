@@ -8,7 +8,7 @@ import { Column, Content, Header, Image, Layout, Row, Text } from '@/ui/componen
 import ImageIcon from '@/ui/components/ImageIcon';
 import SearchInput from '@/ui/components/Input/Search';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
@@ -155,7 +155,7 @@ function SideCrypto({ searchTerm }) {
   };
   const resetUiTxCreateScreen = useResetUiTxCreateScreen();
   const currentAccount = useCurrentAccount();
-  let { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  let { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   balanceList = balanceList.filter((item) => {
     return (
       item.asset.symbol.toLocaleLowerCase().includes(searchTerm.trim()) ||
@@ -221,7 +221,7 @@ export default function SelecCryptoScreen() {
         <Column px="xl" gap="md">
           <SearchInput value={searchTerm} onChange={setSearchTerm} />
 
-          {chain === CHAINS_ENUM.SIDE ? (
+          {chain === CHAINS_ENUM.BITWAY ? (
             <SideCrypto searchTerm={searchTerm} />
           ) : (
             <BitAndRuneCrypto searchTerm={searchTerm} />

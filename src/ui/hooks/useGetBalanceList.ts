@@ -10,7 +10,7 @@ import { useEnvironment } from '../state/environment/hooks';
 import { formatUnitAmount } from '../utils';
 
 // 指定的排序规则
-const customOrder = ['sBTC', 'SIDE', 'USDC', 'n.USDC'];
+const customOrder = ['BTCT', 'BTW', 'USDC', 'n.USDC'];
 
 function customSort(data: BalanceItem[]) {
   data.sort((x, y) => {

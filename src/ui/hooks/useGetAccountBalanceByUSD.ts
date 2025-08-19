@@ -3,17 +3,17 @@ import { useMemo } from 'react';
 
 import { useCurrentAccount } from '../state/accounts/hooks';
 import useGetBitcoinBalanceList from './useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from './useGetSideBalanceList';
+import { useGetBitwayBalanceList } from './useGetBitwayBalanceList';
 
 export default function useGetAccountBalanceByUSD() {
   const currentAccount = useCurrentAccount();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount.address);
   const { balanceList: btcBalanceList } = useGetBitcoinBalanceList(currentAccount.address);
 
   return useMemo(() => {
     const initValueSide = new BigNumber(0);
     const initValueBtc = new BigNumber(0);
-    const sideTotalValue = sideBalanceList.reduce((pre, cur) => {
+    const sideTotalValue = bitwayBalanceList.reduce((pre, cur) => {
       return pre.plus(cur.totalValue);
     }, initValueSide);
     const btcTotalValue = btcBalanceList.reduce((pre, cur) => {
@@ -22,5 +22,5 @@ export default function useGetAccountBalanceByUSD() {
     const totalValue = sideTotalValue.plus(btcTotalValue);
 
     return totalValue.toFixed(2);
-  }, [sideBalanceList, btcBalanceList]);
+  }, [bitwayBalanceList, btcBalanceList]);
 }

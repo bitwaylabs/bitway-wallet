@@ -7,7 +7,7 @@ import { BalanceItem } from '@/shared/types';
 import { Column, LightTooltip, Row, Text } from '@/ui/components';
 import ImageIcon from '@/ui/components/ImageIcon';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { colors } from '@/ui/theme/colors';
@@ -25,7 +25,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
 
   const [hover, setHover] = useState(false);
 
-  const isSideChain = token.asset.chain === CHAINS_ENUM.SIDE;
+  const isSideChain = token.asset.chain === CHAINS_ENUM.BITWAY;
 
   const isBitcoinChain = token.asset.chain === CHAINS_ENUM.BTC;
 
@@ -187,13 +187,13 @@ const STATIC_TOKENS = ['ubtw', 'sat', 'ibc/65D0BEC6DAD96C7F5043D1E54E54B6BB5D5B3
 export default function SideTokenList({ balanceVisible }) {
   const currentAccount = useCurrentAccount();
 
-  const { balanceList: sideBalanceList, loading: sideLoading } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList, loading: sideLoading } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { balanceList: btcBalanceList, loading: btcLoading } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const loading = sideLoading || btcLoading;
 
-  const balanceList = [...sideBalanceList, ...btcBalanceList];
+  const balanceList = [...bitwayBalanceList, ...btcBalanceList];
 
   const allZeroBalanceList = balanceList.every((item) => !+item.amount);
 

@@ -9,7 +9,7 @@ import { NavTabBar } from '@/ui/components/NavTabBar';
 import { useGetBtcStoreParams } from '@/ui/hooks/swap';
 import { useFeeSummary } from '@/ui/hooks/useFeeSummary';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
@@ -28,7 +28,7 @@ export default function SwapSideScreen() {
   const { params } = useGetBtcStoreParams();
 
   const [rateExchange, setRateExchange] = useState(false);
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
@@ -146,7 +146,7 @@ export default function SwapSideScreen() {
         onBack={() => {
           window.history.go(-1);
         }}
-        title="Buy $SIDE"
+        title="Buy $BTW"
       />
       <Content gap="lg" mt="lg">
         <Column
@@ -285,7 +285,7 @@ export default function SwapSideScreen() {
           <Column rounded px="lg" py="md" full justifyBetween bg="black" mt="lg">
             <Row itemsCenter justifyBetween>
               <Row itemsCenter gap="xs">
-                <Text text={rateExchange ? 'BTC/SIDE' : 'SIDE/BTC'} color="grey12" size="sm"></Text>
+                <Text text={rateExchange ? 'BTC/BTW' : 'BTW/BTC'} color="grey12" size="sm"></Text>
                 <Box
                   sx={{
                     cursor: 'pointer',

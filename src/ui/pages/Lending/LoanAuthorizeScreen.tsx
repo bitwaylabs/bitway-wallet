@@ -5,7 +5,7 @@ import { NetworkType } from '@/shared/types';
 import { Button, Column, Content, Footer, Layout, LightTooltip, Row, SuccessAnimation, Text } from '@/ui/components';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import { useApproveLoan, useGetLiquidationPrice, useGetLoanById, useGetPoolsData } from '@/ui/hooks/lending';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useLendingState } from '@/ui/state/lending/hook';
@@ -34,7 +34,7 @@ export default function LoanAuthorizeScreen() {
   const [isEditRefundAddress, setIsEditRefundAddress] = useState(false);
   const [editRefundAddressError, setEditRefundAddressError] = useState('');
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { loan } = useGetLoanById({ loanId });
 

@@ -14,7 +14,7 @@ import SwapSelectToken from '@/ui/components/Swap/SwapSelectToken';
 import SwapDetail from '@/ui/components/Swap/detail';
 import TokenCurrent from '@/ui/components/TokenCurrent';
 import { useGetAllPools, useGetMarketList, useSwap, useSwapSimulation } from '@/ui/hooks/swap';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
@@ -26,7 +26,7 @@ import { Coin } from '@cosmjs/stargate';
 
 const InitBalance = () => {
   const currentAccount = useCurrentAccount();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { reloadDataTrigger } = useSwapState();
   const dispatch = useAppDispatch();
 
@@ -63,7 +63,7 @@ const NativeBalance = () => {
   const connected = !!currentAccount?.address && swapPair?.native.denom;
 
   // const {data: marketList} = useGetMarketList();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const nativeBalance = balances[swapPair?.native?.denom || '']?.available || '0';
   const assetNativeIcon = balanceList.find((item) => item.denom === swapPair.native.denom);
 
@@ -144,7 +144,7 @@ const NativePrice = () => {
   const { swapPair } = useSwapState();
   const currentAccount = useCurrentAccount();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const validNativeInput = BigNumber(swapPair?.native?.amount || 0).gt(0) && swapPair?.native?.denom;
   const assetNativeIcon = balanceList.find((item) => item.denom === swapPair.native.denom);
 
@@ -243,7 +243,7 @@ const RemotePrice = () => {
   const { swapPair, balances } = useSwapState();
   const currentAccount = useCurrentAccount();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const validNativeInput = BigNumber(swapPair?.native?.amount || 0).gt(0) && swapPair?.native?.denom;
   const assetNativeIcon = balanceList.find((item) => item.denom === swapPair.native.denom);
 
@@ -419,7 +419,7 @@ export default function SwapTabScreen() {
   const dispatch = useAppDispatch();
   const currentAccount = useCurrentAccount();
   const { data: marketList } = useGetMarketList();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const balanceListFilter = findIntersection(marketList, balanceList);
   useSwapSimulation();
   useGetAllPools();

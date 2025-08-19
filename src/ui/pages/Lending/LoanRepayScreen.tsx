@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { Button, Column, Content, Header, Image, Layout, LightTooltip, SuccessAnimation } from '@/ui/components';
 import { useGetLoanCurrentInterest, useRepay } from '@/ui/hooks/lending';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
@@ -21,7 +21,7 @@ export default function RepayLoanScreen() {
   const { loan_id } = state as { loan_id: string };
 
   const { sideChain } = useEnvironment();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const { data } = useQuery({
@@ -39,7 +39,7 @@ export default function RepayLoanScreen() {
     loan_id: loan?.vault_address,
     loanStatus: loan?.status
   });
-  const borrowToken = sideBalanceList.find((o) => o.denom === loan?.borrow_amount.denom);
+  const borrowToken = bitwayBalanceList.find((o) => o.denom === loan?.borrow_amount.denom);
   const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
   const { repay, tx, loading } = useRepay();
   if (!loan) return null;

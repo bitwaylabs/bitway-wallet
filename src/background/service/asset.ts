@@ -6,7 +6,7 @@ export type AssetPriceType = {
 };
 
 export type AssetStore = {
-  sideBalanceList: BalanceItem[];
+  bitwayBalanceList: BalanceItem[];
   btcBalanceList: BalanceItem[];
 };
 
@@ -17,18 +17,18 @@ class AssetService {
     this.store = await createPersistStore<AssetStore>({
       name: 'asset',
       template: {
-        sideBalanceList: [],
+        bitwayBalanceList: [],
         btcBalanceList: []
       }
     });
   };
 
-  setSideBalanceList = (data: BalanceItem[]) => {
-    this.store.sideBalanceList = data;
+  setBitwayBalanceList = (data: BalanceItem[]) => {
+    this.store.bitwayBalanceList = data;
   };
 
-  getSideBalanceList = () => {
-    return this.store.sideBalanceList;
+  getBitwayBalanceList = () => {
+    return this.store.bitwayBalanceList;
   };
 
   setBtcBalanceList = (data: BalanceItem[]) => {

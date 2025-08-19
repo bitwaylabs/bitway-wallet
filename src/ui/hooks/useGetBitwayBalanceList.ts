@@ -13,15 +13,15 @@ function formateTokenList(tokens: IAsset[], UNISAT_RUNE_URL: string) {
       return {
         ...token,
         logo: `${UNISAT_RUNE_URL}/${token.symbol}`,
-        chain: CHAINS_ENUM.SIDE
+        chain: CHAINS_ENUM.BITWAY
       };
     }
 
-    return { ...token, chain: CHAINS_ENUM.SIDE };
+    return { ...token, chain: CHAINS_ENUM.BITWAY };
   });
 }
 
-export function useGetSideBalanceList(address?: string) {
+export function useGetBitwayBalanceList(address?: string) {
   const { UNISAT_RUNE_URL, sideChain, SERVICE_BASE_URL } = useEnvironment();
   const { data, isLoading } = useQuery({
     queryKey: ['getSideAssets', { SERVICE_BASE_URL }],

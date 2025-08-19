@@ -56,7 +56,7 @@ export default function SelectNetworkScreen() {
         <Column
           onClick={() => {
             navigate('SelectCryptoScreen', {
-              chain: CHAINS_ENUM.SIDE,
+              chain: CHAINS_ENUM.BITWAY,
               type
             });
             setNumber(1);

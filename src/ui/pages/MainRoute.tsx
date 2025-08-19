@@ -53,7 +53,6 @@ import MyLoansScreen from './Lending/MyLoans';
 import AppTabScrren from './Main/AppTabScreen';
 import BoostScreen from './Main/BoostScreen';
 import DiscoverTabScreen from './Main/DiscoverTabScreen';
-import ExploreTabScreen from './Main/ExploreTabScreen';
 import RegisterEvmAddress from './Main/RegisterEvmAddress';
 import SettingsTabScreen from './Main/SettingsTabScreen';
 import SwapSideScreen from './Main/SwapSideScreen';
@@ -123,10 +122,6 @@ export const routes = {
   SettingsTabScreen: {
     path: '/settings',
     element: <SettingsTabScreen />
-  },
-  ExploreTabScreen: {
-    path: '/explore',
-    element: <ExploreTabScreen />
   },
   LoansTabScreen: {
     path: '/loans',

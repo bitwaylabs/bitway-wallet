@@ -5,8 +5,7 @@ import { AddressType, IChain, NetworkType, RestoreWalletType } from '../types';
 
 export enum CHAINS_ENUM {
   BTC = 'BTC',
-  SIDE = 'SIDE',
-  SIDE_SIGNET = 'SIDE_SIGNET'
+  BITWAY = 'BITWAY'
 }
 
 export const KEYRING_TYPE = {

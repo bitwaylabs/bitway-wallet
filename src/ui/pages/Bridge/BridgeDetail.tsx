@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { Column, Content, Header, Layout, LightTooltip, Row, Text } from '@/ui/components';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
@@ -19,7 +19,7 @@ export default function BridgeDetail() {
   const { txHash } = state as { txHash: string };
   const { sideChain, chains, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, UNISAT_IO_API } = useEnvironment();
 
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const { data: bridgeParams } = useQuery({
@@ -37,16 +37,16 @@ export default function BridgeDetail() {
 
   if (!data) return null;
 
-  const sideTxInfo = sideBalanceList.find((item) => item.denom === data.sideTxFeeDenom);
+  const sideTxInfo = bitwayBalanceList.find((item) => item.denom === data.sideTxFeeDenom);
   const isDeposit = data.direction === 'IN';
   const bridgeFeeAssetInfo = isDeposit
     ? bitcoinBalanceList.find((item) => item.denom === 'sat')
-    : sideBalanceList.find((item) => item.denom === 'sat');
+    : bitwayBalanceList.find((item) => item.denom === 'sat');
   const bridgeSendAssetInfo = isDeposit
     ? bitcoinBalanceList.find((item) => item.denom === data.tokenDenom)
-    : sideBalanceList.find((item) => item.denom === data.tokenDenom);
+    : bitwayBalanceList.find((item) => item.denom === data.tokenDenom);
   const bridgeReceiveAssetInfo = isDeposit
-    ? sideBalanceList.find((item) => item.denom === data.tokenDenom)
+    ? bitwayBalanceList.find((item) => item.denom === data.tokenDenom)
     : bitcoinBalanceList.find((item) => item.denom === data.tokenDenom);
   const bridgeFee = isDeposit
     ? bridgeParams?.params.protocol_fees.deposit_fee || '4000'

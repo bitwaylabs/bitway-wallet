@@ -5,7 +5,7 @@ import { Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components
 import { Empty } from '@/ui/components/Empty';
 import { useGetDlcPrice, useGetLoansData, useGetPoolDataById, useGetPoolsData } from '@/ui/hooks/lending';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { Loan, LoanStatus } from '@/ui/services/lending/types';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { colors } from '@/ui/theme/colors';
@@ -37,7 +37,7 @@ export const loanStatusStyle: Record<
 export default function MyLoansScreen() {
   const currentAccount = useCurrentAccount();
   const { data } = useGetLoansData();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const [isHoverId, setIsHoverId] = useState('');
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function MyLoansScreen() {
         {data?.length > 0 ? (
           <>
             {data.map((item) => {
-              const borrowToken = sideBalanceList.find((o) => o.denom === item.borrow_amount.denom);
+              const borrowToken = bitwayBalanceList.find((o) => o.denom === item.borrow_amount.denom);
               const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
               const collateralAmount = formatUnitAmount(item.collateral_amount, collateralToken?.asset.exponent || 6);
               const borrowTokenAmount = formatUnitAmount(item.borrow_amount.amount, borrowToken?.asset.exponent || 6);
@@ -220,10 +220,10 @@ export default function MyLoansScreen() {
 
 export function HealthFactor({ loan }: { loan: Loan }) {
   const currentAccount = useCurrentAccount();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const { data: lendingPool } = useGetPoolDataById({ poolId: loan.pool_id });
-  const borrowToken = sideBalanceList.find((o) => o.denom === loan.borrow_amount.denom);
+  const borrowToken = bitwayBalanceList.find((o) => o.denom === loan.borrow_amount.denom);
   const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
   const collateralAmount = formatUnitAmount(loan.collateral_amount, collateralToken?.asset.exponent || 6);
   const borrowTokenAmount = formatUnitAmount(loan.borrow_amount.amount, borrowToken?.asset.exponent || 6);
@@ -275,7 +275,7 @@ export function HealthFactor({ loan }: { loan: Loan }) {
 export function LoanLTV({ loan, sx }: { loan: Loan; sx?: BoxProps['sx'] }) {
   const currentAccount = useCurrentAccount();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const { data: lendingPool } = useGetPoolDataById({ poolId: loan.pool_id });

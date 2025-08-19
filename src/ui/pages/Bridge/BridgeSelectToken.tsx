@@ -8,7 +8,7 @@ import { Column, Content, Header, Icon, Input, Layout, Row, Text } from '@/ui/co
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useGetAllBridgeChains } from '@/ui/hooks/bridge';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
@@ -35,7 +35,7 @@ export default function BridgeSelectTokenScreen() {
   const { sideChain } = useEnvironment();
   const { fromAsset, fromChain } = useBridgeState();
 
-  let { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  let { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   let { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   // list, onSearch
@@ -49,7 +49,7 @@ export default function BridgeSelectTokenScreen() {
     // 所有资产
     const allAssetList = [
       ...bitcoinBalanceList.map((item) => ({ ...item, chainType: 'bitcoin' })),
-      ...sideBalanceList.map((item) => ({ ...item, chainType: 'sidechain' }))
+      ...bitwayBalanceList.map((item) => ({ ...item, chainType: 'bitway' }))
     ];
 
     // 只展示 btc /sbtc资产
@@ -59,12 +59,12 @@ export default function BridgeSelectTokenScreen() {
 
     if (type === 'to') {
       if (fromChain?.isBitcoin) {
-        // 如果 fromAsset 是 btc，则只展示 sbtc
+        // 如果 fromAsset 是 btc，则只展示 btct
         assetList = assetList.filter((item) => {
-          return item.chainType === 'sidechain' && item.denom === fromAsset?.denom;
+          return item.chainType === 'bitway' && item.denom === fromAsset?.denom;
         });
       } else {
-        // 如果 fromAsset 是 sbtc，则展示 btc 和 sbtc
+        // 如果 fromAsset 是 btct，则展示 btc 和 btct
         assetList = assetList.filter((item) => {
           return item.denom === fromAsset?.denom;
         });
@@ -87,7 +87,7 @@ export default function BridgeSelectTokenScreen() {
     return {
       assetList
     };
-  }, [sideBalanceList, bitcoinBalanceList, searchValue]);
+  }, [bitwayBalanceList, bitcoinBalanceList, searchValue]);
 
   const { chainList } = useMemo(() => {
     let chainList: IChain[] = [];
@@ -98,7 +98,7 @@ export default function BridgeSelectTokenScreen() {
       if (selectedAsset?.chainType === 'bitcoin') {
         chainList = [bitcoinChain];
       } else {
-        // 如果选中是 sbtc，必须展示 sidechain
+        // 如果选中是 sbtc，必须展示 bitway
         chainList = [sideChain];
         // 如果选中有 ibc，则需要展示 ibc链
         if (selectedAsset.asset.ibcData) {
@@ -236,7 +236,7 @@ export default function BridgeSelectTokenScreen() {
                         if (selectedAsset.denom === 'sat' || selectedAsset.denom.includes('rune')) {
                           if (chain.isBitcoin) {
                             toChain = sideChain;
-                            toAsset = sideBalanceList.find((item) => item.denom === selectedAsset.denom);
+                            toAsset = bitwayBalanceList.find((item) => item.denom === selectedAsset.denom);
                           } else {
                             toChain = bitcoinChain;
                             toAsset = bitcoinBalanceList.find((item) => item.denom === selectedAsset.denom);

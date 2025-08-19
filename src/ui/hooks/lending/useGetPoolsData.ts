@@ -9,7 +9,7 @@ import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { formatUnitAmount } from '@/ui/utils';
 
-import { useGetSideBalanceList } from '../useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '../useGetBitwayBalanceList';
 import { useGetLendingParams } from './useGetLendingParams';
 
 export interface PoolDataItem {
@@ -34,7 +34,7 @@ export interface PoolDataItem {
 export function useGetPoolsData() {
   const currentAccount = useCurrentAccount();
   const { sideChain, SERVICE_BASE_URL } = useEnvironment();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { data: lendingParams } = useGetLendingParams();
   const { data: lendingPools, isLoading: loading } = useQuery({

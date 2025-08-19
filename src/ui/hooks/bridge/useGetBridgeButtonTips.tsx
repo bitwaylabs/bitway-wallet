@@ -12,7 +12,7 @@ import { useNetworkType } from '../../state/settings/hooks';
 import { useUtxos } from '../../state/transactions/hooks';
 import { estimateNetworkFeeHelper } from '../../wallet-sdk/utils';
 import useGetBitcoinBalanceList from '../useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '../useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '../useGetBitwayBalanceList';
 import { useGetBridgeRateLimit } from './useGetBridgeRateLimit';
 import { useGetBridgeRateLimitByAddress } from './useGetBridgeRateLimitByAddress';
 
@@ -25,7 +25,7 @@ export function useGetBridgeButtonTips() {
 
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const [btcTransferGasError, setBtcTransferGasError] = useState<string | undefined>(undefined);
   const [debouncedBridgeAmount] = useDebounce(bridgeAmount, 300);
@@ -124,7 +124,7 @@ export function useGetBridgeButtonTips() {
 
     // 计算跨链需要的费用
     const bitcoinFeeInfo = bitcoinBalanceList.find((item) => item.denom === 'sat');
-    const sideFeeInfo = sideBalanceList.find((item) => item.denom === 'sat');
+    const sideFeeInfo = bitwayBalanceList.find((item) => item.denom === 'sat');
     const bridgeFeeAssetInfo = isDeposit ? bitcoinFeeInfo : sideFeeInfo;
 
     // 判断deposit情况： 非rune，输入是小于 min_deposit + deposit_fee
@@ -218,7 +218,7 @@ export function useGetBridgeButtonTips() {
     bridgeAmount,
     fromAsset,
     bitcoinBalanceList,
-    sideBalanceList,
+    bitwayBalanceList,
     balance,
     btcTransferGasError,
     userRateLimit,

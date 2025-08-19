@@ -7,13 +7,13 @@ import { useAppDispatch } from '@/ui/state/hooks';
 import { SwapActions } from '@/ui/state/swap/reducer';
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 
-import { useGetSideBalanceList } from '../useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '../useGetBitwayBalanceList';
 import { useGetAllPairs } from './useGetAllPairs';
 
 export function useGetAllPools() {
   const { sideChain } = useEnvironment();
   const currentAccount = useCurrentAccount();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { data: pairs } = useGetAllPairs();
   const dispatch = useAppDispatch();
 

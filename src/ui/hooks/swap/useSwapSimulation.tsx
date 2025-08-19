@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { useEffect } from 'react';
 
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { Pool, SwapRouteResult } from '@/ui/services/dex/type';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -14,7 +14,7 @@ import { toReadableAmount, toUnitAmount } from '@/ui/utils/formatter';
 export function useSwapSimulation() {
   const { swapPair, mode, limitRate, rateModified, isRateExchanged, marketPrice, allPools } = useSwapState();
   const currentAccount = useCurrentAccount();
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const dispatch = useAppDispatch();
   const { SERVICE_BASE_URL } = useEnvironment();
 

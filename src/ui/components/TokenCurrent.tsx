@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Coin } from '@cosmjs/stargate';
 
-import { useGetSideBalanceList } from '../hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '../hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '../state/accounts/hooks';
 import ImageIcon from './ImageIcon';
 
@@ -26,7 +26,7 @@ export { Icon };
 export default function TokenCurrent({ value, setShow }: { value: Coin; setShow: any }) {
   const currentAccount = useCurrentAccount();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const newValue = balanceList.find((asset) => asset.denom === value?.denom);
 
   const unSelected = !newValue?.denom;

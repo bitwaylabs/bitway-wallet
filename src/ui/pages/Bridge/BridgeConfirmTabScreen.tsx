@@ -6,7 +6,7 @@ import { Button, Column, Content, Footer, Header, Image, Layout, LightTooltip, R
 import ImageIcon from '@/ui/components/ImageIcon';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import AccountSelect from '@/ui/pages/Account/AccountSelect';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -91,10 +91,10 @@ export default function BridgeTabScreen() {
   const unitAmount = BigNumber(parseUnitAmount(bridgeAmount, 8)).toNumber();
 
   const currentAccount = useCurrentAccount();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount.address);
   const { balanceList: btcBalanceList } = useGetBitcoinBalanceList(currentAccount.address);
 
-  const assets = isDeposit ? btcBalanceList : sideBalanceList;
+  const assets = isDeposit ? btcBalanceList : bitwayBalanceList;
   const balanceList = assets?.filter((item) => {
     return item?.denom.includes('rune') || item?.denom.includes('sat');
   });
@@ -118,9 +118,9 @@ export default function BridgeTabScreen() {
   );
 
   const bitcoinAssetInfo = btcBalanceList.find((item) => item.denom === bridgeAsset?.denom);
-  const sideAssetInfo = sideBalanceList.find((item) => item.denom === bridgeAsset?.denom);
+  const sideAssetInfo = bitwayBalanceList.find((item) => item.denom === bridgeAsset?.denom);
   const bitcoinFeeInfo = btcBalanceList.find((item) => item.denom === 'sat');
-  const sideFeeInfo = sideBalanceList.find((item) => item.denom === 'sat');
+  const sideFeeInfo = bitwayBalanceList.find((item) => item.denom === 'sat');
 
   useEffect(() => {
     setNetworkFee(fee || 20);

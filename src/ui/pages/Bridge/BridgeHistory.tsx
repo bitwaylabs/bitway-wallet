@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 import { Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
 import ImageIcon from '@/ui/components/ImageIcon';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
@@ -17,7 +17,7 @@ import { useNavigate } from '../MainRoute';
 export default function BridgeHistory() {
   const currentAccount = useCurrentAccount();
   const { SERVICE_BASE_URL } = useEnvironment();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const [isHoverId, setIsHoverId] = useState('');
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ export default function BridgeHistory() {
             {data.content.map((item) => {
               let assetLogo = item.tokenLogo;
               if (item.rune) {
-                assetLogo = sideBalanceList.find((a) => a.denom === item.tokenSymbol)?.asset.logo || '';
+                assetLogo = bitwayBalanceList.find((a) => a.denom === item.tokenSymbol)?.asset.logo || '';
               }
               return (
                 <Stack

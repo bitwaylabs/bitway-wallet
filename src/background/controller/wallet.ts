@@ -2060,9 +2060,9 @@ export class WalletController extends BaseController {
   };
 
   setBtcBalanceList = assetService.setBtcBalanceList;
-  setSideBalanceList = assetService.setSideBalanceList;
+  setBitwayBalanceList = assetService.setBitwayBalanceList;
   getBtcBalanceList = assetService.getBtcBalanceList;
-  getSideBalanceList = assetService.getSideBalanceList;
+  getBitwayBalanceList = assetService.getBitwayBalanceList;
   getEnvironment = environmentService.getEnvironment;
 
   reset = async () => {

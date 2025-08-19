@@ -54,7 +54,7 @@ export const useBridgeBtc = () => {
         })
           .then((res) => {
             if (res) {
-              navigate('TxSuccessScreen', { txid: res, chain: CHAINS_ENUM.SIDE, type: 'bridge' });
+              navigate('TxSuccessScreen', { txid: res, chain: CHAINS_ENUM.BITWAY, type: 'bridge' });
             }
           })
           .catch((err) => {
@@ -80,7 +80,7 @@ export const useBridgeBtc = () => {
           messages: [txMsg]
         })
           .then((result) => {
-            navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.SIDE, type: 'bridge' });
+            navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.BITWAY, type: 'bridge' });
           })
           .catch((err) => {
             tools.toastError(err.message);

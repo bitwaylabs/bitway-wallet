@@ -2,11 +2,7 @@ import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// import { useGetBitcoinTokenList, useGetSideTokenList } from '@/ui/hooks/useGetTokenList';
-// import { useAccountBalance } from '@/ui/state/accounts/hooks';
-// import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { BalanceItem } from '@/shared/types';
-// import { CHAINS_ENUM } from '@/shared/constant';
 import { Column, Content, Header, Icon, Input, Layout, Row, Text } from '@/ui/components';
 import ImageIcon from '@/ui/components/ImageIcon';
 import { colors } from '@/ui/theme/colors';

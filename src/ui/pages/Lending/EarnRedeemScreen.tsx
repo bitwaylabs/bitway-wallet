@@ -17,7 +17,7 @@ import {
 } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { PoolDataItem, useGetPoolExchangeRate, useWithdraw } from '@/ui/hooks/lending';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate, useLocationState } from '@/ui/utils';
@@ -35,7 +35,7 @@ export default function EarnRedeemScreen() {
 
   const { withdraw, loading, tx } = useWithdraw();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount.address);
 
   const { data: exchangeRate } = useGetPoolExchangeRate({ poolId: poolData?.baseData?.id || '' });
   const stokenBalance = balanceList.find((b) => b.denom == poolData?.baseData.total_ytokens.denom);

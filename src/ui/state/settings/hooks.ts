@@ -80,7 +80,7 @@ export function useChangeNetworkTypeCallback() {
 export function useBlockstreamUrl(chain?: CHAINS_ENUM) {
   const networkType = useNetworkType();
   const { sideChain } = useEnvironment();
-  if (chain === CHAINS_ENUM.SIDE) {
+  if (chain === CHAINS_ENUM.BITWAY) {
     return sideChain.explorerUrl;
   }
 
@@ -101,12 +101,7 @@ export function useTxIdUrl(txid: string) {
 }
 
 export function useUnisatWebsite() {
-  const networkType = useNetworkType();
-  if (networkType === NetworkType.MAINNET) {
-    return 'https://side.one';
-  } else {
-    return 'https://testnet.side.one';
-  }
+  return 'https://bitway.com';
 }
 
 export function useOrdinalsWebsite() {

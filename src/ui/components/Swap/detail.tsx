@@ -2,7 +2,7 @@
 import BigNumber from 'bignumber.js';
 import { useState } from 'react';
 
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useSwapState } from '@/ui/state/swap/hook';
 
@@ -15,7 +15,7 @@ function SwapDetail() {
   const [isCollapse, setIsCollapse] = useState(false);
   const currentAccount = useCurrentAccount();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const priceImpact = BigNumber(swapRouteResult.priceImpact || '0').toFixed(2);
 

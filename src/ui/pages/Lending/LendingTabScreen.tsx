@@ -13,7 +13,7 @@ import {
   useGetPoolsData
 } from '@/ui/hooks/lending';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useLendingState } from '@/ui/state/lending/hook';
@@ -36,7 +36,7 @@ export default function LendingTanScreen() {
   const navigator = useNavigate();
 
   const [borrowAmount, setBorrowAmount] = useState('');
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 

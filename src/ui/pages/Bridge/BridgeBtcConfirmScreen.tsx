@@ -8,7 +8,7 @@ import ImageIcon from '@/ui/components/ImageIcon';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import { useBridgeBtc, useEstimateNetworkFee } from '@/ui/hooks/bridge';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useBridgeState } from '@/ui/state/bridge/hook';
@@ -59,7 +59,7 @@ export default function BridgeBtcConfirmScreen() {
   const { bridge, loading } = useBridgeBtc();
   const { estimateNetworkFee } = useEstimateNetworkFee();
 
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount.address);
   const { balanceList: btcBalanceList } = useGetBitcoinBalanceList(currentAccount.address);
 
   const [tx, setTx] = useState<CacheUTXO[]>([]);
@@ -123,7 +123,7 @@ export default function BridgeBtcConfirmScreen() {
     fromAsset?.asset.exponent || 8
   );
   const bitcoinFeeInfo = btcBalanceList.find((item) => item.denom === 'sat');
-  const sideFeeInfo = sideBalanceList.find((item) => item.denom === 'sat');
+  const sideFeeInfo = bitwayBalanceList.find((item) => item.denom === 'sat');
   const feePrice = sideFeeInfo?.denomPrice || bitcoinFeeInfo?.denomPrice || '0';
 
   const [isEditToAddress, setIsEditToAddress] = useState(false);

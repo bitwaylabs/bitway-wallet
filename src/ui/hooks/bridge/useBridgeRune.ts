@@ -48,7 +48,7 @@ export const useBridgeRune = () => {
         })
           .then((res) => {
             if (res) {
-              navigate('TxSuccessScreen', { txid: res, chain: CHAINS_ENUM.SIDE });
+              navigate('TxSuccessScreen', { txid: res, chain: CHAINS_ENUM.BITWAY });
             }
           })
           .catch((err) => {
@@ -74,7 +74,7 @@ export const useBridgeRune = () => {
           messages: [txMsg]
         })
           .then((result) => {
-            navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.SIDE });
+            navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.BITWAY });
           })
           .catch((err) => {
             console.log('err: ', err);

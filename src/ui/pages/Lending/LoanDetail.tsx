@@ -20,7 +20,7 @@ import {
 } from '@/ui/hooks/lending';
 import useGetAttestationByEventId from '@/ui/hooks/lending/useGetAttestationByEventId';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
@@ -43,7 +43,7 @@ export default function LoanDetailScreen() {
   const { loan_id, from } = state as { loan_id: string; from?: string };
 
   const { sideChain, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, SIDE_STATION_URL } = useEnvironment();
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const { data: loanDetailCex } = useQuery({
@@ -85,7 +85,7 @@ export default function LoanDetailScreen() {
     enabled: loan?.status === 'Liquidated'
   });
 
-  const borrowToken = sideBalanceList.find((o) => o.denom === loan?.borrow_amount.denom);
+  const borrowToken = bitwayBalanceList.find((o) => o.denom === loan?.borrow_amount.denom);
   const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
   const collateralAmount = formatUnitAmount(loan?.collateral_amount || '0', collateralToken?.asset.exponent || 8);
   const borrowTokenAmount = formatUnitAmount(loan?.borrow_amount.amount || '0', borrowToken?.asset.exponent || 6);

@@ -391,9 +391,9 @@ export interface WalletController {
   getBuyBtcChannelList(): Promise<{ channel: string }[]>;
 
   setBtcBalanceList(data: BalanceItem[]): Promise<void>;
-  setSideBalanceList(data: BalanceItem[]): Promise<void>;
+  setBitwayBalanceList(data: BalanceItem[]): Promise<void>;
 
-  getSideBalanceList(): Promise<BalanceItem[]>;
+  getBitwayBalanceList(): Promise<BalanceItem[]>;
   getBtcBalanceList(): Promise<BalanceItem[]>;
 
   reset(): Promise<void>;

@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 import { CHAINS_ENUM } from '@/shared/constant';
 import ToastView from '@/ui/components/ToastView';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
@@ -25,7 +25,7 @@ export function useSwap() {
   const { signAndBroadcastTxRaw } = useSignAndBroadcastTxRaw();
   const { pools, returnToken } = swapRouteResult;
   const { native } = swapPair;
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const assetIn = balanceList.find((item) => item.denom === native.denom);
 
   const unitAmount = toUnitAmount(native.amount, assetIn?.asset?.exponent || 6);
@@ -79,7 +79,7 @@ export function useSwap() {
         gas: BigNumber('600000').times(pools.length).toFixed()
       });
       dispatch(SwapActions.update({ swapLoading: false }));
-      navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.SIDE });
+      navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.BITWAY });
       // confirmTx(result?.tx_response?.txhash);
     } catch (error) {
       toast.custom(

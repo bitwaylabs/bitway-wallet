@@ -63,7 +63,7 @@ export function useIbc() {
       }
 
       if (hashResponse.tx_response.code === 0) {
-        navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.SIDE, type: 'bridge' });
+        navigate('TxSuccessScreen', { txid: result.tx_response.txhash, chain: CHAINS_ENUM.BITWAY, type: 'bridge' });
       }
     } catch (err) {
       const error = err as Error;

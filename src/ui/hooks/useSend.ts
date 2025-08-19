@@ -7,7 +7,7 @@ import { useNavigate } from '../pages/MainRoute';
 import { useSignAndBroadcastTxRaw } from '../state/transactions/hooks/cosmos';
 import { useUiTxCreateSendSideScreen, useUpdateUiTxCreateSendSideScreen } from '../state/ui/hooks';
 import { parseUnitAmount } from '../utils';
-import { useGetSideBalanceList } from './useGetSideBalanceList';
+import { useGetBitwayBalanceList } from './useGetBitwayBalanceList';
 
 export function useSend() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export function useSend() {
   const uiState = useUiTxCreateSendSideScreen();
   const setUiState = useUpdateUiTxCreateSendSideScreen();
   const [loading, setLoading] = useState(false);
-  const { balanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount.address);
   const { toInfo, base: denom, inputAmount, fee, feeDenom, memo } = uiState;
 
   const { curToken, feeToken } = useMemo(() => {
@@ -90,7 +90,7 @@ export function useSend() {
       });
       navigate('TxSuccessScreen', {
         txid: result.tx_response.txhash,
-        chain: CHAINS_ENUM.SIDE,
+        chain: CHAINS_ENUM.BITWAY,
         text: options?.text,
         title: options?.title
       });

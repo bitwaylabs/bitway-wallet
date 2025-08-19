@@ -5,7 +5,7 @@ import { Button, Column, Content, Footer, Header, Layout, Row } from '@/ui/compo
 import ImageIcon from '@/ui/components/ImageIcon';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useBridge, useBridgeState } from '@/ui/state/bridge/hook';
@@ -26,7 +26,7 @@ export default function BridgeTabScreen() {
   const { bridgeAmount, fee, feeSummary, params, fromChain, fromAsset, toAsset } = useBridgeState();
   const { bridgeRune, loading } = useBridge();
 
-  const { balanceList: sideBalanceList } = useGetSideBalanceList(currentAccount.address);
+  const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount.address);
   const { balanceList: btcBalanceList } = useGetBitcoinBalanceList(currentAccount.address);
 
   const [withdrawFee, setWithdrawFee] = useState<string>('-');
@@ -52,7 +52,7 @@ export default function BridgeTabScreen() {
 
   const yourReceive = bridgeAmount;
   const bitcoinFeeInfo = btcBalanceList.find((item) => item.denom === 'sat');
-  const sideFeeInfo = sideBalanceList.find((item) => item.denom === 'sat');
+  const sideFeeInfo = bitwayBalanceList.find((item) => item.denom === 'sat');
   const feePrice = sideFeeInfo?.denomPrice || bitcoinFeeInfo?.denomPrice || '0';
 
   const isDisabled = loading || Number(fee) === 0 || !withdrawFee;

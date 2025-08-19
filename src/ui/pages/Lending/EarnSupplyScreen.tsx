@@ -17,7 +17,7 @@ import {
 } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { PoolDataItem, useGetPoolExchangeRate, useSupply } from '@/ui/hooks/lending';
-import { useGetSideBalanceList } from '@/ui/hooks/useGetSideBalanceList';
+import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate, useLocationState } from '@/ui/utils';
@@ -34,7 +34,7 @@ export default function EarnSupplyScreen() {
 
   const { supply, loading, tx } = useSupply();
 
-  const { balanceList } = useGetSideBalanceList(currentAccount?.address);
+  const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const poolTokenBalance = balanceList.find((b) => b.denom == poolData.token.denom);
 

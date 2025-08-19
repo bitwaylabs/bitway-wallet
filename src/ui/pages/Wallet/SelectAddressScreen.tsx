@@ -236,7 +236,7 @@ export default function SelecAddressScreen() {
                         ...state,
                         address,
                         addressType: item.name,
-                        chain: CHAINS_ENUM.SIDE
+                        chain: CHAINS_ENUM.BITWAY
                       });
                     }}
                     sx={{
