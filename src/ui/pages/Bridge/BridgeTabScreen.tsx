@@ -332,7 +332,7 @@ export default function BridgeTabScreen() {
                   }
                 }}
                 onClick={() => {
-                  window.open(`${SIDE_STATION_URL}/bridge`);
+                  window.open(`${SIDE_STATION_URL}/bridge/portal`);
                 }}>
                 Bridge on web app
               </Typography>

@@ -52,7 +52,7 @@ export default function AboutScreen() {
                 <Text preset="regular" text={'Terms of Service'}></Text>
                 <Icon
                   onClick={() => {
-                    window.open('https://docs.side.one/about/privacy-policy ', '_blank');
+                    window.open('https://docs.bitway.com/about/privacy-policy ', '_blank');
                   }}
                   icon={'link'}
                   size={18}></Icon>
@@ -76,7 +76,7 @@ export default function AboutScreen() {
 
                 <Icon
                   onClick={() => {
-                    window.open('https://docs.side.one/about/privacy-policy ', '_blank');
+                    window.open('https://docs.bitway.com/about/privacy-policy ', '_blank');
                   }}
                   icon={'link'}
                   size={18}></Icon>

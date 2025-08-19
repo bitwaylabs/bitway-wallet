@@ -202,7 +202,6 @@ export const RESTORE_WALLETS: { value: RestoreWalletType; name: string; addressT
 export const NETWORK_TYPES = [
   { value: NetworkType.MAINNET, label: 'MAINNET', name: 'livenet', validNames: [0, 'livenet', 'mainnet'] },
   { value: NetworkType.TESTNET, label: 'DEVNET', name: 'testnet', validNames: ['testnet'] }
-  // { value: NetworkType.MAINNET, label: 'DEVNET', name: 'livenet', validNames: [0, 'livenet', 'mainnet'] },
 ];
 
 export const MINIMUM_GAS_LIMIT = 21000;
@@ -220,13 +219,7 @@ export const WALLETCONNECT_STATUS_MAP = {
   FAILD: 6
 };
 
-export const INTERNAL_REQUEST_ORIGIN = 'https://side.one';
-
-export const INTERNAL_REQUEST_SESSION = {
-  name: 'Side Wallet',
-  origin: INTERNAL_REQUEST_ORIGIN,
-  icon: './images/logo/wallet-logo.png'
-};
+export const INTERNAL_REQUEST_ORIGIN = 'https://bitway.com';
 
 export const EVENTS = {
   broadcastToUI: 'broadcastToUI',
@@ -262,11 +255,11 @@ export const TO_LOCALE_STRING_CONFIG = {
 export const SUPPORTED_DOMAINS = ['sats', 'unisat', 'x', 'btc'];
 export const SAFE_DOMAIN_CONFIRMATION = 3;
 
-export const GITHUB_URL = 'https://github.com/sideprotocol';
-export const TELEGRAM_URL = 'https://t.me/SideProtocolOfficial';
+export const GITHUB_URL = 'https://github.com/bitwaylabs';
+export const TELEGRAM_URL = 'https://t.me/bitwaycommunity';
 
-export const DISCORD_URL = 'https://discord.com/invite/sideprotocol';
-export const TWITTER_URL = 'https://x.com/SideProtocol';
+export const DISCORD_URL = 'https://discord.gg/bitway';
+export const TWITTER_URL = 'https://x.com/bitwayofficial';
 
 export const CHANNEL = process.env.channel!;
 export const VERSION = process.env.release!;

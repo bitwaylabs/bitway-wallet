@@ -14,16 +14,16 @@ import { colors } from '@/ui/theme/colors';
 import { Box, Skeleton, Stack } from '@mui/material';
 
 export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balanceVisible: boolean }) {
-  const { SIDE_STATION_URL } = useEnvironment();
+  const { sideChain } = useEnvironment();
   const isIbc = token.asset.denom.includes('ibc/');
 
-  const isSide = token.asset.denom === 'ubtw';
+  const isBTW = token.asset.denom === sideChain?.denom;
 
   const ibcData = token.asset.ibcData?.find((item) => !!item.sideChainChannelId);
 
   const navigate = useNavigate();
 
-  const isSideChain = token.asset.chain === CHAINS_ENUM.BITWAY;
+  const isBitwayChain = token.asset.chain === CHAINS_ENUM.BITWAY;
 
   const isBitcoinChain = token.asset.chain === CHAINS_ENUM.BTC;
 
@@ -60,7 +60,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             />
 
             <Box position="absolute" bottom="2px" right="2px">
-              {isSideChain && (
+              {isBitwayChain && (
                 <ImageIcon
                   url="https://api.bitway.com/static/token/logo/bitway.png"
                   style={{ width: '16px', height: '16px', borderRadius: '50%' }}
@@ -123,7 +123,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
           />
         </Column>
       </Stack>
-      {isSide && (
+      {isBTW && (
         <Stack
           direction="row"
           alignItems="center"

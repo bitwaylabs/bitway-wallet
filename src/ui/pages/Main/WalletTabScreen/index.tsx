@@ -246,6 +246,7 @@ export default function WalletTabScreen() {
             direction="row"
             justifyContent="center"
             sx={{
+              display: 'none',
               margin: '12px 12px 0',
               py: '4px',
               fontSize: '12px',
