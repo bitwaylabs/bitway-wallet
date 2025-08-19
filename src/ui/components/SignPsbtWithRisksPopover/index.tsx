@@ -5,7 +5,7 @@ import { colors } from '@/ui/theme/colors';
 
 import { Button } from '../Button';
 import { Column } from '../Column';
-import { Icon } from '../Icon';
+import { Image } from '../Image';
 import { Input } from '../Input';
 import { Popover } from '../Popover';
 import { Row } from '../Row';
@@ -70,7 +70,7 @@ export const SignPsbtWithRisksPopover = ({
   return (
     <Popover>
       <Column justifyCenter itemsCenter>
-        <Icon icon={'alert'} color={'red'} size={20} />
+        <Image src="/images/icons/alert-triangle.svg" size={20} />
         <Text text="Use at your own risk" preset="title-bold" />
         <Text text={'Please be aware that sending the following assets involves risk:'} preset="sub" />
 

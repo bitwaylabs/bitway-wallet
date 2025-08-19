@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { AddressFlagType } from '@/shared/constant';
 import { checkAddressFlag } from '@/shared/utils';
-import { Button, Card, Column, Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
+import { Button, Card, Column, Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import { EnableUnconfirmedPopover } from '@/ui/components/EnableUnconfirmedPopover';
 import { Popover } from '@/ui/components/Popover';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -59,8 +59,7 @@ export default function ProtectionScreen() {
       <Content
         style={{
           marginTop: 16
-        }}
-      >
+        }}>
         <Column>
           <Card style={{ borderRadius: 10 }}>
             <Column fullX>
@@ -103,8 +102,7 @@ export default function ProtectionScreen() {
                       setUnconfirmedPopoverVisible(true);
                     }
                   }}
-                  checked={enableUnconfirmed}
-                ></Switch>
+                  checked={enableUnconfirmed}></Switch>
               </Row>
             </Column>
           </Card>
@@ -119,7 +117,7 @@ export default function ProtectionScreen() {
                   preset="sub"
                   size="sm"
                   text={
-                    'If you enable this setting, you might get signature requests that aren\'t readable. By signing a message you don\'t understand, you could be agreeing to give away your funds and NFTs.You\'re at risk for phishing attacks. Protect yourself by turning off signData.'
+                    "If you enable this setting, you might get signature requests that aren't readable. By signing a message you don't understand, you could be agreeing to give away your funds and NFTs.You're at risk for phishing attacks. Protect yourself by turning off signData."
                   }
                 />
               </Row>
@@ -139,8 +137,7 @@ export default function ProtectionScreen() {
                       setEnableSignDataPopoverVisible(true);
                     }
                   }}
-                  checked={enableSignData}
-                ></Switch>
+                  checked={enableSignData}></Switch>
               </Row>
             </Column>
           </Card>
@@ -191,7 +188,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
       <Column justifyCenter itemsCenter>
         <div className="w-[68px] bg-[#282521] h-[68px] rounded-full flex items-center justify-center">
           <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#F0B622] bg-opacity-10">
-            <Icon icon={'warning2'} color={'icon_yellow'} size={24} />
+            <Image src="/images/icons/alert-triangle.svg" size={24} />
           </div>
         </div>
 
@@ -219,7 +216,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
 
                 <Text
                   color="red_disconnect"
-                  text={'If you\'ve been asked to turn this setting on, you might be getting scammed'}
+                  text={"If you've been asked to turn this setting on, you might be getting scammed"}
                 />
               </Row>
             </Row>
@@ -229,8 +226,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
                   onChange={() => {
                     setUnderstand(!understand);
                   }}
-                  checked={understand}
-                ></Checkbox>
+                  checked={understand}></Checkbox>
                 <Text
                   size="xs"
                   text={'I understand that I can lose all of my funds and NFTs if I enable signData requests.'}
