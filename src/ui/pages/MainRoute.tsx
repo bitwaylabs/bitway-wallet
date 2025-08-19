@@ -85,6 +85,7 @@ import ProtectionScreen from './Settings/ProtectionScreen';
 import SecurityTabScreen from './Settings/SecurityTabScreen';
 import ThemeTypeScreen from './Settings/ThemeTypeScreen';
 import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
+import StakeScreen from './Stake/StakeScreen';
 import TestScreen from './Test/TestScreen';
 import HistoryScreen from './Wallet/HistoryScreen';
 import ReceiveScreen from './Wallet/ReceiveScreen';
@@ -488,6 +489,10 @@ export const routes = {
   RegisterEvmAddress: {
     path: '/register-evm-address',
     element: <RegisterEvmAddress />
+  },
+  StakeScreen: {
+    path: '/stake',
+    element: <StakeScreen />
   }
 };
 

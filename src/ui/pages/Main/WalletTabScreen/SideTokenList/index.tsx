@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CHAINS_ENUM } from '@/shared/constant';
@@ -22,8 +22,6 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
   const ibcData = token.asset.ibcData?.find((item) => !!item.sideChainChannelId);
 
   const navigate = useNavigate();
-
-  const [hover, setHover] = useState(false);
 
   const isSideChain = token.asset.chain === CHAINS_ENUM.BITWAY;
 
@@ -151,7 +149,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               }
             }}
             onClick={() => {
-              window.open(`${SIDE_STATION_URL}/staking`, '_blank');
+              navigate('/stake');
             }}>
             Stake
           </Stack>

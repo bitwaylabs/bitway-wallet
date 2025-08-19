@@ -11,6 +11,7 @@ import EnvironmentService from './environment';
 import LendingService from './lending';
 import NodeService from './node';
 import SignetService from './signet-index';
+import StakingService from './staking';
 import TxService from './tx';
 import UnisatService from './unisat';
 
@@ -27,6 +28,7 @@ class Services {
   lending: LendingService;
   btcStore: BTCStoreService;
   environment: EnvironmentService;
+  staking: StakingService;
   constructor() {
     const apiClient = new ApiConfiguration({ baseURL: '' });
     this.tx = new TxService(new ApiClient(apiClient));
@@ -41,6 +43,7 @@ class Services {
     this.btcStore = new BTCStoreService(new ApiClient(apiClient));
     this.lending = new LendingService(new ApiClient(apiClient));
     this.environment = new EnvironmentService(new ApiClient(apiClient));
+    this.staking = new StakingService(new ApiClient(apiClient));
   }
 }
 

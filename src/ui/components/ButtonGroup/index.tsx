@@ -14,7 +14,7 @@ interface IButtonGroupProps {
   value: ButtonItem['key'];
   onChange: (value: ButtonItem['key'], index: number) => void;
   rowProps: RowProps;
-  size?: 'normal' | 'big';
+  size?: 'small' | 'normal' | 'big';
 }
 
 export function ButtonGroup(props: IButtonGroupProps) {
@@ -58,7 +58,7 @@ export function ButtonGroup(props: IButtonGroupProps) {
               ref={(el) => (buttonRefs.current[index] = el)}
               style={{
                 height,
-                padding: '0 22px',
+                padding: size === 'small' ? '0 10px' : '0 22px',
                 borderRadius: '100px',
                 color: colors.white,
                 fontSize: '12px',
