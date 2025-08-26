@@ -80,8 +80,8 @@ const fixBufferError = () => {
     this.set(obj);
   }
 
-  this.r = BN.fromString(this.r.toString(16), 16)
-  this.s = BN.fromString(this.s.toString(16),16)
+  this.r = new BN(this.r.toString(16), 16);
+  this.s = new BN(this.s.toString(16), 16);
 };`
   );
   fs.writeFileSync(file, fileData);
