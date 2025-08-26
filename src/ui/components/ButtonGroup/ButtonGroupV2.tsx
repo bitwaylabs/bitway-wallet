@@ -1,16 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { colors } from '@/ui/theme/colors';
+import { Box } from '@mui/material';
 
-import { Row } from '../Row';
-import { ButtonGroupV2, IButtonGroupProps } from './ButtonGroupV2';
+import { Row, RowProps } from '../Row';
 
-function ButtonGroup(props: IButtonGroupProps) {
+export interface ButtonItem {
+  key: string | number;
+  label: string;
+}
+
+export interface IButtonGroupProps {
+  list: ButtonItem[];
+  value: ButtonItem['key'];
+  onChange: (value: ButtonItem['key'], index: number) => void;
+  rowProps: RowProps;
+  size?: 'small' | 'normal' | 'big';
+}
+
+export function ButtonGroupV2(props: IButtonGroupProps) {
   const { list, value, onChange, size, rowProps } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  let height = size === 'big' ? '34px' : '26px';
+  let height = '40px';
 
   useEffect(() => {
     const index = list.findIndex((item) => item.key === value);
@@ -23,8 +36,8 @@ function ButtonGroup(props: IButtonGroupProps) {
         justifyCenter
         style={{
           backgroundColor: colors.card_bgColor,
-          borderRadius: '100px',
-          padding: '3px 5px',
+          borderRadius: '10px',
+          padding: '6px',
           gap: '0',
           position: 'relative'
         }}>
@@ -32,8 +45,8 @@ function ButtonGroup(props: IButtonGroupProps) {
           style={{
             position: 'absolute',
             height,
-            backgroundColor: '#404045',
-            borderRadius: '100px',
+            backgroundColor: colors.main,
+            borderRadius: '10px',
             transition: 'all 0.3s ease',
             left: buttonRefs.current[activeIndex]?.offsetLeft ?? 0,
             width: buttonRefs.current[activeIndex]?.offsetWidth ?? 0
@@ -41,33 +54,32 @@ function ButtonGroup(props: IButtonGroupProps) {
         />
         {list.map((item, index) => {
           return (
-            <div
+            <Box
               key={item.key}
               ref={(el) => (buttonRefs.current[index] = el)}
               style={{
                 height,
                 padding: size === 'small' ? '0 10px' : '0 22px',
-                borderRadius: '100px',
-                color: colors.white,
+                borderRadius: '10px',
+                color: activeIndex === index ? colors.black : colors.white,
                 fontSize: '12px',
                 opacity: value === item.key ? 1 : 0.8,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
-                zIndex: 1
+                zIndex: 1,
+                transition: 'color 0.3s ease'
               }}
               onClick={() => {
                 if (item.key === value) return;
                 onChange(item.key, index);
               }}>
               {item.label}
-            </div>
+            </Box>
           );
         })}
       </Row>
     </Row>
   );
 }
-
-export { ButtonGroup, ButtonGroupV2 };

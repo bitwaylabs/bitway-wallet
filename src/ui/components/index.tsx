@@ -1,6 +1,6 @@
 import { AddressBar } from './AddressBar';
 import { Button } from './Button';
-import { ButtonGroup } from './ButtonGroup';
+import { ButtonGroup, ButtonGroupV2 } from './ButtonGroup';
 import { Card } from './Card';
 import { Column } from './Column';
 import { Content } from './Content';
@@ -26,6 +26,7 @@ export {
   AddressBar,
   Button,
   ButtonGroup,
+  ButtonGroupV2,
   Card,
   Column,
   Content,

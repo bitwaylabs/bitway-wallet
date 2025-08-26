@@ -29,7 +29,7 @@ export default function Index({
     {
       label: 'Unstake Period',
       value: '21 days',
-      tips: ''
+      tips: 'After initiating an unstake, there is a mandatory waiting period before the tokens become liquid and transferable.'
     }
   ];
 

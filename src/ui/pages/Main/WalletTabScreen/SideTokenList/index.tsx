@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { CHAINS_ENUM } from '@/shared/constant';
 import { BalanceItem } from '@/shared/types';
-import { Column, LightTooltip, Row, Text } from '@/ui/components';
+import { Column, Image, LightTooltip, Row, Text } from '@/ui/components';
 import ImageIcon from '@/ui/components/ImageIcon';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
@@ -60,12 +60,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             />
 
             <Box position="absolute" bottom="2px" right="2px">
-              {isBitwayChain && (
-                <ImageIcon
-                  url="https://api.bitway.com/static/token/logo/bitway.png"
-                  style={{ width: '16px', height: '16px', borderRadius: '50%' }}
-                />
-              )}
+              {isBitwayChain && <Image src="./images/img/bitway-dark.png" size={16} />}
 
               {isBitcoinChain && (
                 <ImageIcon

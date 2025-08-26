@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import 'swiper/css';
 
-import { ButtonGroup, Column, Content, Header, Layout } from '@/ui/components';
+import { ButtonGroupV2, Column, Content, Header, Layout } from '@/ui/components';
 import { useGetValidators } from '@/ui/hooks/staking';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { colors } from '@/ui/theme/colors';
 
 import Claim from './Claim';
 import Delegate from './Delegate';
@@ -59,7 +60,7 @@ export default function StakeScreen() {
           padding: '0 16px 70px'
         }}>
         <Column gap="lg" py="md">
-          <ButtonGroup
+          <ButtonGroupV2
             list={buttonList}
             value={curTab}
             size="small"
@@ -68,7 +69,9 @@ export default function StakeScreen() {
             }}
             rowProps={{
               style: {
-                width: '100%'
+                width: '100%',
+                backgroundColor: colors.card_bgColor,
+                borderRadius: '10px'
               }
             }}
           />
