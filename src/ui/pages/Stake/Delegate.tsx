@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { useEffect } from 'react';
 
 import { Button, Column, Icon, Image, LightTooltip, Row, Text } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { useStaking } from '@/ui/hooks/staking';
 import { Validator } from '@/ui/services/staking/types';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
 import { Box, Stack, Typography } from '@mui/material';
@@ -12,11 +13,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import ValidatorSelect from './ValidatorSelect';
 
 export default function Index({ activeValidators }: { activeValidators: Validator[] }) {
-  const { delegateToken, amount, setAmount, validator, setValidator, handleDelegate, loading } = useStaking();
-
-  useEffect(() => {
-    setValidator(activeValidators[0]);
-  }, [activeValidators]);
+  const { delegateToken, amount, validator, handleDelegate, loading } = useStaking();
+  const dispatch = useAppDispatch();
 
   const data = [
     // {
@@ -51,14 +49,7 @@ export default function Index({ activeValidators }: { activeValidators: Validato
 
   return (
     <>
-      <ValidatorSelect
-        validatorList={activeValidators}
-        onChangeValidator={(_validator) => {
-          setValidator(_validator);
-          setAmount('');
-        }}
-        selectValidator={validator}
-      />
+      <ValidatorSelect validatorList={activeValidators} selectValidator={validator} type="validator" />
 
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
@@ -119,7 +110,7 @@ export default function Index({ activeValidators }: { activeValidators: Validato
           decimalScale={delegateToken?.asset.precision}
           max={delegateToken?.formatAmount || '0'}
           onChange={(value) => {
-            setAmount(value);
+            dispatch(stakeActions.updateStakeState({ amount: value }));
           }}
         />
         <Row
@@ -143,7 +134,7 @@ export default function Index({ activeValidators }: { activeValidators: Validato
               if (!delegateToken?.formatAmount) {
                 return;
               }
-              setAmount(delegateToken.formatAmount);
+              dispatch(stakeActions.updateStakeState({ amount: delegateToken.formatAmount }));
             }}>
             Max
           </Typography>

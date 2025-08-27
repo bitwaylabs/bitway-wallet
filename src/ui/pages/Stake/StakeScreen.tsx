@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import 'swiper/css';
 
 import { ButtonGroupV2, Column, Content, Header, Layout } from '@/ui/components';
 import { useGetValidators } from '@/ui/hooks/staking';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { useStakeState } from '@/ui/state/stake/hooks';
+import { OperateType, buttonList, stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 
 import Claim from './Claim';
@@ -11,39 +14,20 @@ import Delegate from './Delegate';
 import Redelegate from './Redelegate';
 import Undelegate from './Undelegate';
 
-enum OperateType {
-  delegate = 'delegate',
-  undelegate = 'undelegate',
-  redelegate = 'redelegate',
-  claim = 'claim'
-}
-
-const buttonList = [
-  {
-    label: 'Delegate',
-    key: OperateType.delegate
-  },
-  {
-    label: 'Undelegate',
-    key: OperateType.undelegate
-  },
-  {
-    label: 'Redelegate',
-    key: OperateType.redelegate
-  },
-  {
-    label: 'Claim',
-    key: OperateType.claim
-  }
-];
-
 export default function StakeScreen() {
+  const dispatch = useAppDispatch();
+  const { validator, operateType } = useStakeState();
   const { sideChain } = useEnvironment();
-  const [curTab, setCurTab] = useState<string>(OperateType.delegate);
 
   const { validators: bondedValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_BONDED');
   const { validators: unBondingValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_UNBONDING');
   const { validators: unBondedValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_UNBONDED');
+
+  useEffect(() => {
+    if (!validator && bondedValidators.length > 0) {
+      dispatch(stakeActions.updateStakeState({ validator: bondedValidators[0] }));
+    }
+  }, [bondedValidators]);
 
   return (
     <Layout>
@@ -62,10 +46,10 @@ export default function StakeScreen() {
         <Column gap="lg" py="md">
           <ButtonGroupV2
             list={buttonList}
-            value={curTab}
+            value={operateType}
             size="small"
             onChange={(value) => {
-              setCurTab(value as string);
+              dispatch(stakeActions.updateStakeState({ operateType: value as OperateType, amount: '' }));
             }}
             rowProps={{
               style: {
@@ -75,19 +59,19 @@ export default function StakeScreen() {
               }
             }}
           />
-          {curTab === OperateType.delegate ? (
+          {operateType === OperateType.delegate ? (
             <Delegate activeValidators={bondedValidators} />
-          ) : curTab === OperateType.undelegate ? (
+          ) : operateType === OperateType.undelegate ? (
             <Undelegate
               activeValidators={bondedValidators}
               inactiveValidators={[...unBondingValidators, ...unBondedValidators]}
             />
-          ) : curTab === OperateType.redelegate ? (
+          ) : operateType === OperateType.redelegate ? (
             <Redelegate
               activeValidators={bondedValidators}
               inactiveValidators={[...unBondingValidators, ...unBondedValidators]}
             />
-          ) : curTab === OperateType.claim ? (
+          ) : operateType === OperateType.claim ? (
             <Claim />
           ) : null}
         </Column>

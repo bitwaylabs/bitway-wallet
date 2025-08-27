@@ -11,6 +11,7 @@ import global from './global/reducer';
 import keyrings from './keyrings/reducer';
 import lending from './lending/reducer';
 import settings from './settings/reducer';
+import stake from './stake/reducer';
 import swap from './swap/reducer';
 import transactions from './transactions/reducer';
 import ui from './ui/reducer';
@@ -27,7 +28,8 @@ const store = configureStore({
     bridge,
     swap,
     lending,
-    environment
+    environment,
+    stake
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: true }).concat(save({ states: PERSISTED_KEYS, debounce: 1000 })),

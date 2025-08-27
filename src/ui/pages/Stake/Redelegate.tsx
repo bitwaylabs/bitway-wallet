@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { useEffect } from 'react';
 
 import { Button, Image, Row, Text } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { useStaking } from '@/ui/hooks/staking';
 import { Validator } from '@/ui/services/staking/types';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
 import { Stack, Typography } from '@mui/material';
@@ -18,23 +19,17 @@ export default function Index({
   activeValidators: Validator[];
   inactiveValidators: Validator[];
 }) {
+  const dispatch = useAppDispatch();
   const {
     delegateToken,
     amount,
-    setAmount,
     validator,
-    setValidator,
     validatorDst,
-    setValidatorDst,
     yourDelegation,
     yourDelegationDst,
     handleReDelegate,
     loading
   } = useStaking();
-
-  useEffect(() => {
-    setValidator(activeValidators[0]);
-  }, [activeValidators]);
 
   return (
     <>
@@ -55,11 +50,8 @@ export default function Index({
       <Row full style={{ marginTop: '-8px' }}>
         <ValidatorSelect
           validatorList={[...activeValidators, ...inactiveValidators]}
-          onChangeValidator={(_validator) => {
-            setValidator(_validator);
-            setAmount('');
-          }}
           selectValidator={validator}
+          type="validator"
         />
       </Row>
       <Row full justifyBetween itemsCenter>
@@ -77,13 +69,7 @@ export default function Index({
         </Row>
       </Row>
       <Row full style={{ marginTop: '-8px' }}>
-        <ValidatorSelect
-          validatorList={activeValidators}
-          onChangeValidator={(_validator) => {
-            setValidatorDst(_validator);
-          }}
-          selectValidator={validatorDst}
-        />
+        <ValidatorSelect validatorList={activeValidators} type="validatorDst" selectValidator={validatorDst} />
       </Row>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
@@ -135,7 +121,7 @@ export default function Index({
           decimalScale={delegateToken?.asset.precision}
           max={yourDelegation || '0'}
           onChange={(value) => {
-            setAmount(value);
+            dispatch(stakeActions.updateStakeState({ amount: value }));
           }}
         />
         <Row
@@ -159,7 +145,7 @@ export default function Index({
               if (!delegateToken?.formatAmount) {
                 return;
               }
-              setAmount(yourDelegation || '0');
+              dispatch(stakeActions.updateStakeState({ amount: yourDelegation || '0' }));
             }}>
             Max
           </Typography>

@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { useEffect } from 'react';
 
 import { Button, Column, Image, LightTooltip, Row, Text } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { useStaking } from '@/ui/hooks/staking';
 import { Validator } from '@/ui/services/staking/types';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
 import { Box, Stack, Typography } from '@mui/material';
@@ -18,12 +19,8 @@ export default function Index({
   activeValidators: Validator[];
   inactiveValidators: Validator[];
 }) {
-  const { delegateToken, amount, setAmount, validator, setValidator, yourDelegation, handleUnDelegate, loading } =
-    useStaking();
-
-  useEffect(() => {
-    setValidator(activeValidators[0]);
-  }, [activeValidators]);
+  const { delegateToken, amount, validator, yourDelegation, handleUnDelegate, loading } = useStaking();
+  const dispatch = useAppDispatch();
 
   const data = [
     {
@@ -37,11 +34,8 @@ export default function Index({
     <>
       <ValidatorSelect
         validatorList={[...activeValidators, ...inactiveValidators]}
-        onChangeValidator={(_validator) => {
-          setValidator(_validator);
-          setAmount('');
-        }}
         selectValidator={validator}
+        type="validator"
       />
 
       <Row full justifyBetween itemsCenter>
@@ -102,7 +96,7 @@ export default function Index({
           decimalScale={delegateToken?.asset.precision}
           max={yourDelegation || '0'}
           onChange={(value) => {
-            setAmount(value);
+            dispatch(stakeActions.updateStakeState({ amount: value }));
           }}
         />
         <Row
@@ -126,7 +120,7 @@ export default function Index({
               if (!delegateToken?.formatAmount) {
                 return;
               }
-              setAmount(yourDelegation || '0');
+              dispatch(stakeActions.updateStakeState({ amount: yourDelegation || '0' }));
             }}>
             Max
           </Typography>

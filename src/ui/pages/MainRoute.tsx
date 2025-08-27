@@ -86,6 +86,7 @@ import SecurityTabScreen from './Settings/SecurityTabScreen';
 import ThemeTypeScreen from './Settings/ThemeTypeScreen';
 import UpgradeNoticeScreen from './Settings/UpgradeNoticeScreen';
 import StakeScreen from './Stake/StakeScreen';
+import ValidatorSelectScreen from './Stake/ValidatorSelectScreen';
 import TestScreen from './Test/TestScreen';
 import HistoryScreen from './Wallet/HistoryScreen';
 import ReceiveScreen from './Wallet/ReceiveScreen';
@@ -493,6 +494,10 @@ export const routes = {
   StakeScreen: {
     path: '/stake',
     element: <StakeScreen />
+  },
+  ValidatorSelectScreen: {
+    path: '/validator-select',
+    element: <ValidatorSelectScreen />
   }
 };
 

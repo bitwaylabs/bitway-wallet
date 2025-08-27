@@ -4,10 +4,10 @@ import { useQuery, useQueryClient } from 'react-query';
 import { CHAINS_ENUM } from '@/shared/constant';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
-import { Validator } from '@/ui/services/staking/types';
 import { GetTxByHashResponse } from '@/ui/services/tx/types';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useStakeState } from '@/ui/state/stake/hooks';
 import { useSignAndBroadcastTxRaw } from '@/ui/state/transactions/hooks/cosmos';
 import { formatUnitAmount, parseUnitAmount } from '@/ui/utils';
 
@@ -17,12 +17,10 @@ export function useStaking() {
   const navigate = useNavigate();
   const currentAccount = useCurrentAccount();
   const { sideChain } = useEnvironment();
+  const { validator, validatorDst, amount } = useStakeState();
   const { signAndBroadcastTxRaw } = useSignAndBroadcastTxRaw();
   const queryClient = useQueryClient();
-  const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  const [validator, setValidator] = useState<Validator | null>(null);
-  const [validatorDst, setValidatorDst] = useState<Validator | null>(null);
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const delegateToken = balanceList.find((item) => item.denom === sideChain?.denom);
@@ -171,11 +169,8 @@ export function useStaking() {
   return {
     delegateToken,
     amount,
-    setAmount,
     validator,
-    setValidator,
     validatorDst,
-    setValidatorDst,
     balanceView,
     yourDelegation,
     yourDelegationDst,
