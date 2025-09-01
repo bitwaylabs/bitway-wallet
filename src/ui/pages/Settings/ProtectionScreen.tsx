@@ -9,12 +9,14 @@ import { Popover } from '@/ui/components/Popover';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { accountActions } from '@/ui/state/accounts/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { ColorTypes, colors } from '@/ui/theme/colors';
 import { fontSizes } from '@/ui/theme/font';
 import { shortAddress, useWallet } from '@/ui/utils';
 
 export default function ProtectionScreen() {
   const wallet = useWallet();
+  const isLight = useIsLight();
   const [enableSignData, setEnableSignData] = useState(false);
 
   const [enableSignDataPopoverVisible, setEnableSignDataPopoverVisible] = useState(false);
@@ -63,7 +65,12 @@ export default function ProtectionScreen() {
         <Column>
           <Card style={{ borderRadius: 10 }}>
             <Column fullX>
-              <Text text={'Unconfirmed Balance Not Spendable'} preset="bold" size="sm" />
+              <Text
+                text={'Unconfirmed Balance Not Spendable'}
+                preset="bold"
+                size="sm"
+                color={isLight ? 'black' : 'white'}
+              />
               <Row>
                 <Text
                   preset="sub"
@@ -78,9 +85,13 @@ export default function ProtectionScreen() {
               <Row justifyBetween>
                 <Column fullX gap="zero">
                   {enableUnconfirmed ? (
-                    <Text text={'Mandatory use of unconfirmed balance '} size="xs" />
+                    <Text
+                      text={'Mandatory use of unconfirmed balance '}
+                      size="xs"
+                      color={isLight ? 'black' : 'white'}
+                    />
                   ) : (
-                    <Text text={'Mandatory use of unconfirmed balance'} size="xs" />
+                    <Text text={'Mandatory use of unconfirmed balance'} size="xs" color={isLight ? 'black' : 'white'} />
                   )}
                   <Text
                     text={`Only applies to current address (${shortAddress(currentAccount.address)})`}
@@ -111,7 +122,7 @@ export default function ProtectionScreen() {
         <Column>
           <Card style={{ borderRadius: 10 }}>
             <Column>
-              <Text text={'signData requests'} preset="bold" size="sm" />
+              <Text text={'signData requests'} preset="bold" size="sm" color={isLight ? 'black' : 'white'} />
               <Row>
                 <Text
                   preset="sub"
@@ -125,7 +136,7 @@ export default function ProtectionScreen() {
               <Row style={{ borderTopWidth: 1, borderColor: colors.border }} my="md" />
 
               <Row justifyBetween>
-                <Text text={'Allow signData requests'} size="xs" />
+                <Text text={'Allow signData requests'} size="xs" color={isLight ? 'black' : 'white'} />
 
                 <Switch
                   onChange={() => {
@@ -183,10 +194,15 @@ const riskColor: { [key: string]: ColorTypes } = {
 
 export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void; onCancel: () => void }) => {
   const [understand, setUnderstand] = useState(false);
+  const isLight = useIsLight();
   return (
     <Popover>
       <Column justifyCenter itemsCenter>
-        <div className="w-[68px] bg-[#282521] h-[68px] rounded-full flex items-center justify-center">
+        <div
+          className="w-[68px] h-[68px] rounded-full flex items-center justify-center"
+          style={{
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg
+          }}>
           <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#F0B622] bg-opacity-10">
             <Image src="/images/icons/alert-triangle.svg" size={24} />
           </div>
@@ -196,13 +212,16 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
           text="Use at your own risk"
           mt="sm"
           preset="title-bold"
+          color={isLight ? 'black' : 'white'}
           style={{
             fontSize: '16px'
           }}
         />
 
         <Column gap="zero">
-          <div style={{ fontSize: fontSizes.sm, marginTop: 0 }} className="text-opacity-50 text-white">
+          <div
+            className="text-opacity-50"
+            style={{ color: isLight ? colors.black : colors.white, fontSize: fontSizes.sm, marginTop: 0 }}>
             Allowing signData requests can make you vulnerable to phishing attacks. Always review the URL and be careful
             when signing messages that contain code.
           </div>
@@ -210,12 +229,13 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
 
         <Column mt="sm">
           <Column>
-            <Row style={{ backgroundColor: '#FF45451A', padding: 5, borderRadius: 10 }}>
+            <Row style={{ padding: 5, borderRadius: 10 }}>
               <Row>
                 <Icon icon={'warning2'} color={'red_disconnect'} size={24} />
 
                 <Text
                   color="red_disconnect"
+                  preset="sub"
                   text={"If you've been asked to turn this setting on, you might be getting scammed"}
                 />
               </Row>
@@ -229,6 +249,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
                   checked={understand}></Checkbox>
                 <Text
                   size="xs"
+                  color={isLight ? 'black' : 'white'}
                   text={'I understand that I can lose all of my funds and NFTs if I enable signData requests.'}
                 />
               </Row>

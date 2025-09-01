@@ -1,7 +1,9 @@
 import { Column, Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 
 export default function CurrencyTypeScreen() {
+  const isLight = useIsLight();
   return (
     <Layout>
       <Header
@@ -10,26 +12,11 @@ export default function CurrencyTypeScreen() {
         }}
         title="Currency"
       />
-      {/*<Content>*/}
-      {/*  <Column>*/}
-      {/*    <Card preset={'styleChecked'}>*/}
-      {/*      <Row full justifyBetween itemsCenter>*/}
-      {/*        <Row itemsCenter>*/}
-      {/*          <Text text={'USD'} preset="regular-bold" />*/}
-      {/*        </Row>*/}
-      {/*        <Column>*/}
-      {/*          <Icon icon="check-box" />*/}
-      {/*        </Column>*/}
-      {/*      </Row>*/}
-      {/*    </Card>*/}
-      {/*  </Column>*/}
-      {/*</Content>*/}
       <Content
         style={{
           padding: '0 16px',
           marginTop: '16px'
-        }}
-      >
+        }}>
         <Column gap={'md'}>
           <Row
             rounded
@@ -40,11 +27,9 @@ export default function CurrencyTypeScreen() {
             }}
             full
             justifyBetween
-            itemsCenter
-            classname={''}
-          >
+            itemsCenter>
             <Row itemsCenter>
-              <Text text={'USD'} />
+              <Text text={'USD'} color={isLight ? 'black' : 'white'} />
             </Row>
             <Column>
               <Icon color={'primary'} contain={'contain'} icon="check-circle" />

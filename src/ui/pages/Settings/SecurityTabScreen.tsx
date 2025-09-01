@@ -2,15 +2,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ADDRESS_TYPES, KEYRING_TYPE, NETWORK_TYPES } from '@/shared/constant';
-import { Card, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
+import { Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { IconTypes } from '@/ui/components/Icon';
+import { Icon } from '@/ui/components/TokenCurrent';
 import { getCurrentTab, useExtensionIsInTab, useOpenExtensionInTab } from '@/ui/features/browser/tabs';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
-import { RightOutlined } from '@ant-design/icons';
 
 interface Setting {
   label?: string;
@@ -117,7 +118,7 @@ export default function SecurityTabScreen() {
 
   const tools = useTools();
   const openExtensionInTab = useOpenExtensionInTab();
-
+  const isLight = useIsLight();
   return (
     <Layout>
       <Header
@@ -134,10 +135,9 @@ export default function SecurityTabScreen() {
                 return null;
               }
               return (
-                <Card
-                  classname="bg-item-hover"
+                <div
+                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   key={item.action + index}
-                  mt="lg"
                   onClick={(e) => {
                     if (item.action == 'addressType') {
                       if (isCustomHdPath) {
@@ -152,19 +152,32 @@ export default function SecurityTabScreen() {
                     navigate(item.route);
                   }}
                   style={{
-                    backgroundColor: 'transparent'
+                    padding: '12px 10px',
+                    borderRadius: '8px',
+                    marginTop: '12px',
+                    cursor: 'pointer'
                   }}>
                   <Row full justifyBetween>
                     <Column justifyCenter>
-                      <Text text={item.label || item.desc} preset="regular-bold" />
-                      <Text text={item.value} preset="sub" />
+                      <Text text={item.label || item.desc} preset="regular-bold" color={isLight ? 'black' : 'white'} />
+                      <Text text={item.value} preset="sub" color={isLight ? 'black' : 'white'} />
                     </Column>
 
                     <Column justifyCenter>
-                      {item.right && <RightOutlined style={{ color: 'rgb(107,107,107)', fontSize: '14px' }} />}
+                      {item.right && (
+                        <Icon
+                          type="side-down"
+                          className={'hover-100'}
+                          style={{
+                            transform: 'rotate(-90deg)',
+                            opacity: '0.6',
+                            color: isLight ? colors.black : colors.white
+                          }}
+                        />
+                      )}
                     </Column>
                   </Row>
-                </Card>
+                </div>
               );
             })}
           </div>

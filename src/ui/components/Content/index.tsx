@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { spacing, spacingGap } from '@/ui/theme/spacing';
 
@@ -11,7 +12,6 @@ export interface ContentProps extends BaseViewProps {
   preset?: Presets;
 }
 const $contentStyle = {
-  backgroundColor: colors.black,
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
@@ -44,7 +44,12 @@ const $viewPresets = {
 
 export function Content(props: ContentProps) {
   const { style: $styleOverride, preset, ...rest } = props;
+  const isLight = useIsLight();
 
-  const $style = Object.assign({}, $viewPresets[preset || 'medium'], $styleOverride);
+  const $style = Object.assign(
+    { backgroundColor: isLight ? colors.white : colors.black },
+    $viewPresets[preset || 'medium'],
+    $styleOverride
+  );
   return <BaseView style={$style} {...rest} />;
 }

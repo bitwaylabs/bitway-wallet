@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { spacingGap } from '@/ui/theme/spacing';
 
@@ -13,7 +14,6 @@ const $baseViewStyle = {
   display: 'flex',
   flexDirection: 'row',
   gap: spacingGap.md,
-  backgroundColor: colors.black_dark,
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 8
@@ -70,6 +70,9 @@ type Presets = keyof typeof $viewPresets;
 
 export function Card(props: CardProps) {
   const { style: $styleOverride, preset, ...rest } = props;
-  const $style = Object.assign({}, $viewPresets[preset || 'auto'], $styleOverride);
+  const isLight = useIsLight();
+  const $style = Object.assign({}, $viewPresets[preset || 'auto'], $styleOverride, {
+    backgroundColor: isLight ? colors.light_bg : colors.dark_bg
+  });
   return <BaseView style={$style} {...rest} />;
 }

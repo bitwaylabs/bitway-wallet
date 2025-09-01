@@ -2,14 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ADDRESS_TYPES, KEYRING_TYPE, NETWORK_TYPES } from '@/shared/constant';
-import { Card, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
+import { Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { IconTypes } from '@/ui/components/Icon';
 import { Icon } from '@/ui/components/TokenCurrent';
 import { getCurrentTab, useExtensionIsInTab, useOpenExtensionInTab } from '@/ui/features/browser/tabs';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
 interface Setting {
@@ -52,6 +53,7 @@ export default function AdvancedTabScreen() {
   const isInTab = useExtensionIsInTab();
 
   const [connected, setConnected] = useState(false);
+  const isLight = useIsLight();
 
   const currentKeyring = useCurrentKeyring();
   const currentAccount = useCurrentAccount();
@@ -124,10 +126,9 @@ export default function AdvancedTabScreen() {
                 return null;
               }
               return (
-                <Card
-                  classname="bg-item-hover"
+                <div
+                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   key={item.action}
-                  mt="lg"
                   onClick={(e) => {
                     if (item.action == 'addressType') {
                       if (isCustomHdPath) {
@@ -142,26 +143,36 @@ export default function AdvancedTabScreen() {
                     navigate(item.route);
                   }}
                   style={{
-                    backgroundColor: 'transparent'
+                    padding: '12px 10px',
+                    borderRadius: '8px',
+                    marginTop: '12px',
+                    cursor: 'pointer'
                   }}>
                   <Row full justifyBetween>
-                    <Text text={item.label || item.desc} preset="regular-bold" />
+                    <Text text={item.label || item.desc} preset="regular-bold" color={isLight ? 'black' : 'white'} />
 
                     <Row itemsCenter>
-                      <Text text={item.value} preset="regular" size="xs" style={{ opacity: 0.5 }} />
+                      <Text
+                        text={item.value}
+                        preset="regular"
+                        size="xs"
+                        style={{ opacity: 0.5 }}
+                        color={isLight ? 'black' : 'white'}
+                      />
                       {item.right && (
                         <Icon
                           type="side-down"
                           className={'hover-100'}
                           style={{
                             transform: 'rotate(-90deg)',
-                            opacity: '0.6'
+                            opacity: '0.6',
+                            color: isLight ? colors.black : colors.white
                           }}
                         />
                       )}
                     </Row>
                   </Row>
-                </Card>
+                </div>
               );
             })}
           </div>

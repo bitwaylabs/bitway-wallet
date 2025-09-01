@@ -5,10 +5,11 @@ import React, { CSSProperties, useEffect, useState } from 'react';
 import { SAFE_DOMAIN_CONFIRMATION, SUPPORTED_DOMAINS } from '@/shared/constant';
 import { getSatsName } from '@/shared/lib/satsname-utils';
 import { Inscription } from '@/shared/types';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { spacing } from '@/ui/theme/spacing';
 import { useWallet } from '@/ui/utils';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { AccordingInscription } from '../AccordingInscription';
 import { useTools } from '../ActionComponent';
@@ -60,7 +61,6 @@ const $baseContainerStyle: CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  backgroundColor: colors.black_dark3,
   paddingLeft: 15.2,
   paddingRight: 15.2,
   paddingTop: 11,
@@ -95,19 +95,25 @@ function PasswordInput(props: InputProps) {
   const [isMouse, setIsMouse] = useState<boolean>(false);
   const [isContainerMouseOver, setIsContainerMouseOver] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState(false);
+  const isLight = useIsLight();
   return (
     <div
       className={` border-[1px] border-solid ${
         isFocus ? 'border-white' : 'border-transparent hover:border-[#ffffff50] '
       } `}
-      style={Object.assign({}, $baseContainerStyle, containerStyle, {
-        // borderColor: isContainerMouseOver ? '#ffffff50!important' : 'transparent'
-      })}>
+      style={Object.assign(
+        { backgroundColor: isLight ? colors.light_bg : colors.dark_bg },
+        $baseContainerStyle,
+        containerStyle,
+        {
+          // borderColor: isContainerMouseOver ? '#ffffff50!important' : 'transparent'
+        }
+      )}>
       <input
         placeholder={isNull(placeholder) ? 'Password' : placeholder}
         className="placeholder:opacity-30"
         type={type}
-        style={Object.assign({}, $baseInputStyle, $inputStyleOverride)}
+        style={Object.assign({ color: isLight ? colors.black : colors.white }, $baseInputStyle, $inputStyleOverride)}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         {...rest}
@@ -121,11 +127,17 @@ function PasswordInput(props: InputProps) {
           style={{ marginLeft: spacing.tiny }}
           // onClick={() => setType('text')} color="textDim" />
           onClick={() => setType('text')}
-          color={isMouse ? 'white' : 'textDim'}
+          color={isMouse ? (isLight ? 'black' : 'white') : 'textDim'}
         />
       )}
       {type === 'text' && (
-        <Icon icon="eye-white" size={24} style={{ marginLeft: spacing.tiny }} onClick={() => setType('password')} />
+        <Icon
+          icon="eye-white"
+          size={24}
+          style={{ marginLeft: spacing.tiny }}
+          onClick={() => setType('password')}
+          color={isLight ? 'black' : 'white'}
+        />
       )}
     </div>
   );
@@ -145,7 +157,13 @@ function AmountInput(props: InputProps) {
     rightElement,
     ...rest
   } = props;
-  const $style = Object.assign({}, $baseInputStyle, $inputStyleOverride, disabled ? { color: colors.textDim } : {});
+  const isLight = useIsLight();
+  const $style = Object.assign(
+    { color: isLight ? colors.black : colors.white },
+    $baseInputStyle,
+    $inputStyleOverride,
+    disabled ? { color: colors.textDim } : {}
+  );
 
   if (!onAmountInputChange) {
     return <div />;
@@ -185,10 +203,17 @@ function AmountInput(props: InputProps) {
     }
   };
   return (
-    <div
-      className={` border-[1px] border-solid ${
-        isFocus ? 'border-[#ffffff50]' : 'border-[#ffffff20] hover:border-[#ffffff50] '
-      } `}
+    <Box
+      sx={{
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        ':hover': {
+          borderColor: isLight ? colors.light_border : colors.dark_border
+        },
+        ':focus': {
+          borderColor: isLight ? colors.light_border : colors.dark_border
+        }
+      }}
       style={Object.assign({}, $baseContainerStyle, { padding: '4px 10px' })}>
       <input
         placeholder={placeholder || 'Amount'}
@@ -222,7 +247,7 @@ function AmountInput(props: InputProps) {
           Max
         </Typography>
       ) : null}
-    </div>
+    </Box>
   );
 }
 
@@ -242,6 +267,7 @@ export const AddressInput = (props: InputProps) => {
   const [inscription, setInscription] = useState<Inscription>();
   const [parseName, setParseName] = useState('');
   const wallet = useWallet();
+  const isLight = useIsLight();
   const tools = useTools();
   useEffect(() => {
     onAddressInputChange({
@@ -351,7 +377,7 @@ export const AddressInput = (props: InputProps) => {
           placeholder={'Address...'}
           className="placeholder:opacity-30"
           type={'text'}
-          style={Object.assign({}, $baseInputStyle, $inputStyleOverride)}
+          style={Object.assign({ color: isLight ? colors.black : colors.white }, $baseInputStyle, $inputStyleOverride)}
           onChange={async (e) => {
             handleInputAddress(e);
           }}
@@ -404,12 +430,13 @@ function TextInput(props: InputProps) {
     ...rest
   } = props;
   const [isFocus, setIsFocus] = useState(false);
+  const isLight = useIsLight();
   return (
     <div
       className={` border-[1px] border-solid ${
         isFocus ? 'border-[#ffffff50]' : 'border-[#ffffff20] hover:border-[#ffffff50] '
       } `}
-      style={Object.assign({}, $baseContainerStyle, containerStyle)}>
+      style={Object.assign({ color: isLight ? colors.black : colors.white }, $baseContainerStyle, containerStyle)}>
       <input
         value={value}
         onChange={onChange}

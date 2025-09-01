@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { copyToClipboard } from '@/ui/utils';
 
 import { Icon, IconProps } from '../Icon';
@@ -21,6 +22,7 @@ export function CopyIcon({
 }) {
   const [isClickCopy, setIsClickCopy] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const isLight = useIsLight();
   const handleMouseOver = () => {
     setIsHovered(true);
   };
@@ -49,7 +51,7 @@ export function CopyIcon({
       style={style}>
       <Icon
         icon={isClickCopy ? 'check-circle-broken' : 'copy2'}
-        color={isClickCopy ? 'primary' : isHovered ? 'white' : defaultColor || 'search_icon'}
+        color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : defaultColor || 'search_icon'}
         size={size}
       />
       {!onlyIcon && (

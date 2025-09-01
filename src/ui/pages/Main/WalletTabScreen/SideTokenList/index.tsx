@@ -32,7 +32,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
   return (
     <Stack
       sx={{
-        borderRadius: '10px',
+        borderRadius: '8px',
         overflow: 'hidden'
       }}>
       <Stack
@@ -41,7 +41,8 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
         className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
         sx={{
           cursor: 'pointer',
-          padding: '10px 16px'
+          padding: '10px 16px',
+          borderRadius: isBTW ? '8px 8px 0 0' : '8px'
         }}>
         <Row>
           <Row
@@ -139,7 +140,8 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               py: '4px',
               fontSize: '12px',
               fontWeight: 500,
-              color: isLight ? colors.grey12 : colors.white
+              color: isLight ? colors.grey12 : colors.white,
+              borderRadius: '0 0 0 8px'
             }}
             onClick={() => {
               navigate('/stake');
@@ -155,7 +157,8 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               fontSize: '12px',
               fontWeight: 500,
               color: isLight ? colors.grey12 : colors.white,
-              borderLeft: `1px solid ${isLight ? colors.light_border : colors.white20}`
+              borderLeft: `1px solid ${isLight ? colors.light_border : colors.white20}`,
+              borderRadius: '0 0 8px 0'
             }}
             className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             onClick={() => {

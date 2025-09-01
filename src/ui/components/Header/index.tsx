@@ -26,7 +26,7 @@ export function Header(props: HeaderProps) {
     if (children) {
       return children;
     } else if (title) {
-      return <Text size={'lg'} text={title} preset="regular-bold" />;
+      return <Text size={'lg'} text={title} preset="regular-bold" color={isLight ? 'black' : 'white'} />;
     } else {
       return '';
     }

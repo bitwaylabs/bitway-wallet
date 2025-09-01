@@ -207,3 +207,13 @@ export function useIsLight() {
   const state = useSettingsState();
   return state.isLight;
 }
+
+export function useChangeIsLightCallback() {
+  const dispatch = useAppDispatch();
+  return useCallback(
+    async (isLight: boolean) => {
+      dispatch(settingsActions.updateSettings({ isLight }));
+    },
+    [dispatch]
+  );
+}

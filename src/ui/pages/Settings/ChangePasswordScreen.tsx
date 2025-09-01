@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Column, Content, Header, Input, Layout, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useWallet } from '@/ui/utils';
 import { getPasswordStrengthWord } from '@/ui/utils/password-utils';
 
@@ -19,6 +20,7 @@ export default function ChangePasswordScreen() {
   const [disabled, setDisabled] = useState(true);
   const wallet = useWallet();
   const tools = useTools();
+  const isLight = useIsLight();
 
   const [isOldPwdError, setIsOldPwdError] = useState(false);
   const [isPwdError, setIsPwdError] = useState(false);
@@ -85,11 +87,10 @@ export default function ChangePasswordScreen() {
         style={{
           marginTop: 16
         }}
-        justifyBetween
-      >
+        justifyBetween>
         <Column gap="lg">
           <Column>
-            <Text text={'Old Password'} color={'white'} preset="sub"></Text>
+            <Text text={'Old Password'} color={isLight ? 'black' : 'white'} preset="sub"></Text>
             <Input
               preset="password"
               placeholder="Current Password"
@@ -102,7 +103,7 @@ export default function ChangePasswordScreen() {
           </Column>
 
           <Column>
-            <Text text={'New Password'} color={'white'} preset="sub"></Text>
+            <Text text={'New Password'} color={isLight ? 'black' : 'white'} preset="sub"></Text>
 
             <Input
               containerStyle={{
@@ -140,7 +141,7 @@ export default function ChangePasswordScreen() {
           </Column>
 
           <Column>
-            <Text text={'Confirm Password'} color={'white'} preset="sub"></Text>
+            <Text text={'Confirm Password'} color={isLight ? 'black' : 'white'} preset="sub"></Text>
 
             <Input
               preset="password"

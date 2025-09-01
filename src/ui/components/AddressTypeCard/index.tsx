@@ -6,6 +6,7 @@ import { AddressAssets } from '@/shared/types';
 import { checkAddressFlag } from '@/shared/utils';
 import services from '@/ui/services';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { fontSizes } from '@/ui/theme/font';
 import { satoshisToAmount, satoshisToBTC } from '@/ui/utils';
@@ -28,6 +29,7 @@ interface AddressTypeCardProps {
 export function AddressTypeCard(props: AddressTypeCardProps) {
   const { onClick, label, address, checked } = props;
   const { UNISAT_SERVICE_ENDPOINT } = useEnvironment();
+  const isLight = useIsLight();
   const [balance, setBalance] = useState('0');
   // const hasVault = Boolean(assets?.satoshis && assets?.satoshis > 0);
   const fetchUtxos = async () => {
@@ -50,8 +52,8 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
   return (
     <Stack
       onClick={onClick}
+      className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
       sx={{
-        bgcolor: colors.card_bgColor,
         borderRadius: '8px',
         overflow: 'hidden',
         border: `1px solid ${checked ? colors.main : 'transparent'}`,
@@ -69,7 +71,7 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
             paddingTop: '16px'
           }}>
           <Column justifyCenter>
-            <Text text={label} size="xs" disableTranslate />
+            <Text text={label} size="xs" color={isLight ? 'black' : 'white'} />
           </Column>
         </Row>
         <Row justifyBetween px="lg" pb="md">
@@ -96,7 +98,7 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
             <Text
               text={`${balance} BTC`}
               style={{
-                color: '#48BB78'
+                color: colors.main
               }}
             />
           </Row>
