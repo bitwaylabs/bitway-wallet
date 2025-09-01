@@ -4,7 +4,7 @@ import { CHAINS_ENUM } from '@/shared/constant';
 import { Button, Column, Content, Footer, Icon, Layout, Row, SuccessAnimation, Text } from '@/ui/components';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useEnvironment } from '@/ui/state/environment/hooks';
-import { useBlockstreamUrl } from '@/ui/state/settings/hooks';
+import { useBlockstreamUrl, useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { spacing } from '@/ui/theme/spacing';
 import { useLocationState } from '@/ui/utils';
@@ -23,6 +23,7 @@ export default function TxSuccessScreen() {
   const navigate = useNavigate();
   const { SIDE_BRIDGEEXPLORER_URL } = useEnvironment();
   const blockstream = useBlockstreamUrl(chain);
+  const isLight = useIsLight();
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -42,7 +43,7 @@ export default function TxSuccessScreen() {
               fontWeight: 600
             }}
           />
-          {text ? <Text preset="regular-bold" text={text} textCenter /> : null}
+          {text ? <Text preset="regular-bold" text={text} textCenter color={isLight ? 'black' : 'white'} /> : null}
 
           <Row
             itemsCenter
@@ -65,12 +66,12 @@ export default function TxSuccessScreen() {
                 fontSize: '14px',
                 fontWeight: '500',
                 transition: '.4s',
-                color: isHover ? colors.white : colors.grey12
+                color: isHover ? (isLight ? 'black' : 'white') : colors.grey12
               }}>
               View on Explorer
             </Typography>
 
-            <Icon icon="link" color={isHover ? 'white' : 'white_muted'} size={14} />
+            <Icon icon="link" color={isHover ? (isLight ? 'black' : 'white') : 'white_muted'} size={14} />
           </Row>
         </Column>
       </Content>

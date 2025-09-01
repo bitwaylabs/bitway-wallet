@@ -10,7 +10,7 @@ import { RBFBar } from '@/ui/components/RBFBar';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
 // import { useSendRune } from '@/ui/state/send/hook';
-import { useBTCUnit } from '@/ui/state/settings/hooks';
+import { useBTCUnit, useIsLight } from '@/ui/state/settings/hooks';
 import {
   useBitcoinTx,
   useFetchUtxosCallback,
@@ -34,6 +34,7 @@ export default function CreateSendBtc() {
   const navigate = useNavigate();
   const bitcoinTx = useBitcoinTx();
   const btcUnit = useBTCUnit();
+  const isLight = useIsLight();
 
   const { token } = useLocationState<LocationState>();
   const [disabled, setDisabled] = useState(true);
@@ -154,7 +155,7 @@ export default function CreateSendBtc() {
 
       <Row
         style={{
-          background: colors.black_dark,
+          background: isLight ? colors.light_bg : colors.dark_bg,
           width: '74px',
           height: '74px',
           position: 'absolute',
@@ -163,7 +164,7 @@ export default function CreateSendBtc() {
           borderRadius: '50%',
           transform: 'translate(-50%, 0)',
           zIndex: 2,
-          borderTop: '1px solid #404045',
+          borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset'
         }}
         justifyCenter>
@@ -178,15 +179,15 @@ export default function CreateSendBtc() {
       <Content
         style={{
           position: 'relative',
-          borderTop: '1px solid #404045',
+          borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           borderRadius: '10px',
           padding: '16px 16px 64px 16px',
           marginTop: '66px',
           boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset',
-          background: colors.black_dark
+          background: isLight ? colors.light_bg : colors.dark_bg
         }}>
         <Column mt="xxl">
-          <Text text="Recipient" preset="regular" color="white" />
+          <Text text="Recipient" preset="regular" color={isLight ? 'black' : 'white'} />
           <Input
             preset="address"
             addressInputData={toInfo}
@@ -198,7 +199,7 @@ export default function CreateSendBtc() {
         </Column>
 
         <Column mt="lg">
-          <Text text="Transfer amount" preset="regular" color="white" />
+          <Text text="Transfer amount" preset="regular" color={isLight ? 'black' : 'white'} />
           <Input
             preset="amount"
             placeholder={'Amount'}
@@ -266,12 +267,20 @@ export default function CreateSendBtc() {
 
             {spendUnavailableSatoshis > 0 ? (
               <Row>
-                <Text text={`${BigNumber(unspendUnavailableAmount).toFormat()}`} size="sm" color="white" />
+                <Text
+                  text={`${BigNumber(unspendUnavailableAmount).toFormat()}`}
+                  size="sm"
+                  color={isLight ? 'black' : 'white'}
+                />
                 <Text text={''} size="sm" color="textDim" />
               </Row>
             ) : (
               <Row>
-                <Text text={`${BigNumber(unavailableAmount).toFormat()}`} size="sm" color="white" />
+                <Text
+                  text={`${BigNumber(unavailableAmount).toFormat()}`}
+                  size="sm"
+                  color={isLight ? 'black' : 'white'}
+                />
                 <Text text={token.asset.symbol} size="sm" color="textDim" />
               </Row>
             )}
@@ -286,7 +295,7 @@ export default function CreateSendBtc() {
               Total
             </Typography>
             <Row>
-              <Text text={`${BigNumber(totalAmount).toFormat()}`} size="sm" color="white" />
+              <Text text={`${BigNumber(totalAmount).toFormat()}`} size="sm" color={isLight ? 'black' : 'white'} />
               <Text text={token.asset.symbol} size="sm" color="textDim" />
             </Row>
           </Row>
@@ -296,7 +305,7 @@ export default function CreateSendBtc() {
           <Typography
             sx={{
               fontSize: '14px',
-              color: colors.white
+              color: isLight ? 'black' : 'white'
             }}>
             Fee
           </Typography>

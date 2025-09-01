@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 
 import { Row } from '../Row';
@@ -7,6 +8,7 @@ import { ButtonGroupV2, IButtonGroupProps } from './ButtonGroupV2';
 
 function ButtonGroup(props: IButtonGroupProps) {
   const { list, value, onChange, size, rowProps } = props;
+  const isLight = useIsLight();
   const [activeIndex, setActiveIndex] = useState(0);
   const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -22,7 +24,7 @@ function ButtonGroup(props: IButtonGroupProps) {
       <Row
         justifyCenter
         style={{
-          backgroundColor: colors.card_bgColor,
+          backgroundColor: isLight ? colors.white : colors.dark_bg,
           borderRadius: '100px',
           padding: '3px 5px',
           gap: '0',
@@ -32,7 +34,7 @@ function ButtonGroup(props: IButtonGroupProps) {
           style={{
             position: 'absolute',
             height,
-            backgroundColor: '#404045',
+            backgroundColor: isLight ? colors.light_bg : colors.grey_dark,
             borderRadius: '100px',
             transition: 'all 0.3s ease',
             left: buttonRefs.current[activeIndex]?.offsetLeft ?? 0,
@@ -48,7 +50,7 @@ function ButtonGroup(props: IButtonGroupProps) {
                 height,
                 padding: size === 'small' ? '0 10px' : '0 22px',
                 borderRadius: '100px',
-                color: colors.white,
+                color: isLight ? colors.black : colors.white,
                 fontSize: '12px',
                 opacity: value === item.key ? 1 : 0.8,
                 cursor: 'pointer',

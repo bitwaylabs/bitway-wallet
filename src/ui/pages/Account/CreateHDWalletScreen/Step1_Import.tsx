@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { Button, ButtonGroup, Column, Grid, Image, Input, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 
 import { ContextData, TabType, UpdateContextDataParams, WORDS_12_ITEM, WORDS_24_ITEM, WordsType } from './type';
@@ -14,6 +15,7 @@ export default function Step1_Import({
   contextData: ContextData;
   updateContextData: (params: UpdateContextDataParams) => void;
 }) {
+  const isLight = useIsLight();
   const [curInputIndex, setCurInputIndex] = useState(0);
   const [hover, setHover] = useState(999);
   const [disabled, setDisabled] = useState(true);
@@ -89,24 +91,21 @@ export default function Step1_Import({
         flex: 1,
         overflow: 'hidden',
         padding: '0 16px 24px'
-      }}
-    >
+      }}>
       <Column
         classname="hide-scrollbar"
         style={{
           flex: 1,
           overflow: 'auto'
-        }}
-      >
+        }}>
         <Column
           style={{
             marginTop: '16px',
             // boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset',
-            backgroundColor: '#222222',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
             borderRadius: '14px',
             padding: '16px'
-          }}
-        >
+          }}>
           {wordsItems.length > 1 ? (
             <ButtonGroup
               rowProps={{
@@ -135,10 +134,9 @@ export default function Step1_Import({
                       gap: '4px',
                       height: '36px',
                       borderRadius: '8px',
-                      border: '1px solid #FFFFFF33',
-                      backgroundColor: '#121212'
-                    }}
-                  >
+                      border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                      backgroundColor: isLight ? colors.light_bg : colors.dark_bg
+                    }}>
                     <Text
                       text={`${index + 1}. `}
                       style={{ width: 25, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
@@ -153,7 +151,7 @@ export default function Step1_Import({
                         border: 'none',
                         backgroundColor: 'transparent'
                       }}
-                      style={{ width: '100%', color: '#fff' }}
+                      style={{ width: '100%' }}
                       value={_}
                       onPaste={(e) => {
                         handleEventPaste(e, index);
@@ -189,22 +187,20 @@ export default function Step1_Import({
           style={{
             marginTop: '10px',
             // boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset',
-            backgroundColor: '#222222',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
             borderRadius: '14px',
             padding: '10px 16px',
             gap: '6px'
-          }}
-        >
+          }}>
           <Row
             style={{
               alignItems: 'center'
-            }}
-          >
+            }}>
             <Image src="/images/icons/info-circle.svg" size={24} />
             <Text
               text="Note:"
               style={{
-                color: colors.white,
+                color: isLight ? colors.black : colors.white,
                 lineHeight: '20px',
                 fontSize: '14px',
                 fontWeight: 600
@@ -214,7 +210,7 @@ export default function Step1_Import({
           <Text
             text="Enter your recovery phrase here to restore your wallet. Click on any field and paste the entire phrase. Make sure the phrase is in the correct order, without capitalization, punctuation, or extra spaces."
             style={{
-              color: '#fff',
+              color: isLight ? colors.black : colors.white,
               lineHeight: '18px',
               fontSize: '12px',
               fontWeight: 400,

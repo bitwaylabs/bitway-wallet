@@ -19,7 +19,7 @@ export function RBFBar({ defaultValue, onChange }: { defaultValue?: boolean; onC
         <Typography
           sx={{
             fontSize: '14px',
-            color: colors.grey12,
+            color: colors.grey2,
             textDecoration: 'dotted underline',
             textUnderlineOffset: '2px',
             cursor: 'pointer',

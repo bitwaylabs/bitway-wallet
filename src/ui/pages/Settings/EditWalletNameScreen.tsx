@@ -5,6 +5,7 @@ import { WalletKeyring } from '@/shared/types';
 import { Button, Column, Header, Input, Layout, Text } from '@/ui/components';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useWallet } from '@/ui/utils';
 
 export default function EditWalletNameScreen() {
@@ -12,6 +13,7 @@ export default function EditWalletNameScreen() {
   const { keyring } = state as {
     keyring: WalletKeyring;
   };
+  const isLight = useIsLight();
 
   const wallet = useWallet();
   const [alianName, setAlianName] = useState('');
@@ -47,12 +49,11 @@ export default function EditWalletNameScreen() {
         style={{
           flex: 1,
           padding: '0 16px 24px'
-        }}
-      >
+        }}>
         <Column style={{ flex: 1, gap: '8px' }}>
           <Text
             text="Previous Wallet Name"
-            color="white"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
               fontWeight: 400,
@@ -63,7 +64,7 @@ export default function EditWalletNameScreen() {
           <Input value={keyring.alianName} disabled />
           <Text
             text="New Wallet Name"
-            color="white"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
               fontWeight: 400,

@@ -40,6 +40,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
         justifyContent="space-between"
         className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
         sx={{
+          display: 'flex',
           cursor: 'pointer',
           padding: '10px 16px',
           borderRadius: isBTW ? '8px 8px 0 0' : '8px'
@@ -72,12 +73,13 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
 
           <Column
             style={{
-              gap: '0px'
+              gap: '0px',
+              flex: 1
             }}>
             <Text color={isLight ? 'black' : 'white'} text={token?.asset?.symbol}></Text>
 
             <Row itemsCenter style={{ position: 'relative' }}>
-              <Text color={isLight ? 'black' : 'white'} text={token?.asset?.name}></Text>
+              <Text color={'white_muted'} size="xs" text={token?.asset?.name}></Text>
 
               {isIbc && (
                 <LightTooltip
@@ -115,7 +117,8 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             textEnd
           />
           <Text
-            color={isLight ? 'black' : 'white'}
+            color={'white_muted'}
+            size="xs"
             text={`${balanceVisible ? '$' + BigNumber(token?.totalValue || '').toFormat(2) : '**'}`}
             textEnd
           />

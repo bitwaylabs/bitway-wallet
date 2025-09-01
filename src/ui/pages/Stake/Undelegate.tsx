@@ -5,6 +5,7 @@ import { CoinInput } from '@/ui/components/CoinInput';
 import { useStaking } from '@/ui/hooks/staking';
 import { Validator } from '@/ui/services/staking/types';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
@@ -21,6 +22,7 @@ export default function Index({
 }) {
   const { delegateToken, amount, validator, yourDelegation, handleUnDelegate, loading } = useStaking();
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
 
   const data = [
     {
@@ -77,14 +79,14 @@ export default function Index({
         alignItems="center"
         gap="8px"
         sx={{
-          bgcolor: colors.card_bgColor,
-          border: `1px solid ${colors.white20}`,
+          bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           borderRadius: '10px',
           marginTop: '-8px',
           p: '8px 10px',
           transition: '.4s',
           ':hover': {
-            border: `1px solid ${colors.white_4}`
+            border: `1px solid ${isLight ? colors.black : colors.white}`
           }
         }}>
         <CoinInput
@@ -113,7 +115,7 @@ export default function Index({
               cursor: 'pointer',
               transition: '.4s',
               ':hover': {
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }
             }}
             onClick={() => {
@@ -125,16 +127,16 @@ export default function Index({
             Max
           </Typography>
           <Image src={delegateToken?.asset.logo} height={28} width={28}></Image>
-          <Text text={delegateToken?.asset.symbol} color="white" size="md"></Text>
+          <Text text={delegateToken?.asset.symbol} color={isLight ? 'black' : 'white'} size="md"></Text>
         </Row>
       </Stack>
       <Box
         sx={{
           height: '1px',
-          backgroundColor: colors.black_dark
+          backgroundColor: isLight ? colors.light_border : colors.dark_border
         }}
       />
-      <Column bg="black">
+      <Column style={{ backgroundColor: isLight ? colors.light_bg : colors.dark_bg, padding: '8px' }}>
         {data.map((item) => (
           <Stack direction="row" justifyContent="space-between" alignItems="center" key={item.label}>
             <LightTooltip title={item.tips} placement="top" arrow>
@@ -147,7 +149,7 @@ export default function Index({
                   cursor: 'pointer',
                   transition: '.4s',
                   ':hover': {
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }
                 }}>
                 {item.label}
@@ -159,7 +161,7 @@ export default function Index({
               alignItems="center"
               sx={{
                 fontSize: '12px',
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               {item.value}
             </Stack>

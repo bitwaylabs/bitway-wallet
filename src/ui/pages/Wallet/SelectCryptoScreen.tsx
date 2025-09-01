@@ -10,6 +10,7 @@ import SearchInput from '@/ui/components/Input/Search';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useResetUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Box, Stack } from '@mui/material';
@@ -17,6 +18,7 @@ import { Box, Stack } from '@mui/material';
 import { useNavigate } from '../MainRoute';
 
 function BtcItem({ token }: { token: BalanceItem }) {
+  const isLight = useIsLight();
   return (
     <>
       <Row>
@@ -25,7 +27,7 @@ function BtcItem({ token }: { token: BalanceItem }) {
           style={{
             gap: '0px'
           }}>
-          <Text preset="regular" text={token.asset.symbol}></Text>
+          <Text preset="regular" text={token.asset.symbol} color={isLight ? 'black' : 'white'}></Text>
           <Text preset="sub" text={token.asset.name}></Text>
         </Column>
       </Row>
@@ -34,7 +36,11 @@ function BtcItem({ token }: { token: BalanceItem }) {
         style={{
           gap: '0px'
         }}>
-        <Text preset="regular" textEnd text={BigNumber(token.formatAmount).toFormat()}></Text>
+        <Text
+          preset="regular"
+          textEnd
+          text={BigNumber(token.formatAmount).toFormat()}
+          color={isLight ? 'black' : 'white'}></Text>
         <Text preset="sub" textEnd text={`$${BigNumber(token.totalValue || '0').toFormat(2)}`}></Text>
       </Column>
     </>
@@ -49,7 +55,7 @@ function BitAndRuneCrypto({ searchTerm }) {
     type: 'receive' | 'send';
   };
   const resetUiTxCreateScreen = useResetUiTxCreateScreen();
-
+  const isLight = useIsLight();
   const currentAccount = useCurrentAccount();
   let { balanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   balanceList = balanceList.filter((item) => {
@@ -76,15 +82,10 @@ function BitAndRuneCrypto({ searchTerm }) {
                 navigate('TxCreateScreen', { ...state, token });
               }
             }}
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             sx={{
               padding: '10px 16px',
-              cursor: 'pointer',
-              backgroundColor: colors.card_bgColor,
-              borderRadius: '8px',
-              transition: '.4s',
-              ':hover': {
-                backgroundColor: colors.black_dark
-              }
+              cursor: 'pointer'
             }}>
             <BtcItem token={token} />
           </Stack>
@@ -96,10 +97,11 @@ function BitAndRuneCrypto({ searchTerm }) {
 
 function SideCryptoItem({ token }: { token: BalanceItem }) {
   const isIbc = token.asset.denom.includes('ibc/');
+  const isLight = useIsLight();
 
   return (
     <>
-      <Row classname={'bg-item-hover'}>
+      <Row>
         <ImageIcon
           url={token?.asset?.logo}
           style={{
@@ -113,7 +115,7 @@ function SideCryptoItem({ token }: { token: BalanceItem }) {
             gap: '0px'
           }}>
           <Row itemsCenter>
-            <Text preset="regular" text={token?.asset?.symbol}></Text>
+            <Text preset="regular" text={token?.asset?.symbol} color={isLight ? 'black' : 'white'}></Text>
             {isIbc && (
               <Box
                 sx={{
@@ -139,7 +141,11 @@ function SideCryptoItem({ token }: { token: BalanceItem }) {
         style={{
           gap: '0px'
         }}>
-        <Text preset="regular" textEnd text={BigNumber(token?.formatAmount).toFormat()}></Text>
+        <Text
+          preset="regular"
+          textEnd
+          text={BigNumber(token?.formatAmount).toFormat()}
+          color={isLight ? 'black' : 'white'}></Text>
         <Text preset="sub" textEnd text={`$${BigNumber(token?.totalValue || '0').toFormat(2)}`}></Text>
       </Column>
     </>
@@ -149,6 +155,7 @@ function SideCryptoItem({ token }: { token: BalanceItem }) {
 function SideCrypto({ searchTerm }) {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const isLight = useIsLight();
   const { chain, type } = state as {
     chain: CHAINS_ENUM;
     type: 'receive' | 'send';
@@ -182,13 +189,7 @@ function SideCrypto({ searchTerm }) {
             }}
             sx={{
               padding: '10px 16px',
-              cursor: 'pointer',
-              backgroundColor: colors.card_bgColor,
-              borderRadius: '8px',
-              transition: '.4s',
-              ':hover': {
-                backgroundColor: colors.black_dark
-              }
+              cursor: 'pointer'
             }}>
             <SideCryptoItem token={token} />
           </Stack>
@@ -204,6 +205,7 @@ export default function SelecCryptoScreen() {
   const { chain } = state as {
     chain: CHAINS_ENUM;
   };
+  const isLight = useIsLight();
   return (
     <Layout>
       <Header
@@ -214,7 +216,7 @@ export default function SelecCryptoScreen() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
+          backgroundColor: isLight ? colors.white : colors.black,
           padding: 0,
           marginTop: '16px'
         }}>

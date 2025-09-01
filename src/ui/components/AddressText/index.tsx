@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import { ToAddressInfo } from '@/shared/types';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { ColorTypes } from '@/ui/theme/colors';
 import { shortAddress } from '@/ui/utils';
 
@@ -17,6 +18,7 @@ export const AddressText = (props: {
   textCenter?: boolean;
   color?: ColorTypes;
 }) => {
+  const isLight = useIsLight();
   const [popoverVisible, setPopoverVisible] = useState(false);
   const address = useMemo(() => {
     if (props.address) {
@@ -35,8 +37,7 @@ export const AddressText = (props: {
         <Column
           onClick={() => {
             setPopoverVisible(true);
-          }}
-        >
+          }}>
           {domain && <Text text={domain} textCenter={props.textCenter} />}
           {inscription && (
             <Row full itemsCenter mt="sm">
@@ -49,9 +50,8 @@ export const AddressText = (props: {
         <Column
           onClick={() => {
             setPopoverVisible(true);
-          }}
-        >
-          <Text text={shortAddress(address)} color={props.color || 'white'} />
+          }}>
+          <Text text={shortAddress(address)} color={props.color || (isLight ? 'black' : 'white')} />
         </Column>
       )}
       {popoverVisible && (

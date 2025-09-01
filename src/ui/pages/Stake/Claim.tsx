@@ -8,12 +8,14 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate } from '@/ui/utils';
 import { Stack, Typography } from '@mui/material';
 
 export default function Index() {
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
   const { sideChain } = useEnvironment();
   const { data } = useQuery('stakingGetRewards', () => {
     if (!currentAccount?.address) return;
@@ -35,7 +37,7 @@ export default function Index() {
     <>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
-          <Text color="white" size="xs">
+          <Text color={isLight ? 'black' : 'white'} size="xs">
             Your Total Rewards
           </Text>
         </Row>
@@ -49,7 +51,7 @@ export default function Index() {
           minHeight: '68px',
           mt: '-8px',
           borderRadius: '10px',
-          bgcolor: colors.card_bgColor
+          bgcolor: isLight ? colors.light_bg : colors.dark_bg
         }}>
         {!isDisabled ? (
           rewards.map((item) => {
@@ -65,7 +67,7 @@ export default function Index() {
                 <Typography
                   sx={{
                     fontSize: '24px',
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     fontWeight: 600
                   }}>
                   {getTruncate(formatAmount, rewardAsset?.asset.precision || 6)}

@@ -25,6 +25,7 @@ import { SignPsbtWithRisksPopover } from '@/ui/components/SignPsbtWithRisksPopov
 import KeystoneSignScreen from '@/ui/pages/Wallet/KeystoneSignScreen';
 import { useAccountAddress, useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import {
   usePrepareSendAtomicalsNFTCallback,
   usePrepareSendBTCCallback,
@@ -85,6 +86,7 @@ interface InscriptioinInfo {
 
 function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?: RawTxInfo; type: TxType }) {
   const address = useAccountAddress();
+  const isLight = useIsLight();
 
   const sendingInscriptions = useMemo(() => {
     return txInfo.decodedPsbt.inputInfos
@@ -419,7 +421,7 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
                 <Text text={'Spend Amount'} textCenter color="textDim" />
 
                 <Column justifyCenter>
-                  <Text text={spendAmount} color="white" preset="bold" textCenter size="xxl" />
+                  <Text text={spendAmount} color={isLight ? 'black' : 'white'} preset="bold" textCenter size="xxl" />
                   {sendingInscriptionSaotoshis > 0 && (
                     <Text text={`${sendingInscriptionAmount} (in inscriptions)`} preset="sub" textCenter />
                   )}
@@ -491,6 +493,7 @@ export default function SignPsbt({
   handleConfirm
 }: Props) {
   const [getApproval, resolveApproval, rejectApproval] = useApproval();
+  const isLight = useIsLight();
 
   const [txInfo, setTxInfo] = useState<TxInfo>(initTxInfo);
 
@@ -712,10 +715,10 @@ export default function SignPsbt({
         <Text
           textCenter
           style={{
-            color: '#828282',
+            color: colors.grey2,
             borderRadius: '8px',
             padding: '4px 16px',
-            backgroundColor: '#1E1E1F',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
             fontSize: '14px',
             maxWidth: 'max-content'
           }}
@@ -731,9 +734,23 @@ export default function SignPsbt({
       <Layout>
         <Content>
           <Column>
-            <Text text="Phishing Detection" preset="title-bold" textCenter mt="xxl" />
-            <Text text="Malicious behavior and suspicious activity have been detected." mt="md" />
-            <Text text="Your access to this page has been restricted by Side Wallet as it might be unsafe." mt="md" />
+            <Text
+              text="Phishing Detection"
+              preset="title-bold"
+              textCenter
+              mt="xxl"
+              color={isLight ? 'black' : 'white'}
+            />
+            <Text
+              text="Malicious behavior and suspicious activity have been detected."
+              mt="md"
+              color={isLight ? 'black' : 'white'}
+            />
+            <Text
+              text="Your access to this page has been restricted by Side Wallet as it might be unsafe."
+              mt="md"
+              color={isLight ? 'black' : 'white'}
+            />
           </Column>
         </Content>
 
@@ -786,7 +803,7 @@ export default function SignPsbt({
                 justifyBetween
                 mt="md"
                 style={{
-                  background: '#1E1E1F',
+                  background: isLight ? colors.light_bg : colors.dark_bg,
                   padding: '16px 10px 16px 10px',
                   borderRadius: '8px',
                   position: 'relative'
@@ -798,7 +815,8 @@ export default function SignPsbt({
                   <Text
                     style={{
                       fontWeight: '500',
-                      fontSize: '16px'
+                      fontSize: '16px',
+                      color: isLight ? 'black' : 'white'
                     }}>
                     Account connected
                   </Text>
@@ -806,7 +824,7 @@ export default function SignPsbt({
                   <Text
                     size="sm"
                     style={{
-                      color: 'white',
+                      color: isLight ? 'black' : 'white',
                       opacity: '0.5',
                       wordBreak: 'break-word'
                     }}>
@@ -822,12 +840,12 @@ export default function SignPsbt({
                       padding: '4px 10px',
                       fontSize: '12px',
                       width: 'max-content',
-                      color: 'black'
+                      color: isLight ? 'black' : 'white'
                     }}>
                     <Text
                       style={{
                         fontWeight: '600',
-                        color: 'black'
+                        color: isLight ? 'black' : 'white'
                       }}
                       size="xs">
                       {currentKeyring.alianName}
@@ -836,7 +854,7 @@ export default function SignPsbt({
                     <Text
                       style={{
                         fontWeight: '600',
-                        color: 'black'
+                        color: isLight ? 'black' : 'white'
                       }}
                       size="xs">
                       /
@@ -844,7 +862,7 @@ export default function SignPsbt({
 
                     <Text
                       style={{
-                        color: 'black'
+                        color: isLight ? 'black' : 'white'
                       }}
                       size="xs">
                       {currentAccount.alianName}
@@ -857,7 +875,7 @@ export default function SignPsbt({
             {detailsComponent}
             {canChanged == false && (
               <Section title="Network Fee:">
-                <Text text={networkFee} />
+                <Text text={networkFee} color={isLight ? 'black' : 'white'} />
                 <Text text="BTC" color="textDim" />
               </Section>
             )}
@@ -876,13 +894,13 @@ export default function SignPsbt({
                     }}>
                     <div>
                       <Row itemsCenter>
-                        <Text text={txInfo.decodedPsbt.feeRate.toString()} />
+                        <Text text={txInfo.decodedPsbt.feeRate.toString()} color={isLight ? 'black' : 'white'} />
                         <Icon icon="alert" color="warning" />
                       </Row>
                     </div>
                   </Tooltip>
                 ) : (
-                  <Text text={txInfo.decodedPsbt.feeRate.toString()} />
+                  <Text text={txInfo.decodedPsbt.feeRate.toString()} color={isLight ? 'black' : 'white'} />
                 )}
 
                 <Text text="sat/vB" color="textDim" />
@@ -892,11 +910,15 @@ export default function SignPsbt({
             <Section title="Features:">
               <Row>
                 {txInfo.decodedPsbt.features.rbf ? (
-                  <Text text="RBF" color="white" style={{ backgroundColor: 'green', padding: 5, borderRadius: 5 }} />
+                  <Text
+                    text="RBF"
+                    color={isLight ? 'black' : 'white'}
+                    style={{ backgroundColor: 'green', padding: 5, borderRadius: 5 }}
+                  />
                 ) : (
                   <Text
                     text="RBF"
-                    color="white"
+                    color={isLight ? 'black' : 'white'}
                     style={{ backgroundColor: 'red', padding: 5, borderRadius: 5, textDecoration: 'line-through' }}
                   />
                 )}
@@ -924,7 +946,10 @@ export default function SignPsbt({
                               <Row fullX justifyBetween>
                                 <Column>
                                   <Row>
-                                    <AddressText address={v.address} color={isToSign ? 'white' : 'textDim'} />
+                                    <AddressText
+                                      address={v.address}
+                                      color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'}
+                                    />
                                     {isToSign && (
                                       <Row
                                         style={{
@@ -940,7 +965,10 @@ export default function SignPsbt({
                                   </Row>
                                 </Column>
                                 <Row>
-                                  <Text text={`${satoshisToAmount(v.value)}`} color={isToSign ? 'white' : 'textDim'} />
+                                  <Text
+                                    text={`${satoshisToAmount(v.value)}`}
+                                    color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'}
+                                  />
                                   <Text text="BTC" color="textDim" />
                                 </Row>
                               </Row>
@@ -950,7 +978,7 @@ export default function SignPsbt({
                                   <Column justifyCenter>
                                     <Text
                                       text={`Inscriptions (${inscriptions.length})`}
-                                      color={isToSign ? 'white' : 'textDim'}
+                                      color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'}
                                     />
                                     <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                       {inscriptions.map((w) => (
@@ -973,7 +1001,7 @@ export default function SignPsbt({
                                   <Column justifyCenter>
                                     <Text
                                       text={`Atomicals NFT (${inscriptions.length})`}
-                                      color={isToSign ? 'white' : 'textDim'}
+                                      color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'}
                                     />
                                     <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                       {atomicals_nft.map((w) => (
@@ -994,7 +1022,7 @@ export default function SignPsbt({
                               {atomicals_ft.length > 0 && (
                                 <Row>
                                   <Column justifyCenter>
-                                    <Text text={'ARC20'} color={isToSign ? 'white' : 'textDim'} />
+                                    <Text text={'ARC20'} color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'} />
                                     <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                       {atomicals_ft.map((w) => (
                                         <Arc20PreviewCard key={w.ticker} ticker={w.ticker || ''} amt={v.value} />
@@ -1007,7 +1035,7 @@ export default function SignPsbt({
                               {runes.length > 0 && (
                                 <Row>
                                   <Column justifyCenter>
-                                    <Text text={'RUNES'} color={isToSign ? 'white' : 'textDim'} />
+                                    <Text text={'RUNES'} color={isToSign ? (isLight ? 'black' : 'white') : 'textDim'} />
                                     <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                       {runes.map((w) => (
                                         <RunesPreviewCard key={w.runeid} balance={w} />
@@ -1042,11 +1070,14 @@ export default function SignPsbt({
                             }>
                             <Column>
                               <Row justifyBetween>
-                                <AddressText address={v.address} color={isMyAddress ? 'white' : 'textDim'} />
+                                <AddressText
+                                  address={v.address}
+                                  color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
+                                />
                                 <Row>
                                   <Text
                                     text={`${satoshisToAmount(v.value)}`}
-                                    color={isMyAddress ? 'white' : 'textDim'}
+                                    color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
                                   />
                                   <Text text="BTC" color="textDim" />
                                 </Row>
@@ -1058,7 +1089,7 @@ export default function SignPsbt({
                                 <Column justifyCenter>
                                   <Text
                                     text={`Inscriptions (${inscriptions.length})`}
-                                    color={isMyAddress ? 'white' : 'textDim'}
+                                    color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
                                   />
                                   <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                     {inscriptions.map((w) => (
@@ -1081,7 +1112,7 @@ export default function SignPsbt({
                                 <Column justifyCenter>
                                   <Text
                                     text={`Atomicals NFT (${inscriptions.length})`}
-                                    color={isMyAddress ? 'white' : 'textDim'}
+                                    color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
                                   />
                                   <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                     {atomicals_nft.map((v) => (
@@ -1102,7 +1133,10 @@ export default function SignPsbt({
                             {atomicals_ft.length > 0 && (
                               <Row>
                                 <Column justifyCenter>
-                                  <Text text={'ARC20'} color={isMyAddress ? 'white' : 'textDim'} />
+                                  <Text
+                                    text={'ARC20'}
+                                    color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
+                                  />
                                   <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                     {atomicals_ft.map((w) => (
                                       <Arc20PreviewCard key={w.ticker} ticker={w.ticker || ''} amt={v.value} />
@@ -1115,7 +1149,10 @@ export default function SignPsbt({
                             {runes.length > 0 && (
                               <Row>
                                 <Column justifyCenter>
-                                  <Text text={'RUNES'} color={isMyAddress ? 'white' : 'textDim'} />
+                                  <Text
+                                    text={'RUNES'}
+                                    color={isMyAddress ? (isLight ? 'black' : 'white') : 'textDim'}
+                                  />
                                   <Row overflowX gap="lg" style={{ width: 280 }} pb="lg">
                                     {runes.map((w) => (
                                       <RunesPreviewCard key={w.runeid} balance={w} />
@@ -1134,7 +1171,7 @@ export default function SignPsbt({
             )}
 
             <Section title="PSBT Data:">
-              <Text text={shortAddress(txInfo.psbtHex, 10)} />
+              <Text text={shortAddress(txInfo.psbtHex, 10)} color={isLight ? 'black' : 'white'} />
               <Row
                 onMouseOver={handleMouseOver}
                 onMouseLeave={handleMouseLeave}
@@ -1151,13 +1188,13 @@ export default function SignPsbt({
                 {/*<Icon icon="copy" color="textDim" />*/}
                 <Icon
                   icon={isClickCopy ? 'check-circle-broken' : 'copy3'}
-                  color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                  color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                   height={isClickCopy ? 20 : 16}
                   width={20}
                 />
                 <Text
                   text={isClickCopy ? '' : ''}
-                  color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                  color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                 />
               </Row>
             </Section>

@@ -7,6 +7,7 @@ import { Button, Column, Header, Input, Layout, Text } from '@/ui/components';
 import { accountActions } from '@/ui/state/accounts/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useWallet } from '@/ui/utils';
 
 export default function EditAccountNameScreen() {
@@ -20,6 +21,7 @@ export default function EditAccountNameScreen() {
   const wallet = useWallet();
   const [alianName, setAlianName] = useState('');
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
   const handleOnClick = async () => {
     const newAccount = await wallet.setAccountAlianName(account, alianName);
     dispatch(keyringsActions.updateAccountName(newAccount));
@@ -52,12 +54,11 @@ export default function EditAccountNameScreen() {
           flex: 1,
           padding: '0 16px 24px',
           marginTop: '16px'
-        }}
-      >
+        }}>
         <Column style={{ flex: 1, gap: '8px' }}>
           <Text
             text="New Account Name"
-            color="white"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
               fontWeight: 400,

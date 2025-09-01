@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 
 import { Button, Column, Input, Row, Text } from '@/ui/components';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 
 import { ContextData, TabType, UpdateContextDataParams } from './type';
 
@@ -11,6 +13,7 @@ export default function Step2_Verify({
   contextData: ContextData;
   updateContextData: (params: UpdateContextDataParams) => void;
 }) {
+  const isLight = useIsLight();
   const [firstWordInput, setFirstWordInput] = useState('');
   const [secondWordInput, setSecondWordInput] = useState('');
   const { firstWordIndex, firstWord, secondWordIndex, secondWord } = useMemo(() => {
@@ -61,7 +64,7 @@ export default function Step2_Verify({
         <Text
           text="Verify Your Recovery Phrase"
           style={{
-            color: '#fff',
+            color: isLight ? colors.black : colors.white,
             fontSize: '18px',
             fontWeight: 600,
             lineHeight: '22px',
@@ -72,7 +75,7 @@ export default function Step2_Verify({
         <Text
           text="Fill out the words according to their numbers to verify that you have stored your phrase safely."
           style={{
-            color: '#fff',
+            color: isLight ? colors.black : colors.white,
             fontSize: '12px',
             fontWeight: 400,
             lineHeight: '18px',
@@ -83,7 +86,7 @@ export default function Step2_Verify({
         />
         <Column
           style={{
-            backgroundColor: '#222222',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
             borderRadius: '10px',
             padding: '24px 16px',
             marginTop: '24px',
@@ -100,7 +103,7 @@ export default function Step2_Verify({
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 fontSize: '14px',
                 lineHeight: '18px'
               }}
@@ -111,9 +114,9 @@ export default function Step2_Verify({
                 padding: '0 10px',
                 flex: 1,
                 borderRadius: '8px',
-                backgroundColor: '#121212'
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg
               }}
-              style={{ width: '100%', color: '#fff', textAlign: 'right', fontWeight: 600 }}
+              style={{ width: '100%', textAlign: 'right', fontWeight: 600 }}
               value={firstWordInput}
               onChange={(e) => {
                 setFirstWordInput(e.target.value);
@@ -133,7 +136,7 @@ export default function Step2_Verify({
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 fontSize: '14px',
                 lineHeight: '18px'
               }}
@@ -144,9 +147,9 @@ export default function Step2_Verify({
                 padding: '0 10px',
                 flex: 1,
                 borderRadius: '8px',
-                backgroundColor: '#121212'
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg
               }}
-              style={{ width: '100%', color: '#fff', textAlign: 'right', fontWeight: 600 }}
+              style={{ width: '100%', textAlign: 'right', fontWeight: 600 }}
               value={secondWordInput}
               onChange={(e) => {
                 setSecondWordInput(e.target.value);

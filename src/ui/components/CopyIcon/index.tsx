@@ -57,7 +57,7 @@ export function CopyIcon({
       {!onlyIcon && (
         <Text
           text={isClickCopy ? 'Copied' : 'Copy to clipboard'}
-          color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+          color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
         />
       )}
     </Row>

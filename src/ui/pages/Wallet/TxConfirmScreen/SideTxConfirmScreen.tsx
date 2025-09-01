@@ -3,12 +3,15 @@ import BigNumber from 'bignumber.js';
 import { Button, Column, Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useSend } from '@/ui/hooks/useSend';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { fontSizes } from '@/ui/theme/font';
 import { formatUnitAmount } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export default function SideTxConfirmScreen() {
   const { handleSubmit, loading, curToken, feeToken, memo, inputAmount, toInfo, fee } = useSend();
+  const isLight = useIsLight();
 
   const feeByUSD = new BigNumber(formatUnitAmount(fee, feeToken?.asset.exponent || 6))
     .multipliedBy(feeToken?.denomPrice || '0')
@@ -53,7 +56,7 @@ export default function SideTxConfirmScreen() {
             style={{
               alignItems: 'center',
               padding: '11px 16px',
-              backgroundColor: '#1E1E1F',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px'
             }}>
             <Row
@@ -73,7 +76,8 @@ export default function SideTxConfirmScreen() {
                 style={{
                   fontSize: '14px',
                   fontWeight: 600,
-                  lineHeight: '24px'
+                  lineHeight: '24px',
+                  color: isLight ? 'black' : 'white'
                 }}
               />
             </Row>
@@ -82,7 +86,8 @@ export default function SideTxConfirmScreen() {
               style={{
                 fontSize: '20px',
                 fontWeight: 600,
-                lineHeight: '24px'
+                lineHeight: '24px',
+                color: isLight ? 'black' : 'white'
               }}
             />
           </Row>
@@ -90,7 +95,7 @@ export default function SideTxConfirmScreen() {
             justifyBetween
             style={{
               padding: '16px',
-              backgroundColor: '#1E1E1F',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px',
               overflow: 'hidden'
             }}>
@@ -107,7 +112,8 @@ export default function SideTxConfirmScreen() {
               style={{
                 fontSize: '14px',
                 lineHeight: '16px',
-                wordBreak: 'break-all'
+                wordBreak: 'break-all',
+                color: isLight ? 'black' : 'white'
               }}
             />
           </Column>
@@ -116,7 +122,7 @@ export default function SideTxConfirmScreen() {
             justifyBetween
             style={{
               padding: '16px',
-              backgroundColor: '#1E1E1F',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px',
               overflow: 'hidden'
             }}>
@@ -132,7 +138,8 @@ export default function SideTxConfirmScreen() {
               text={memo}
               style={{
                 fontSize: '14px',
-                lineHeight: '16px'
+                lineHeight: '16px',
+                color: isLight ? 'black' : 'white'
               }}
             />
           </Column>
@@ -142,14 +149,15 @@ export default function SideTxConfirmScreen() {
           style={{
             padding: '14px 12px',
             borderRadius: '10px',
-            backgroundColor: '#1E1E1F'
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg
           }}>
           <Text
             text="Tx Fee:"
             style={{
               fontSize: '16px',
               fontWeight: 600,
-              lineHeight: '24px'
+              lineHeight: '24px',
+              color: isLight ? 'black' : 'white'
             }}
           />
           <Row>
@@ -158,7 +166,8 @@ export default function SideTxConfirmScreen() {
               style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                lineHeight: '24px'
+                lineHeight: '24px',
+                color: isLight ? 'black' : 'white'
               }}
             />
             <Text
@@ -166,7 +175,8 @@ export default function SideTxConfirmScreen() {
               color="white_muted"
               style={{
                 fontSize: '16px',
-                lineHeight: '24px'
+                lineHeight: '24px',
+                color: isLight ? 'black' : 'white'
               }}
             />
           </Row>

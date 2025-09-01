@@ -8,6 +8,8 @@ import { accountActions } from '@/ui/state/accounts/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useKeyrings } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
 import { useNavigate } from '../MainRoute';
@@ -19,6 +21,7 @@ export default function DeleteWalletScreen() {
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
 
   const [error, setError] = useState('');
   const wallet = useWallet();
@@ -39,7 +42,7 @@ export default function DeleteWalletScreen() {
   };
 
   useEffect(() => {
-    if (password) {
+    if (password.length >= 8) {
       setDisabled(false);
       setError('');
     } else {
@@ -94,15 +97,13 @@ export default function DeleteWalletScreen() {
         style={{
           gap: '0',
           padding: '0 16px 24px'
-        }}
-      >
+        }}>
         <Column
           justifyCenter
           style={{
             flex: 1,
             alignItems: 'center'
-          }}
-        >
+          }}>
           <Image src="/images/img/delete-icon.png" size={90} />
         </Column>
         <Column
@@ -112,14 +113,12 @@ export default function DeleteWalletScreen() {
             borderRadius: '10px',
             padding: '10px',
             gap: '4px'
-          }}
-        >
+          }}>
           <Row
             style={{
               alignItems: 'center',
               gap: '8px'
-            }}
-          >
+            }}>
             <Image src="/images/icons/alert-triangle.svg" size={24} />
             <Text
               text="Alert"
@@ -140,21 +139,22 @@ export default function DeleteWalletScreen() {
           {/*    fontWeight: 400*/}
           {/*  }}*/}
           {/*/>*/}
-          <div className="text-[12px] text-white leading-[18px] font-[400] ">
+          <div
+            className="text-[12px]  leading-[18px] font-[400] "
+            style={{ color: isLight ? colors.black : colors.white }}>
             Make sure that you have backed up your recovery phrase.{' '}
             <span
               className={'underline cursor-pointer'}
               onClick={() => {
                 navigate('ExportMnemonicsScreen', { keyring });
-              }}
-            >
+              }}>
               Back Up My Wallet
             </span>
           </div>
           <Text
             text="After deletion, you will need to import your wallet to restore access."
             style={{
-              color: '#fff',
+              color: isLight ? colors.black : colors.white,
               lineHeight: '18px',
               fontSize: '12px',
               fontWeight: 400

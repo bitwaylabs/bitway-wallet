@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Button, ButtonGroup, Column, CopyIcon, Grid, Image, Input, Mask, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
 import { ContextData, TabType, UpdateContextDataParams, WORDS_12_ITEM, WORDS_24_ITEM, WordsType } from './type';
@@ -15,6 +17,7 @@ export default function Step1_Create({
 }) {
   const wallet = useWallet();
   const tools = useTools();
+  const isLight = useIsLight();
   const [type, setType] = useState<WordsType>(WordsType.WORDS_12);
   const [isClickMask, setIsClickMask] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -82,7 +85,7 @@ export default function Step1_Create({
             <Column
               style={{
                 marginTop: '16px',
-                backgroundColor: '#222222',
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
                 borderRadius: '14px',
                 padding: '16px',
                 // height: isClickMask ? 'auto' : '165px',
@@ -115,8 +118,8 @@ export default function Step1_Create({
                           gap: '4px',
                           height: '36px',
                           borderRadius: '8px',
-                          border: '1px solid #FFFFFF33',
-                          backgroundColor: '#121212'
+                          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                          backgroundColor: isLight ? colors.white : colors.black
                         }}>
                         <Text
                           text={`${index + 1}. `}
@@ -132,7 +135,7 @@ export default function Step1_Create({
                             border: 'none',
                             backgroundColor: 'transparent'
                           }}
-                          style={{ width: '100%', color: '#fff' }}
+                          style={{ width: '100%', color: isLight ? colors.black : colors.white }}
                           value={v}
                           disabled
                           placeholder=""
@@ -163,7 +166,7 @@ export default function Step1_Create({
               <Text
                 text="Keep It Private:"
                 style={{
-                  color: '#F0B622',
+                  color: colors.warning_yellow,
                   lineHeight: '20px',
                   fontSize: '14px',
                   fontWeight: 600
@@ -173,7 +176,7 @@ export default function Step1_Create({
             <Text
               text="Never share your recovery phrase with anyone. This phrase grants access to your wallet"
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 lineHeight: '18px',
                 fontSize: '12px',
                 fontWeight: 400
@@ -198,7 +201,7 @@ export default function Step1_Create({
               <Text
                 text="No Recovery Options:"
                 style={{
-                  color: '#F0B622',
+                  color: colors.warning_yellow,
                   lineHeight: '20px',
                   fontSize: '14px',
                   fontWeight: 600
@@ -208,7 +211,7 @@ export default function Step1_Create({
             <Text
               text="If you lose your recovery phrase, you will not be able to recover your wallet."
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 lineHeight: '18px',
                 fontSize: '12px',
                 fontWeight: 400
@@ -234,7 +237,7 @@ export default function Step1_Create({
               <Text
                 text="Store Securely:"
                 style={{
-                  color: '#F0B622',
+                  color: colors.warning_yellow,
                   lineHeight: '20px',
                   fontSize: '14px',
                   fontWeight: 600
@@ -244,7 +247,7 @@ export default function Step1_Create({
             <Text
               text="Write down your recovery phrase and store it in a safe place."
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 lineHeight: '18px',
                 fontSize: '12px',
                 fontWeight: 400

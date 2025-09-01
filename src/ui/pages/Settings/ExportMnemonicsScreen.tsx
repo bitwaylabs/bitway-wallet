@@ -5,12 +5,15 @@ import { ADDRESS_TYPES } from '@/shared/constant';
 import { WalletKeyring } from '@/shared/types';
 import { Button, Column, Grid, Header, Icon, Input, Layout, LongPress, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { copyToClipboard, useLocationState, useWallet } from '@/ui/utils';
 
 type Status = '' | 'error' | 'warning' | undefined;
 
 export default function ExportMnemonicsScreen() {
   const { keyring } = useLocationState<{ keyring: WalletKeyring }>();
+  const isLight = useIsLight();
 
   const { t } = useTranslation();
 
@@ -53,7 +56,7 @@ export default function ExportMnemonicsScreen() {
 
   useEffect(() => {
     setDisabled(true);
-    if (password?.length > 4) {
+    if (password?.length >= 8) {
       setDisabled(false);
       setStatus('');
       setError('');
@@ -79,16 +82,14 @@ export default function ExportMnemonicsScreen() {
         style={{
           flex: 1,
           padding: '0 16px 24px'
-        }}
-      >
+        }}>
         {mnemonic == '' ? (
           <>
             <Column
               style={{
                 flex: 1,
                 gap: '16px'
-              }}
-            >
+              }}>
               <LongPress />
             </Column>
             <Text
@@ -127,20 +128,18 @@ export default function ExportMnemonicsScreen() {
             <Column
               style={{
                 flex: 1
-              }}
-            >
+              }}>
               <Column
                 justifyCenter
                 style={{
                   marginTop: '16px',
-                  border: '1px solid #404045',
+                  border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                   boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset',
-                  backgroundColor: '#222222',
+                  backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
                   borderRadius: '14px',
                   padding: '16px',
                   gap: '8px'
-                }}
-              >
+                }}>
                 <Grid columns={2}>
                   {words.map((v, index) => {
                     return (
@@ -150,15 +149,14 @@ export default function ExportMnemonicsScreen() {
                           gap: '8px',
                           height: '32px',
                           borderRadius: '8px',
-                          border: '1px solid #FFFFFF33',
-                          backgroundColor: '#121212'
-                        }}
-                      >
+                          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                          backgroundColor: isLight ? colors.white : colors.black
+                        }}>
                         <Text
                           text={`${index + 1}. `}
                           style={{ width: 25, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
                           textEnd
-                          color="textDim"
+                          color="white_muted"
                         />
                         <Input
                           containerStyle={{
@@ -168,7 +166,7 @@ export default function ExportMnemonicsScreen() {
                             border: 'none',
                             backgroundColor: 'transparent'
                           }}
-                          style={{ width: '100%', color: '#fff' }}
+                          style={{ width: '100%', color: isLight ? colors.black : colors.white }}
                           value={v}
                           disabled
                           placeholder=""
@@ -197,16 +195,15 @@ export default function ExportMnemonicsScreen() {
                   }}
                   style={{
                     marginTop: '8px'
-                  }}
-                >
+                  }}>
                   <Icon
                     icon={isClickCopy ? 'check-circle-broken' : 'copy2'}
-                    color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                    color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                     size={20}
                   />
                   <Text
                     text={isClickCopy ? 'Copied' : 'Copy to clipboard'}
-                    color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                    color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                   />
                 </Row>
               </Column>

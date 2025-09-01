@@ -33,7 +33,7 @@ export default function SearchInput({
           alignItems: 'center',
           gap: '8px',
           ':hover': {
-            border: `1px solid ${isLight ? colors.white_4 : colors.dark_border}`
+            border: `1px solid ${isLight ? colors.black : colors.white} !important`
           }
         },
         ...(Array.isArray(sx) ? sx : [sx])
@@ -51,7 +51,7 @@ export default function SearchInput({
           padding: '0',
           fontSize: '12px',
           fontWeight: 400,
-          color: colors.white,
+          color: isLight ? colors.black : colors.white,
           backgroundColor: 'transparent'
         }}
         placeholder={placeholder || 'Search crypto'}

@@ -5,7 +5,8 @@ import { Button, Column, Image, Input, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
 import { useCreateAccountCallback } from '@/ui/state/global/hooks';
-import { useChangeNetworkTypeCallback } from '@/ui/state/settings/hooks';
+import { useChangeNetworkTypeCallback, useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 import { AddressType } from '@unisat/wallet-sdk';
 
@@ -19,6 +20,7 @@ export default function Step2_SetName({
   contextData: ContextData;
   updateContextData: (params: UpdateContextDataParams) => void;
 }) {
+  const isLight = useIsLight();
   const changeNetworkType = useChangeNetworkTypeCallback();
   const reloadAccounts = useReloadAccounts();
   const createAccount = useCreateAccountCallback();
@@ -95,7 +97,7 @@ export default function Step2_SetName({
           <Text
             text="Wallet Name"
             style={{
-              color: 'white',
+              color: isLight ? colors.black : colors.white,
               fontSize: '14px',
               lineHeight: '24px'
             }}
@@ -104,10 +106,9 @@ export default function Step2_SetName({
             containerStyle={{
               padding: '0 10px',
               flex: 1,
-              borderRadius: '8px',
-              backgroundColor: '#121212'
+              borderRadius: '8px'
             }}
-            style={{ width: '100%', color: '#fff' }}
+            style={{ width: '100%' }}
             value={alianName}
             onChange={(e) => {
               setAlianName(e.target.value);

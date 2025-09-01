@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import { Validator } from '@/ui/services/staking/types';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
@@ -17,6 +18,7 @@ interface IValidatorSelect {
 export default function SideValidatorSelect({ validatorList, selectValidator, type }: IValidatorSelect) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLight = useIsLight();
 
   return (
     <Box
@@ -28,7 +30,7 @@ export default function SideValidatorSelect({ validatorList, selectValidator, ty
         borderRadius: '10px',
         gap: '10px',
         cursor: 'pointer',
-        background: colors.card_bgColor,
+        background: isLight ? colors.light_bg : colors.dark_bg,
         overflow: 'hidden',
         width: '100%'
       }}
@@ -41,7 +43,7 @@ export default function SideValidatorSelect({ validatorList, selectValidator, ty
       <Stack direction="row" alignItems="center" gap="8px" sx={{ overflow: 'hidden' }}>
         <Typography
           sx={{
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             fontSize: '12px',
             fontWeight: 500,
             textOverflow: 'ellipsis',

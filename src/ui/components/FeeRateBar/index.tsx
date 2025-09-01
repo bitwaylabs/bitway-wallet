@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useState } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
@@ -17,6 +18,7 @@ enum FeeRateType {
 
 export function FeeRateBar({ readonly, onChange }: { readonly?: boolean; onChange?: (val: number) => void }) {
   const wallet = useWallet();
+  const isLight = useIsLight();
   const [feeOptions, setFeeOptions] = useState<{ title: string; desc?: string; feeRate: number }[]>([]);
 
   useEffect(() => {
@@ -71,6 +73,7 @@ export function FeeRateBar({ readonly, onChange }: { readonly?: boolean; onChang
           return (
             <div
               key={v.title}
+              className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
               onClick={() => {
                 if (readonly) {
                   return;
@@ -81,7 +84,7 @@ export function FeeRateBar({ readonly, onChange }: { readonly?: boolean; onChang
                 {},
                 {
                   borderWidth: 1,
-                  borderColor: 'rgba(255,255,255,0.3)',
+                  borderColor: isLight ? colors.light_border : colors.dark_border,
                   height: 75,
                   width: 75,
                   textAlign: 'center',
@@ -93,16 +96,10 @@ export function FeeRateBar({ readonly, onChange }: { readonly?: boolean; onChang
                   cursor: 'pointer'
                 } as CSSProperties,
                 selected ? { backgroundColor: colors.primary } : {}
-              )}
-            >
-              <Text text={v.title} textCenter style={{ color: selected ? colors.black : colors.white }} />
+              )}>
+              <Text text={v.title} textCenter style={{ color: colors.black }} />
               {v.title !== 'Custom' && (
-                <Text
-                  text={`${v.feeRate} sat/vB`}
-                  size="xxs"
-                  textCenter
-                  style={{ color: selected ? colors.black : colors.white }}
-                />
+                <Text text={`${v.feeRate} sat/vB`} size="xxs" textCenter style={{ color: colors.black }} />
               )}
               {v.title !== 'Custom' && (
                 <Text

@@ -4,7 +4,8 @@ import { useLocation } from 'react-router-dom';
 
 import { Account } from '@/shared/types';
 import { Button, Column, Header, Icon, Image, Input, Layout, LongPress, Mask, Row, Text } from '@/ui/components';
-import { useTools } from '@/ui/components/ActionComponent';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { copyToClipboard, useWallet } from '@/ui/utils';
 
 type Status = '' | 'error' | 'warning' | undefined;
@@ -25,7 +26,7 @@ export default function ExportPrivateKeyScreen() {
   const [status, setStatus] = useState<Status>('');
   const [error, setError] = useState('');
   const wallet = useWallet();
-  const tools = useTools();
+  const isLight = useIsLight();
   const [isClickCopy, setIsClickCopy] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -54,7 +55,7 @@ export default function ExportPrivateKeyScreen() {
 
   useEffect(() => {
     setDisabled(true);
-    if (password) {
+    if (password.length >= 8) {
       setDisabled(false);
       setStatus('');
       setError('');
@@ -101,7 +102,6 @@ export default function ExportPrivateKeyScreen() {
             />
             <Input
               containerStyle={{
-                // borderColor: error ? 'rgba(255, 69, 69, 1)' : error ? 'white' : ''
                 borderColor: error ? 'rgba(255, 69, 69, 1)' : isFocus ? 'white' : ''
               }}
               onFocus={() => {
@@ -137,17 +137,15 @@ export default function ExportPrivateKeyScreen() {
               }}>
               <Mask>
                 <div
-                  // className={'flex'}
                   style={{
-                    background: '#222222',
-                    border: '1px solid #404045',
-                    // boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset',
+                    background: isLight ? colors.light_bg : colors.dark_bg,
+                    border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                     borderRadius: '14px',
                     padding: '16px'
                   }}>
                   <span
                     style={{
-                      color: '#fff',
+                      color: isLight ? colors.black : colors.white,
                       fontSize: '12px',
                       lineHeight: '20px',
                       // opacity: 0.5,
@@ -168,14 +166,14 @@ export default function ExportPrivateKeyScreen() {
                     <Icon
                       className={'inline-block relative  ml-[5px] mr-[2px]'}
                       icon={isClickCopy ? 'check-circle-broken' : 'copy2'}
-                      color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                      color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                       size={20}
                     />
                     <Text
                       classname={'inline-block'}
                       text={isClickCopy ? 'Copied' : ''}
                       size="sm"
-                      color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+                      color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
                     />
                   </div>
                 </div>
@@ -197,7 +195,7 @@ export default function ExportPrivateKeyScreen() {
                   <Text
                     text="No Recovery Options:"
                     style={{
-                      color: '#F0B622',
+                      color: colors.warning_yellow,
                       lineHeight: '20px',
                       fontSize: '14px',
                       fontWeight: 600
@@ -207,7 +205,7 @@ export default function ExportPrivateKeyScreen() {
                 <Text
                   text="If you lose your recovery phrase, you will not be able to recover your wallet."
                   style={{
-                    color: '#fff',
+                    color: isLight ? colors.black : colors.white,
                     lineHeight: '18px',
                     fontSize: '12px',
                     fontWeight: 400
@@ -232,7 +230,7 @@ export default function ExportPrivateKeyScreen() {
                   <Text
                     text="Store Securely:"
                     style={{
-                      color: '#F0B622',
+                      color: colors.warning_yellow,
                       lineHeight: '20px',
                       fontSize: '14px',
                       fontWeight: 600
@@ -242,7 +240,7 @@ export default function ExportPrivateKeyScreen() {
                 <Text
                   text="Write down your recovery phrase and store it in a safe place."
                   style={{
-                    color: '#fff',
+                    color: isLight ? colors.black : colors.white,
                     lineHeight: '18px',
                     fontSize: '12px',
                     fontWeight: 400

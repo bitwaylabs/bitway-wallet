@@ -4,6 +4,9 @@ import { SyntheticInputEvent } from 'react-number-format/types/types';
 
 import { Coin } from '@cosmjs/stargate';
 
+import { useIsLight } from '../state/settings/hooks';
+import { colors } from '../theme/colors';
+
 export type CoinInputProps = {
   coin: Coin;
   onChange?: (value: string) => void;
@@ -14,6 +17,7 @@ export type CoinInputProps = {
   max?: string;
 };
 export function CoinInput({ coin, onChange, readOnly, size, color, decimalScale, max }: CoinInputProps) {
+  const isLight = useIsLight();
   return (
     <NumericFormat
       type="text"
@@ -27,7 +31,7 @@ export function CoinInput({ coin, onChange, readOnly, size, color, decimalScale,
         border: 'none',
         fontWeight: '500',
         outline: 'none',
-        color: color,
+        color: color || (isLight ? colors.black : colors.white),
         overflow: 'hidden',
         resize: 'none'
       }}

@@ -5,6 +5,7 @@ import { CoinInput } from '@/ui/components/CoinInput';
 import { useStaking } from '@/ui/hooks/staking';
 import { Validator } from '@/ui/services/staking/types';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
@@ -20,6 +21,7 @@ export default function Index({
   inactiveValidators: Validator[];
 }) {
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
   const {
     delegateToken,
     amount,
@@ -35,7 +37,7 @@ export default function Index({
     <>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
-          <Text color="white" size="xs">
+          <Text color={isLight ? 'black' : 'white'} size="xs">
             From
           </Text>
         </Row>
@@ -56,7 +58,7 @@ export default function Index({
       </Row>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
-          <Text color="white" size="xs">
+          <Text color={isLight ? 'black' : 'white'} size="xs">
             To
           </Text>
         </Row>
@@ -73,7 +75,7 @@ export default function Index({
       </Row>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter>
-          <Text color="white" size="xs">
+          <Text color={isLight ? 'black' : 'white'} size="xs">
             Token
           </Text>
           {+amount ? (
@@ -102,14 +104,14 @@ export default function Index({
         alignItems="center"
         gap="8px"
         sx={{
-          bgcolor: colors.card_bgColor,
-          border: `1px solid ${colors.white20}`,
+          bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           borderRadius: '10px',
           marginTop: '-8px',
           p: '8px 10px',
           transition: '.4s',
           ':hover': {
-            border: `1px solid ${colors.white_4}`
+            border: `1px solid ${isLight ? colors.black : colors.white}`
           }
         }}>
         <CoinInput
@@ -138,7 +140,7 @@ export default function Index({
               cursor: 'pointer',
               transition: '.4s',
               ':hover': {
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }
             }}
             onClick={() => {
@@ -150,7 +152,7 @@ export default function Index({
             Max
           </Typography>
           <Image src={delegateToken?.asset.logo} height={28} width={28}></Image>
-          <Text text={delegateToken?.asset.symbol} color="white" size="md"></Text>
+          <Text text={delegateToken?.asset.symbol} color={isLight ? 'black' : 'white'} size="md"></Text>
         </Row>
       </Stack>
       <Row>

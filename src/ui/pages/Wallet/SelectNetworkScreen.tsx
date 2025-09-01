@@ -3,12 +3,14 @@ import { useLocation } from 'react-router-dom';
 
 import { CHAINS_ENUM } from '@/shared/constant';
 import { Column, Content, Header, Image, Layout } from '@/ui/components';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 
 import { useNavigate } from '../MainRoute';
 
 export default function SelectNetworkScreen() {
   const [isCheck, setIsCheck] = useState(false);
+  const isLight = useIsLight();
   const [number, setNumber] = useState(-1);
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -26,7 +28,7 @@ export default function SelectNetworkScreen() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
+          backgroundColor: isLight ? colors.white : colors.black,
           marginTop: '32px'
         }}>
         <Column

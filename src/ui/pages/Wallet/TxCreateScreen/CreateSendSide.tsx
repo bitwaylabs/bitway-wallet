@@ -7,6 +7,7 @@ import { Button, Column, Header, Icon, Input, Layout, Row, Text } from '@/ui/com
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useSend } from '@/ui/hooks/useSend';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useUpdateUiTxCreateSendSideScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, isValidAddress } from '@/ui/utils';
@@ -15,6 +16,7 @@ export default function CreateSendSide() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const setUiState = useUpdateUiTxCreateSendSideScreen();
+  const isLight = useIsLight();
   const { token } = state as {
     token: BalanceItem;
   };
@@ -57,9 +59,9 @@ export default function CreateSendSide() {
       <Column
         style={{
           flex: 1,
-          borderTop: '1px solid #404045',
+          borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           borderRadius: '10px',
-          background: colors.black_dark,
+          background: isLight ? colors.light_bg : colors.dark_bg,
           padding: '0 16px',
           paddingBottom: '14px',
           marginTop: '66px',
@@ -77,7 +79,7 @@ export default function CreateSendSide() {
             }}>
             <Row
               style={{
-                background: colors.black_dark,
+                background: isLight ? colors.light_bg : colors.dark_bg,
 
                 width: '74px',
                 height: '74px',
@@ -97,7 +99,7 @@ export default function CreateSendSide() {
           </Row>
           <Text
             text="Recipient"
-            color="white"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
               lineHeight: '24px'
@@ -118,7 +120,7 @@ export default function CreateSendSide() {
             }}>
             <Text
               text="Amount"
-              color="white"
+              color={isLight ? 'black' : 'white'}
               style={{
                 fontSize: '14px',
                 lineHeight: '24px'
@@ -154,7 +156,7 @@ export default function CreateSendSide() {
           />
           <Text
             text="Memo"
-            color="white"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
               lineHeight: '24px',
@@ -179,6 +181,7 @@ export default function CreateSendSide() {
           }}>
           <Text
             text="Tx Fee:"
+            color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '16px',
               fontWeight: 600,
@@ -190,6 +193,7 @@ export default function CreateSendSide() {
               text={`${disabled ? '-' : formatUnitAmount(fee, feeToken?.asset?.exponent || 6)} ${
                 feeToken?.asset?.symbol
               }`}
+              color={isLight ? 'black' : 'white'}
               style={{
                 fontSize: '16px',
                 fontWeight: 600,

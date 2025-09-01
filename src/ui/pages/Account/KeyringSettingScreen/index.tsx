@@ -2,9 +2,12 @@ import { useMemo } from 'react';
 import { useLocation, useNavigate as useNavigateRouter } from 'react-router-dom';
 
 import { KEYRING_TYPE } from '@/shared/constant';
-import { Button, Column, Header, Image, Layout, Text } from '@/ui/components';
+import { Button, Column, Header, Layout, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
+import { Icon } from '@/ui/components/TokenCurrent';
 import { useKeyrings } from '@/ui/state/keyrings/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 
 import { useNavigate } from '../../MainRoute';
 import './index.less';
@@ -14,6 +17,7 @@ export default function () {
   const navigateRouter = useNavigateRouter();
   const tools = useTools();
   const keyrings = useKeyrings();
+  const isLight = useIsLight();
   const { state } = useLocation();
   const { index } = state as {
     index: number;
@@ -28,68 +32,78 @@ export default function () {
         style={{
           flex: 1,
           padding: '0 16px 24px'
-        }}
-      >
+        }}>
         <Column
           style={{
             flex: 1,
             gap: '10px',
             marginTop: '16px'
-          }}
-        >
+          }}>
           <div
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             style={{
               height: '50px',
-              borderRadius: '10px',
               padding: '0 10px',
               cursor: 'pointer',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
             }}
-            className="walletSettingItem"
             onClick={() => {
               navigate('EditWalletNameScreen', { keyring });
-            }}
-          >
+            }}>
             <Text
               text="Edit Wallet Name"
-              color="text"
+              color={isLight ? 'black' : 'white'}
               style={{
                 fontSize: '16px',
                 fontWeight: 500,
                 lineHeight: '19px'
               }}
             />
-            <Image src="./images/icons/chevron-down.svg" size={24} />
+            <Icon
+              type="side-down"
+              className={'hover-100'}
+              style={{
+                transform: 'rotate(-90deg)',
+                opacity: '0.6',
+                color: isLight ? colors.black : colors.white
+              }}
+            />
           </div>
 
           {keyring?.type === KEYRING_TYPE.HdKeyring && (
             <div
+              className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
               style={{
                 height: '50px',
-                borderRadius: '10px',
                 padding: '0 10px',
                 cursor: 'pointer',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}
-              className="walletSettingItem"
               onClick={() => {
                 navigate('ExportMnemonicsScreen', { keyring });
-              }}
-            >
+              }}>
               <Text
                 text="View Recovery Phrase"
-                color="text"
+                color={isLight ? 'black' : 'white'}
                 style={{
                   fontSize: '16px',
                   fontWeight: 500,
                   lineHeight: '19px'
                 }}
               />
-              <Image src="./images/icons/chevron-down.svg" size={24} />
+              <Icon
+                type="side-down"
+                className={'hover-100'}
+                style={{
+                  transform: 'rotate(-90deg)',
+                  opacity: '0.6',
+                  color: isLight ? colors.black : colors.white
+                }}
+              />
             </div>
           )}
         </Column>

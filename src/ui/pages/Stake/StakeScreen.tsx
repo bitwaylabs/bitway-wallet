@@ -5,6 +5,7 @@ import { ButtonGroupV2, Column, Content, Header, Layout } from '@/ui/components'
 import { useGetValidators } from '@/ui/hooks/staking';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useStakeState } from '@/ui/state/stake/hooks';
 import { OperateType, buttonList, stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
@@ -18,6 +19,7 @@ export default function StakeScreen() {
   const dispatch = useAppDispatch();
   const { validator, operateType } = useStakeState();
   const { sideChain } = useEnvironment();
+  const isLight = useIsLight();
 
   const { validators: bondedValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_BONDED');
   const { validators: unBondingValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_UNBONDING');
@@ -54,7 +56,7 @@ export default function StakeScreen() {
             rowProps={{
               style: {
                 width: '100%',
-                backgroundColor: colors.card_bgColor,
+                backgroundColor: isLight ? colors.white : colors.black,
                 borderRadius: '10px'
               }
             }}

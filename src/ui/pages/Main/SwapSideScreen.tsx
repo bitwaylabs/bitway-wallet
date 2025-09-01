@@ -11,6 +11,7 @@ import { useFeeSummary } from '@/ui/hooks/useFeeSummary';
 import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { btcTosatoshis } from '@/ui/utils';
@@ -22,6 +23,7 @@ import { useNavigate } from '../MainRoute';
 
 export default function SwapSideScreen() {
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
 
   const [sideAmount, setSideAmount] = useState('');
 
@@ -152,19 +154,19 @@ export default function SwapSideScreen() {
         <Column
           gap="xs"
           style={{
-            borderRadius: '10px'
+            borderRadius: '10px',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg
           }}
-          bg="card_bgColor"
           px="lg"
           py="lg">
           <Row px="md" full justifyBetween itemsCenter>
-            <Text color="white" size="xs">
+            <Text color={isLight ? 'black' : 'white'} size="xs">
               How much would you like to buy?
             </Text>
           </Row>
 
           <Row
-            bg="black"
+            bg={isLight ? 'white' : 'black'}
             style={{
               height: 68
             }}
@@ -174,15 +176,15 @@ export default function SwapSideScreen() {
             py="md">
             <Row
               style={{
-                flexShrink: 0
+                flexShrink: 0,
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg
               }}
               rounded={true}
               px="lg"
-              py="md"
-              bg="card_bgColor">
+              py="md">
               <Image src={sideBalance?.asset.logo} height={24} width={24}></Image>
 
-              <Text text={sideBalance?.asset.symbol || 'BTC'} color="white" size="md"></Text>
+              <Text text={sideBalance?.asset.symbol || 'BTC'} color={isLight ? 'black' : 'white'} size="md"></Text>
             </Row>
 
             <Box py={'2px'} display={'flex'} justifyContent={'space-between'} gap={'2px'} height={'max-content'}>
@@ -210,10 +212,10 @@ export default function SwapSideScreen() {
                       sx={{
                         fontSize: '8px',
                         borderRadius: '4px',
-                        bgcolor: colors.white1,
+                        bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                         p: '0px 4px',
                         height: '20px',
-                        color: colors.white2,
+                        color: colors.grey2,
                         width: 'max-content',
                         cursor: 'pointer',
                         ':hover': {
@@ -232,7 +234,7 @@ export default function SwapSideScreen() {
           </Row>
 
           <Row px="md" full justifyBetween itemsCenter mt="lg">
-            <Text color="white" size="xs">
+            <Text color={isLight ? 'black' : 'white'} size="xs">
               You need to pay
             </Text>
 
@@ -243,7 +245,7 @@ export default function SwapSideScreen() {
           </Row>
 
           <Row
-            bg="black"
+            bg={isLight ? 'white' : 'black'}
             style={{
               height: 68
             }}
@@ -253,16 +255,16 @@ export default function SwapSideScreen() {
             py="md">
             <Row
               style={{
-                flexShrink: 0
+                flexShrink: 0,
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg
               }}
               rounded={true}
               py="md"
               px="lg"
-              itemsCenter
-              bg="card_bgColor">
+              itemsCenter>
               <Image src={satBalance?.asset.logo} height={24} width={24}></Image>
 
-              <Text text={satBalance?.asset.symbol || 'BTC'} color="white" size="md"></Text>
+              <Text text={satBalance?.asset.symbol || 'BTC'} color={isLight ? 'black' : 'white'} size="md"></Text>
             </Row>
 
             <Box py={'2px'} display={'flex'} alignItems={'center'} justifyContent={'space-between'} gap={'2px'}>
@@ -282,7 +284,7 @@ export default function SwapSideScreen() {
             </Box>
           </Row>
 
-          <Column rounded px="lg" py="md" full justifyBetween bg="black" mt="lg">
+          <Column rounded px="lg" py="md" full justifyBetween bg={isLight ? 'white' : 'black'} mt="lg">
             <Row itemsCenter justifyBetween>
               <Row itemsCenter gap="xs">
                 <Text text={rateExchange ? 'BTC/BTW' : 'BTW/BTC'} color="grey12" size="sm"></Text>
@@ -291,7 +293,7 @@ export default function SwapSideScreen() {
                     cursor: 'pointer',
                     color: colors.grey12,
                     ':hover': {
-                      color: colors.white
+                      color: isLight ? colors.black : colors.white
                     }
                   }}
                   onClick={() => {
@@ -309,13 +311,15 @@ export default function SwapSideScreen() {
                 </Box>
               </Row>
 
-              <Text text={rateExchange ? btcToSideRate : sideToBtcRate} color="white" size="sm"></Text>
+              <Text
+                text={rateExchange ? btcToSideRate : sideToBtcRate}
+                color={isLight ? 'black' : 'white'}
+                size="sm"></Text>
             </Row>
 
             <Row itemsCenter justifyBetween>
               <Text text="Estimated Time" color="grey12" size="sm"></Text>
-
-              <Text text={fastTimeDesc} color="white" size="sm"></Text>
+              <Text text={fastTimeDesc} color={isLight ? 'black' : 'white'} size="sm"></Text>
             </Row>
           </Column>
 
