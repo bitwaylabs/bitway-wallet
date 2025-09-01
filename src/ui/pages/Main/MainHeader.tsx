@@ -1,8 +1,8 @@
-import { Header, Image } from '@/ui/components';
+import { Header } from '@/ui/components';
 import AccountSelect from '@/ui/pages/Account/AccountSelect';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
-import { fontSizes } from '@/ui/theme/font';
 import { Stack } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
@@ -10,18 +10,26 @@ import { useNavigate } from '../MainRoute';
 export default function Index({ title }) {
   const navigate = useNavigate();
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
   const address = currentAccount.address;
   return (
     <Header
       LeftComponent={
         <>
-          <Image
+          <Stack
             onClick={() => {
               navigate('SettingsTabScreen');
-            }}
-            src="/images/icons/main/menu-icon.svg"
-            size={fontSizes.xxl}
-          />
+            }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3 12H21M3 6H21M3 18H21"
+                stroke={isLight ? colors.black : colors.white}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Stack>
         </>
       }
       title={title ? title : address ? <AccountSelect /> : ''}
@@ -48,11 +56,11 @@ export default function Index({ title }) {
               },
               svg: {
                 rect: {
-                  stroke: colors.white
+                  stroke: isLight ? colors.black : colors.white
                 },
                 path: {
-                  stroke: colors.white,
-                  fill: colors.white
+                  stroke: isLight ? colors.black : colors.white,
+                  fill: isLight ? colors.black : colors.white
                 },
                 '&.expand_svg': {
                   display: 'none'

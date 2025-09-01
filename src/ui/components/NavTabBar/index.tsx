@@ -4,7 +4,7 @@ import { NetworkType } from '@/shared/types';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useUnreadAppSummary } from '@/ui/state/accounts/hooks';
 import { TabOption } from '@/ui/state/global/reducer';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
@@ -14,8 +14,9 @@ import { Grid } from '../Grid';
 import { Icon, IconTypes } from '../Icon';
 
 export const NavTabBar = function NavTabBar({ tab }: { tab: TabOption }) {
+  const isLight = useIsLight();
   return (
-    <Grid columns={4} style={{ width: '100%', height: '66px', backgroundColor: colors.bg2 }}>
+    <Grid columns={4} style={{ width: '100%', height: '66px', backgroundColor: isLight ? colors.white : colors.black }}>
       <TabButton tabName="home" icon="main-home" isActive={tab === 'home'} />
       <TabButton tabName="loans" icon="main-loans" isActive={tab === 'loans'} />
       <TabButton tabName="earn" icon="main-earn" isActive={tab === 'earn'} />
@@ -41,6 +42,7 @@ const TabButton = function TabButton({
   const [showLoanNotice, setShowLoanNotice] = useState(true);
   const wallet = useWallet();
   const networkType = useNetworkType();
+  const isLight = useIsLight();
 
   useLayoutEffect(() => {
     wallet.getShowLoanNotice().then((show) => {
@@ -81,13 +83,16 @@ const TabButton = function TabButton({
         }}
         onMouseOver={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}>
-        <Icon size={24} color={isActive || isHover ? 'white' : 'white_muted'} icon={icon as IconTypes}></Icon>
+        <Icon
+          size={24}
+          color={isActive || isHover ? (isLight ? 'black' : 'white') : 'white_muted'}
+          icon={icon as IconTypes}></Icon>
 
         <span
           style={{
             textTransform: 'capitalize' as const,
             fontSize: 15,
-            color: isActive || isHover ? '#fff' : '#6C7080'
+            color: isActive || isHover ? (isLight ? colors.black : colors.white) : colors.grey2
           }}>
           {name ? name : tabName}
         </span>

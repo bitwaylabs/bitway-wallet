@@ -84,7 +84,11 @@ export const colors = {
   blue3: '#94E3601A',
   red11: '#F565651A',
 
-  green_1: '#94E36033'
+  green_1: '#94E36033',
+  light_border: '#1E1E1F1A',
+  light_bg: '#f7f7f7',
+  dark_border: '#ffffff20',
+  dark_bg: '#17171C'
 };
 
 export type ColorTypes = keyof typeof colors;

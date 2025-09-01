@@ -3,6 +3,7 @@ import React, { CSSProperties, useEffect } from 'react';
 import { useExtensionIsInTab } from '@/ui/features/browser/tabs';
 import { routes } from '@/ui/pages/MainRoute';
 import { useBooted, useIsUnlocked } from '@/ui/state/global/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 
 import './index.less';
@@ -14,6 +15,7 @@ export interface LayoutProps {
 export function Layout(props: LayoutProps) {
   const { children, style: $styleBase } = props;
   const isInTab = useExtensionIsInTab();
+  const isLight = useIsLight();
 
   const isBooted = useBooted();
   const isUnlocked = useIsUnlocked();
@@ -31,7 +33,7 @@ export function Layout(props: LayoutProps) {
       className="layout"
       style={Object.assign(
         {
-          backgroundColor: colors.black,
+          backgroundColor: isLight ? colors.white : colors.black,
           display: 'flex',
           flexDirection: 'column',
           width: '100%',

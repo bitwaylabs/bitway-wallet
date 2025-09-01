@@ -12,6 +12,7 @@ export interface SettingsState {
   skippedVersion: string;
   autoLockTime: number;
   chainType?: ChainType;
+  isLight: boolean;
 }
 
 export const initialState: SettingsState = {
@@ -27,7 +28,8 @@ export const initialState: SettingsState = {
     chainTip: ''
   },
   skippedVersion: '',
-  autoLockTime: DEFAULT_LOCKTIME
+  autoLockTime: DEFAULT_LOCKTIME,
+  isLight: true
 };
 
 const slice = createSlice({
@@ -48,6 +50,7 @@ const slice = createSlice({
           walletConfig?: WalletConfig;
           skippedVersion?: string;
           autoLockTime?: number;
+          isLight?: boolean;
         };
       }
     ) {

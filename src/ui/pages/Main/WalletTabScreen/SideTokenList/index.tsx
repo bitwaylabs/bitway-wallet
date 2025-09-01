@@ -10,12 +10,14 @@ import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Box, Skeleton, Stack } from '@mui/material';
 
 export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balanceVisible: boolean }) {
   const { sideChain } = useEnvironment();
   const isIbc = token.asset.denom.includes('ibc/');
+  const isLight = useIsLight();
 
   const isBTW = token.asset.denom === sideChain?.denom;
 
@@ -36,14 +38,10 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
       <Stack
         direction="row"
         justifyContent="space-between"
+        className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
         sx={{
           cursor: 'pointer',
-          padding: '10px 16px',
-          backgroundColor: colors.card_bgColor,
-          transition: '.4s',
-          ':hover': {
-            backgroundColor: colors.grey_dark
-          }
+          padding: '10px 16px'
         }}>
         <Row>
           <Row
@@ -75,10 +73,10 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             style={{
               gap: '0px'
             }}>
-            <Text classname={'symbol'} preset="regular" text={token?.asset?.symbol}></Text>
+            <Text color={isLight ? 'black' : 'white'} text={token?.asset?.symbol}></Text>
 
             <Row itemsCenter style={{ position: 'relative' }}>
-              <Text preset="sub" text={token?.asset?.name}></Text>
+              <Text color={isLight ? 'black' : 'white'} text={token?.asset?.name}></Text>
 
               {isIbc && (
                 <LightTooltip
@@ -87,15 +85,15 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
                   title={`${ibcData?.oppositeChainId}/${ibcData?.oppositeChainChannelId}`}>
                   <Box
                     sx={{
+                      background: isLight ? colors.white : colors.black,
                       borderRadius: '4px',
-                      background: '#FFFFFF1A',
                       fontSize: '8px',
                       fontWeight: 500,
                       display: 'flex',
                       alignItems: 'center',
                       height: '16px',
                       p: '4px 6px',
-                      color: '#B8BFBD',
+                      color: isLight ? colors.black : colors.white,
                       position: 'relative'
                     }}>
                     IBC
@@ -110,9 +108,13 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
           style={{
             gap: '0px'
           }}>
-          <Text preset="regular" text={balanceVisible ? BigNumber(token?.formatAmount).toFormat() : '**'} textEnd />
           <Text
-            preset="sub"
+            color={isLight ? 'black' : 'white'}
+            text={balanceVisible ? BigNumber(token?.formatAmount).toFormat() : '**'}
+            textEnd
+          />
+          <Text
+            color={isLight ? 'black' : 'white'}
             text={`${balanceVisible ? '$' + BigNumber(token?.totalValue || '').toFormat(2) : '**'}`}
             textEnd
           />
@@ -126,22 +128,18 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
           sx={{
             width: '100%',
             cursor: 'pointer',
-            borderTop: `1px solid ${colors.white20}`
+            borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
           }}>
           <Stack
             direction="row"
             justifyContent="center"
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             sx={{
               flex: 1,
               py: '4px',
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.grey12,
-              bgcolor: colors.card_bgColor,
-              transition: '.4s',
-              ':hover': {
-                bgcolor: colors.grey_dark
-              }
+              color: isLight ? colors.grey12 : colors.white
             }}
             onClick={() => {
               navigate('/stake');
@@ -156,14 +154,10 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               py: '4px',
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.grey12,
-              borderLeft: `1px solid ${colors.white20}`,
-              bgcolor: colors.card_bgColor,
-              transition: '.4s',
-              ':hover': {
-                bgcolor: colors.grey_dark
-              }
+              color: isLight ? colors.grey12 : colors.white,
+              borderLeft: `1px solid ${isLight ? colors.light_border : colors.white20}`
             }}
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             onClick={() => {
               navigate('/swap-side');
             }}>
@@ -179,6 +173,7 @@ const STATIC_TOKENS = ['ubtw', 'sat', 'ibc/65D0BEC6DAD96C7F5043D1E54E54B6BB5D5B3
 
 export default function SideTokenList({ balanceVisible }) {
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
 
   const { balanceList: bitwayBalanceList, loading: sideLoading } = useGetBitwayBalanceList(currentAccount?.address);
 
@@ -206,7 +201,7 @@ export default function SideTokenList({ balanceVisible }) {
         <>
           <Skeleton
             sx={{
-              bgcolor: colors.card_bgColor,
+              bgcolor: isLight ? colors.light_bg : colors.dark_bg,
               transform: 'scale(1)',
               width: '100%',
               borderRadius: '10px'

@@ -192,19 +192,22 @@ div {
   /* @ts-ignore */
   /*background-image: url("@/ui/images/icons/wallet/arrow-right.png");*/
 }
-.bg-item-hover:hover .icon-right {
-  /*  // @ts-ignore */
-  /*background: url('/images/icons/wallet/arrow-right-hover.png');*/
+.bg-item-hover-v2 {
+  border-radius: 8px;
+  background-color: #17171c;
+  transition: 0.4s;
+}
+
+.light.bg-item-hover-v2 {
+  background-color: #f7f7f7;
 }
 
 .bg-item-hover-v2:hover {
-  background-color: rgb(64, 64, 69) !important;
-  border-radius: 8px;
+  background-color: #404045;
 }
 
-.bg-item-hover-v2:hover .symbol {
-  /*color: #0DD4C3!important;*/
-  /*font-weight: bold;*/
+.light.bg-item-hover-v2:hover {
+  background-color: #f7f7f7;
 }
 
 .bg-item-hover-v3:hover {
@@ -224,9 +227,16 @@ div {
   opacity: 1;
 }
 
-.close-icon:hover {
+.close-icon {
   border-radius: 50%;
-  background-color: rgb(64, 64, 69);
+}
+
+.close-icon:hover {
+  background-color: #404045;
+}
+
+.light.close-icon:hover {
+  background-color: #f7f7f7;
 }
 
 .smooth-scroll {
@@ -247,11 +257,16 @@ div {
 /* modal start */
 .walletSelectModal .ant-modal-content {
   border-radius: 12px;
+}
+.walletSelectModal .ant-modal-content {
   background-color: #000000;
 }
-
 .walletSelectModal .ant-modal-content .ant-modal-body {
   padding: 0;
+}
+
+.light.walletSelectModal .ant-modal-content {
+  background-color: #ffffff;
 }
 
 .ant-modal-mask {

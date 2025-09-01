@@ -202,3 +202,8 @@ export function useAutoLockTime() {
   const state = useSettingsState();
   return state.autoLockTime;
 }
+
+export function useIsLight() {
+  const state = useSettingsState();
+  return state.isLight;
+}

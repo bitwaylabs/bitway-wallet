@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Box, BoxProps } from '@mui/material';
 
@@ -17,21 +18,22 @@ export default function SearchInput({
   sx?: BoxProps['sx'];
   placeholder?: string;
 }) {
+  const isLight = useIsLight();
   const [isHover, setIsHover] = useState(false);
   return (
     <Box
       sx={[
         {
-          border: `1px solid ${colors.white20}`,
+          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
           px: '10px',
           borderRadius: '10px',
-          bgcolor: colors.card_bgColor,
+          bgcolor: isLight ? colors.light_bg : colors.dark_bg,
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
           ':hover': {
-            border: `1px solid ${colors.white_4}`
+            border: `1px solid ${isLight ? colors.white_4 : colors.dark_border}`
           }
         },
         ...(Array.isArray(sx) ? sx : [sx])
@@ -68,7 +70,7 @@ export default function SearchInput({
           cursor: 'pointer',
           display: value ? 'block' : 'none'
         }}>
-        <Icon icon="clear" color={isHover ? 'white' : 'search_icon'} size={20}></Icon>
+        <Icon icon="clear" color={isHover ? (isLight ? 'black' : 'white') : 'search_icon'} size={20}></Icon>
       </div>
     </Box>
   );
