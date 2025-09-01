@@ -545,14 +545,16 @@ const Main = () => {
 
       if (!self.settingsLoaded) {
         const networkType = await wallet.getNetworkType();
+        const _locale = await wallet.getLocale();
+        const _isLight = await wallet.getIsLight();
         dispatch(
           settingsActions.updateSettings({
-            networkType
+            networkType,
+            locale: _locale,
+            isLight: _isLight
           })
         );
 
-        const _locale = await wallet.getLocale();
-        dispatch(settingsActions.updateSettings({ locale: _locale }));
         self.settingsLoaded = true;
       }
 

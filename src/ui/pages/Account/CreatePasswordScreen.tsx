@@ -5,6 +5,7 @@ import { useLocation, useNavigate as useNavigateRouter } from 'react-router-dom'
 import { Button, Column, Header, Input, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useExtensionIsInTab } from '@/ui/features/browser/tabs';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet, useWalletRequest } from '@/ui/utils';
 import { getPasswordStrengthWord } from '@/ui/utils/password-utils';
@@ -19,6 +20,7 @@ export default function CreatePasswordScreen() {
   const isInTab = useExtensionIsInTab();
   const wallet = useWallet();
   const loc = useLocation();
+  const isLight = useIsLight();
   const params = new URLSearchParams(loc.search);
   let state = {};
   if (loc.state) {
@@ -68,7 +70,7 @@ export default function CreatePasswordScreen() {
     return (
       <Column>
         <Row>
-          <Text size="xs" text={'Password strength: '} />
+          <Text size="xs" text={'Password strength: '} style={{ color: color }} />
           <Text size="xs" text={text} style={{ color: color }} />
         </Row>
       </Column>
@@ -123,7 +125,7 @@ export default function CreatePasswordScreen() {
   return (
     <div
       style={{
-        backgroundColor: colors.black,
+        backgroundColor: isLight ? colors.white : colors.black,
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -152,23 +154,21 @@ export default function CreatePasswordScreen() {
               opacity: 0.5,
               fontSize: '12px',
               lineHeight: '18px',
-              marginTop: '24px'
+              marginTop: '24px',
+              color: isLight ? colors.black : colors.white
             }}
           />
           <Text
             text="Password"
             style={{
               marginTop: '24px',
-              color: '#828282',
+              color: colors.grey2,
               fontSize: '14px',
               lineHeight: '24px'
             }}
           />
           <Input
             placeholder="Set your password"
-            containerStyle={{
-              borderColor: isPwdError ? '#ff0000' : isPwdFocus ? 'white' : ''
-            }}
             preset="password"
             onBlur={(e) => {
               setPassword(e.target.value);
@@ -186,9 +186,18 @@ export default function CreatePasswordScreen() {
             autoFocus={true}
           />
           {strongText}
+          {pwdErrorMsg && (
+            <div
+              style={{
+                color: colors.red,
+                fontSize: '14px'
+              }}>
+              {pwdErrorMsg}
+            </div>
+          )}
           <div
             style={{
-              color: '#ff0000',
+              color: colors.red,
               fontSize: '14px',
               opacity: pwdErrorMsg ? 1 : 0
             }}
@@ -199,15 +208,12 @@ export default function CreatePasswordScreen() {
             text="Confirm Password"
             style={{
               marginTop: '16px',
-              color: '#828282',
+              color: colors.grey2,
               fontSize: '14px',
               lineHeight: '24px'
             }}
           />
           <Input
-            containerStyle={{
-              borderColor: isConfirmError ? '#ff0000' : isConfirmFocus ? 'white' : ''
-            }}
             preset="password"
             placeholder="Repeat your password"
             onChange={(e) => {
@@ -228,7 +234,7 @@ export default function CreatePasswordScreen() {
           />
           <div
             style={{
-              color: '#ff0000',
+              color: colors.red,
               fontSize: '14px',
               opacity: confirmErrorMsg ? 1 : 0
             }}
@@ -253,7 +259,7 @@ export default function CreatePasswordScreen() {
             <Text
               text="I understand that I will not be able to access my wallet on this device if I forget my password"
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 opacity: 0.5,
                 fontSize: '12px',
                 lineHeight: '18px'

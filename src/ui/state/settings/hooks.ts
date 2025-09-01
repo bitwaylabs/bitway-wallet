@@ -210,8 +210,10 @@ export function useIsLight() {
 
 export function useChangeIsLightCallback() {
   const dispatch = useAppDispatch();
+  const wallet = useWallet();
   return useCallback(
     async (isLight: boolean) => {
+      await wallet.setIsLight(isLight);
       dispatch(settingsActions.updateSettings({ isLight }));
     },
     [dispatch]

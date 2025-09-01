@@ -407,6 +407,9 @@ export interface WalletController {
 
   getShowLoanNotice(): Promise<boolean>;
   setShowLoanNotice(show: boolean): Promise<void>;
+
+  getIsLight(): Promise<boolean>;
+  setIsLight(isLight: boolean): Promise<void>;
 }
 
 const WalletContext = createContext<{
