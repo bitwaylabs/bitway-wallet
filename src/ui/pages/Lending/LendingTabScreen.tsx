@@ -17,6 +17,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useLendingState } from '@/ui/state/lending/hook';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate } from '@/ui/utils';
 import { toUnitAmount } from '@/ui/utils/formatter';
@@ -26,6 +27,7 @@ import { useNavigate } from '../MainRoute';
 
 export default function LendingTanScreen() {
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
 
   const [collateralAmount, setcollateralAmount] = useState('');
   const [isHover, setIsHover] = useState(false);
@@ -313,9 +315,7 @@ export default function LendingTanScreen() {
   const { isDisabled, buttonText } = useMemo(() => {
     let isDisabled = false,
       buttonText = 'Request Loan';
-    if (loading) {
-      isDisabled = true;
-    } else if (poolData?.baseData.config.paused) {
+    if (poolData?.baseData.config.paused) {
       isDisabled = true;
       buttonText = 'Pool is paused';
     } else if (collateralAmount && +collateralAmount === +(satBalance?.formatAmount || '0')) {
@@ -367,7 +367,7 @@ export default function LendingTanScreen() {
           <Stack>
             <Row full justifyBetween itemsCenter mt="lg">
               <Text
-                color="white"
+                color={isLight ? 'black' : 'white'}
                 size="lg"
                 style={{
                   fontWeight: 600
@@ -393,12 +393,12 @@ export default function LendingTanScreen() {
                   },
                   ':hover': {
                     p: {
-                      color: colors.white
+                      color: isLight ? colors.black : colors.white
                     },
                     div: {
                       div: {
-                        color: `${colors.white} !important`,
-                        bgcolor: `${colors.white} !important`
+                        color: `${isLight ? colors.black : colors.white} !important`,
+                        bgcolor: `${isLight ? colors.black : colors.white} !important`
                       }
                     }
                   }
@@ -415,7 +415,7 @@ export default function LendingTanScreen() {
             </Row>
             <Row full justifyBetween itemsCenter mt="lg">
               <Row itemsCenter>
-                <Text color="white" size="xs">
+                <Text color={isLight ? 'black' : 'white'} size="xs">
                   Collateral
                 </Text>
                 {+collateralValue ? (
@@ -442,14 +442,14 @@ export default function LendingTanScreen() {
               direction="row"
               alignItems="center"
               sx={{
-                bgcolor: colors.card_bgColor,
-                border: `1px solid ${colors.white20}`,
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                 borderRadius: '10px',
                 marginTop: '4px',
                 p: '8px 10px',
                 transition: '.4s',
                 ':hover': {
-                  border: `1px solid ${colors.white_4}`
+                  border: `1px solid ${isLight ? colors.black : colors.white}`
                 }
               }}>
               <CoinInput
@@ -469,12 +469,12 @@ export default function LendingTanScreen() {
                   flexShrink: 0
                 }}>
                 <Image src="/images/icons/btc.svg" height={24} width={24}></Image>
-                <Text text={satBalance?.asset.symbol || 'BTC'} color="white" size="md"></Text>
+                <Text text={satBalance?.asset.symbol || 'BTC'} color={isLight ? 'black' : 'white'} size="md"></Text>
               </Row>
             </Stack>
             <Row full justifyBetween itemsCenter mt="medium">
               <Row itemsCenter>
-                <Text color="white" size="xs">
+                <Text color={isLight ? 'black' : 'white'} size="xs">
                   I want to borrow
                 </Text>
                 {+borrowValue ? (
@@ -503,14 +503,14 @@ export default function LendingTanScreen() {
               direction="row"
               alignItems="center"
               sx={{
-                bgcolor: colors.card_bgColor,
-                border: `1px solid ${colors.white20}`,
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                 borderRadius: '10px',
                 marginTop: '4px',
                 p: '8px 10px',
                 transition: '.4s',
                 ':hover': {
-                  border: `1px solid ${colors.white_4}`
+                  border: `1px solid ${isLight ? colors.black : colors.white}`
                 }
               }}>
               <CoinInput
@@ -543,11 +543,11 @@ export default function LendingTanScreen() {
                 <Typography
                   sx={{
                     fontSize: '16px',
-                    color: isHover ? colors.main : colors.white
+                    color: isHover ? colors.main : isLight ? colors.black : colors.white
                   }}>
                   {poolTokenBalance?.asset.symbol || 'USDC'}
                 </Typography>
-                <Icon icon="down" size={10} color={isHover ? 'main' : 'white'}></Icon>
+                <Icon icon="down" size={10} color={isHover ? 'main' : isLight ? 'black' : 'white'}></Icon>
               </Stack>
             </Stack>
             {healthFactor !== '-' && +healthFactor <= 1.2 && (
@@ -565,7 +565,7 @@ export default function LendingTanScreen() {
                 <Checkbox
                   sx={{
                     p: '4px',
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     '&.Mui-checked': {
                       color: colors.red
                     }
@@ -590,11 +590,11 @@ export default function LendingTanScreen() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 cursor: 'pointer',
-                bgcolor: colors.card_bgColor,
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                 transition: '.4s',
                 borderRadius: '8px',
                 ':hover': {
-                  bgcolor: colors.black_dark
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg
                 }
               }}
               onMouseOver={() => setIsHoverMaturity(true)}
@@ -606,7 +606,7 @@ export default function LendingTanScreen() {
               <Typography
                 sx={{
                   fontSize: '12px',
-                  color: colors.white
+                  color: isLight ? colors.black : colors.white
                 }}>
                 Maturity
               </Typography>
@@ -614,7 +614,7 @@ export default function LendingTanScreen() {
                 <Box
                   sx={{
                     fontSize: '12px',
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px'
@@ -632,17 +632,17 @@ export default function LendingTanScreen() {
                       transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: '.4s'
                     }}>
-                    <Icon icon="down" size={12} color={isHoverMaturity ? 'main' : 'white'}></Icon>
+                    <Icon icon="down" size={12} color={isHoverMaturity ? 'main' : isLight ? 'black' : 'white'}></Icon>
                   </Box>
                 </Box>
               </Stack>
             </Box>
             {!isDisabled && (
               <Column
-                bg="black"
                 style={{
                   marginTop: '16px',
-                  borderTop: `1px solid ${colors.white1}`
+                  borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                  backgroundColor: isLight ? colors.light_bg : colors.dark_bg
                 }}
                 py="lg">
                 {data.map((item, index) => (
@@ -659,7 +659,7 @@ export default function LendingTanScreen() {
                             cursor: 'pointer',
                             transition: '.4s',
                             ':hover': {
-                              color: colors.white
+                              color: isLight ? colors.black : colors.white
                             }
                           }}>
                           {item.label}
@@ -669,7 +669,7 @@ export default function LendingTanScreen() {
                         direction="row"
                         sx={{
                           fontSize: '12px',
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }}>
                         {item.value}
                       </Stack>
@@ -719,10 +719,10 @@ export default function LendingTanScreen() {
           '.MuiPaper-root': {
             mt: '4px',
             p: '12px',
-            backgroundColor: colors.card_bgColor,
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
             borderRadius: '10px',
             width: '100%',
-            border: `1px solid ${colors.white1}`
+            border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
           }
         }}
         anchorEl={anchorEl}
@@ -738,9 +738,9 @@ export default function LendingTanScreen() {
                 borderRadius: '10px',
                 cursor: 'pointer',
                 mt: index !== 0 ? '10px' : '0px',
-                background: selected ? colors.white1 : 'transparent',
+                background: selected ? (isLight ? colors.light_bg : colors.dark_bg) : 'transparent',
                 ':hover': {
-                  bgcolor: colors.white1
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg
                 },
                 position: 'relative'
               }}
@@ -752,7 +752,7 @@ export default function LendingTanScreen() {
                 sx={{
                   fontSize: '14px'
                 }}
-                color={colors.white}>
+                color={isLight ? 'black' : 'white'}>
                 {new BigNumber(item.maturity).div(3600).div(24).toFixed(0)} days&nbsp;
                 <small
                   style={{
@@ -773,7 +773,7 @@ export default function LendingTanScreen() {
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M13.3346 4L6.0013 11.3333L2.66797 8"
-                      stroke="white"
+                      stroke={isLight ? colors.black : colors.white}
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"

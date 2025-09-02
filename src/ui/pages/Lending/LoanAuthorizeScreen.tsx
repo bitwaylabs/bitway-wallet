@@ -9,7 +9,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useLendingState } from '@/ui/state/lending/hook';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate, useLocationState } from '@/ui/utils';
 import { formatTimeWithUTC } from '@/ui/utils/formatter';
@@ -29,6 +29,7 @@ export default function LoanAuthorizeScreen() {
   const { loanId, feeRate, borrowAmount, collateralAmount, from } = useLocationState<LoanAuthorizeLocationState>();
   const currentAccount = useCurrentAccount();
   const networkType = useNetworkType();
+  const isLight = useIsLight();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditRefundAddress, setIsEditRefundAddress] = useState(false);
@@ -97,7 +98,7 @@ export default function LoanAuthorizeScreen() {
               sx={{
                 mt: '32px',
                 fontSize: '12px',
-                color: colors.white,
+                color: isLight ? colors.black : colors.white,
                 maxWidth: '338px',
                 textAlign: 'center',
                 fontWeight: 400
@@ -135,18 +136,19 @@ export default function LoanAuthorizeScreen() {
                 text="Step 2: Authorize Liquidation"
                 size="lg"
                 style={{
-                  fontWeight: 700
+                  fontWeight: 700,
+                  color: isLight ? colors.black : colors.white
                 }}></Text>
             </Row>
 
             <Row
-              bg="black_dark2"
               fullX
               style={{
                 flexShrink: 0,
                 position: 'relative',
                 borderRadius: '10px',
-                height: '6px'
+                height: '6px',
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg
               }}>
               <Row
                 bg="main"
@@ -173,7 +175,7 @@ export default function LoanAuthorizeScreen() {
                     sx={{
                       p: '16px',
                       borderRadius: '10px',
-                      bgcolor: colors.card_bgColor
+                      bgcolor: isLight ? colors.light_bg : colors.dark_bg
                     }}>
                     <LightTooltip title={item.tip} arrow placement="top">
                       <Typography
@@ -185,7 +187,7 @@ export default function LoanAuthorizeScreen() {
                           cursor: 'pointer',
                           transition: '.4s',
                           ':hover': {
-                            color: colors.white
+                            color: isLight ? colors.black : colors.white
                           }
                         }}>
                         {item.label}
@@ -196,7 +198,7 @@ export default function LoanAuthorizeScreen() {
                         sx={{
                           fontSize: '12px',
                           fontWeight: 600,
-                          color: colors.white,
+                          color: isLight ? colors.black : colors.white,
                           textDecoration: item.valueTip ? 'dotted underline' : 'none',
                           textUnderlineOffset: '2px',
                           cursor: item.valueTip ? 'pointer' : 'default'
@@ -211,7 +213,7 @@ export default function LoanAuthorizeScreen() {
                   sx={{
                     p: '16px',
                     borderRadius: '10px',
-                    bgcolor: colors.card_bgColor
+                    bgcolor: isLight ? colors.light_bg : colors.dark_bg
                   }}>
                   <LightTooltip
                     title={'The Bitcoin address where your collateral will be returned once the loan is fully repaid'}
@@ -226,7 +228,7 @@ export default function LoanAuthorizeScreen() {
                         cursor: 'pointer',
                         transition: '.4s',
                         ':hover': {
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }
                       }}>
                       Collateral Refund Address
@@ -242,10 +244,10 @@ export default function LoanAuthorizeScreen() {
                       borderRadius: '10px',
                       width: '100%',
                       mt: '8px',
-                      border: `1px solid ${colors.white20}`,
+                      border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                       transition: '.4s',
                       ':hover': {
-                        border: `1px solid ${colors.white_4}`
+                        border: `1px solid ${isLight ? colors.black : colors.white}`
                       }
                     }}>
                     <Input
@@ -262,7 +264,7 @@ export default function LoanAuthorizeScreen() {
                       placeholder={'Refund Address'}
                       disableUnderline
                       sx={{
-                        color: colors.white,
+                        color: isLight ? colors.black : colors.white,
                         fontSize: '12px',
                         textAlign: 'left',
                         bgcolor: 'transparent',
@@ -293,7 +295,7 @@ export default function LoanAuthorizeScreen() {
                         ':hover': {
                           svg: {
                             path: {
-                              stroke: colors.white
+                              stroke: isLight ? colors.black : colors.white
                             }
                           }
                         }

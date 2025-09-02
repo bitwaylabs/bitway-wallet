@@ -8,6 +8,7 @@ import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { Loan, LoanStatus } from '@/ui/services/lending/types';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate } from '@/ui/utils';
 import { formatTimeWithUTC } from '@/ui/utils/formatter';
@@ -18,20 +19,67 @@ import { useNavigate } from '../MainRoute';
 export const loanStatusStyle: Record<
   LoanStatus,
   {
-    bgColor: string;
-    color: string;
+    lightBgColor: string;
+    lightColor: string;
+    darkBgColor: string;
+    darkColor: string;
   }
 > = {
-  Unspecified: { bgColor: '', color: '' },
-  Requested: { bgColor: colors.card_bgColor, color: colors.grey62 },
-  Cancelled: { bgColor: colors.card_bgColor, color: colors.grey64 },
-  Authorized: { bgColor: colors.card_bgColor, color: colors.grey62 },
-  Rejected: { bgColor: colors.card_bgColor, color: colors.grey64 },
-  Open: { bgColor: colors.green10, color: colors.green },
-  Repaid: { bgColor: colors.green10, color: colors.green },
-  Defaulted: { bgColor: colors.blue3, color: colors.main },
-  Liquidated: { bgColor: colors.red11, color: colors.red },
-  Closed: { bgColor: colors.card_bgColor, color: colors.grey64 }
+  Unspecified: { lightBgColor: '', lightColor: '', darkBgColor: '', darkColor: '' },
+  Requested: {
+    darkBgColor: colors.card_bgColor,
+    darkColor: colors.grey62,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.grey62
+  },
+  Cancelled: {
+    darkBgColor: colors.card_bgColor,
+    darkColor: colors.grey64,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.grey64
+  },
+  Authorized: {
+    darkBgColor: colors.card_bgColor,
+    darkColor: colors.grey62,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.grey62
+  },
+  Rejected: {
+    darkBgColor: colors.card_bgColor,
+    darkColor: colors.grey64,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.grey64
+  },
+  Open: {
+    darkBgColor: colors.green10,
+    darkColor: colors.green,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.green
+  },
+  Repaid: {
+    darkBgColor: colors.green10,
+    darkColor: colors.green,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.green
+  },
+  Defaulted: {
+    darkBgColor: colors.blue3,
+    darkColor: colors.main,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.main
+  },
+  Liquidated: {
+    darkBgColor: colors.red11,
+    darkColor: colors.red,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.red
+  },
+  Closed: {
+    darkBgColor: colors.card_bgColor,
+    darkColor: colors.grey64,
+    lightBgColor: colors.light_bg,
+    lightColor: colors.grey64
+  }
 };
 
 export default function MyLoansScreen() {
@@ -41,6 +89,7 @@ export default function MyLoansScreen() {
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const [isHoverId, setIsHoverId] = useState('');
   const navigate = useNavigate();
+  const isLight = useIsLight();
   return (
     <Layout>
       <Header
@@ -75,14 +124,11 @@ export default function MyLoansScreen() {
                   onClick={() => {
                     navigate('LoanDetailScreen', { loan_id: item.vault_address });
                   }}
+                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   sx={{
                     padding: '16px 16px 0',
                     borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: '.4s',
-                    ':hover': {
-                      bgcolor: colors.black_dark
-                    }
+                    cursor: 'pointer'
                   }}>
                   <Row full justifyBetween itemsCenter>
                     <Row itemsCenter gap="md">
@@ -91,7 +137,7 @@ export default function MyLoansScreen() {
                         style={{
                           fontSize: '14px',
                           fontWeight: 600,
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }}>
                         {borrowTokenAmount}
                       </Text>
@@ -108,13 +154,21 @@ export default function MyLoansScreen() {
                           padding: '4px 8px',
                           borderRadius: '4px',
                           fontSize: '12px',
-                          color: loanStatusStyle[item.status].color,
-                          bgcolor: loanStatusStyle[item.status].bgColor
+                          color: isLight
+                            ? loanStatusStyle[item.status].lightColor
+                            : loanStatusStyle[item.status].darkColor,
+                          bgcolor: isLight
+                            ? loanStatusStyle[item.status].lightBgColor
+                            : loanStatusStyle[item.status].darkBgColor
                         }}>
                         {item.status}
                       </Box>
                     </Row>
-                    <Icon icon="arrow-right" color={isHoverId === item.vault_address ? 'main' : 'white'} size={16} />
+                    <Icon
+                      icon="arrow-right"
+                      color={isHoverId === item.vault_address ? 'main' : isLight ? 'black' : 'white'}
+                      size={16}
+                    />
                   </Row>
                   <Row full justifyBetween itemsCenter>
                     <Text
@@ -129,7 +183,7 @@ export default function MyLoansScreen() {
                         style={{
                           fontSize: '12px',
                           fontWeight: 500,
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }}>
                         {+collateralAmount > 0 ? collateralAmount : '-'}
                       </Text>
@@ -166,7 +220,7 @@ export default function MyLoansScreen() {
                       style={{
                         fontSize: '12px',
                         fontWeight: 500,
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {getTruncate(
                         formatUnitAmount(item.interest, borrowToken?.asset.exponent || 6),
@@ -186,17 +240,11 @@ export default function MyLoansScreen() {
                       style={{
                         fontSize: '12px',
                         fontWeight: 500,
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {formatTimeWithUTC(+item.maturity_time * 1000)}
                     </Text>
                   </Row>
-                  <Box
-                    sx={{
-                      height: '1px',
-                      backgroundColor: colors.black_dark
-                    }}
-                  />
                 </Stack>
               );
             })}

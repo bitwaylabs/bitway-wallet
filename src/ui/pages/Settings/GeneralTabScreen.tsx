@@ -162,14 +162,14 @@ export default function GeneralTabScreen() {
       <Content justifyBetween>
         <Column>
           <div>
-            {toRenderSettings.map((item) => {
+            {toRenderSettings.map((item, index) => {
               if (!item.label) {
                 return null;
               }
               return (
                 <div
                   className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
-                  key={item.action}
+                  key={item.action + index}
                   onClick={(e) => {
                     if (item.action == 'addressType') {
                       if (isCustomHdPath) {

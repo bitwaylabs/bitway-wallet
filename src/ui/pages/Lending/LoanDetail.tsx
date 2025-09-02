@@ -24,7 +24,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { useUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate } from '@/ui/utils';
@@ -40,6 +40,7 @@ export default function LoanDetailScreen() {
   const networkType = useNetworkType();
   const currentAccount = useCurrentAccount();
   const { state } = useLocation();
+  const isLight = useIsLight();
   const { loan_id, from } = state as { loan_id: string; from?: string };
 
   const { sideChain, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, SIDE_STATION_URL } = useEnvironment();
@@ -140,12 +141,10 @@ export default function LoanDetailScreen() {
 
   const receipent = useMemo(() => {
     try {
-      console.log(dlcMetaData);
       if (dlcMetaData?.dlc_meta?.repayment_cet.tx) {
         const res = Psbt.fromBase64(dlcMetaData?.dlc_meta?.repayment_cet.tx, {
           network: networkType === NetworkType.MAINNET ? bitcoin : testnet
         });
-        console.log(res);
         return res.txOutputs[0].address;
       }
     } catch (err) {
@@ -168,7 +167,7 @@ export default function LoanDetailScreen() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {collateralAmount}
           </Text>
@@ -191,7 +190,7 @@ export default function LoanDetailScreen() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -220,7 +219,7 @@ export default function LoanDetailScreen() {
                       p: '1px 6px',
                       borderRadius: '4px',
                       backgroundColor: colors.white1,
-                      color: colors.white
+                      color: isLight ? colors.black : colors.white
                     }}>
                     {item.confirms > 0 ? `${item.confirms} Confirmed` : 'Unconfirmed'}
                   </Box>
@@ -231,7 +230,7 @@ export default function LoanDetailScreen() {
                   sx={{
                     fontSize: '12px',
                     fontWeight: 500,
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     cursor: 'pointer',
                     ':hover': {
                       color: colors.main
@@ -252,26 +251,26 @@ export default function LoanDetailScreen() {
 
     {
       label: 'Recipient Upon Repayment',
-      value: receipent ? (
+      value: (
         <>
           <Typography
             sx={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white,
+              color: isLight ? colors.black : colors.white,
               cursor: 'pointer',
               ':hover': {
                 color: colors.main
               }
             }}
             onClick={() => {
-              window.open(`${SIDE_BTC_EXPLORER}/address/${receipent}`);
+              if (receipent) {
+                window.open(`${SIDE_BTC_EXPLORER}/address/${receipent}`);
+              }
             }}>
-            {formatAddress(receipent, 6)}
+            {receipent ? formatAddress(receipent, 6) : '-'}
           </Typography>
         </>
-      ) : (
-        '-'
       ),
       tips: 'Recipient address to receive the locked collateral after loan repayment.'
     },
@@ -283,7 +282,7 @@ export default function LoanDetailScreen() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -305,7 +304,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {formatTimeWithUTC(+loan.final_timeout * 1000)}
         </Text>
@@ -323,7 +322,7 @@ export default function LoanDetailScreen() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {borrowTokenAmount}
           </Text>
@@ -346,7 +345,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {formatTimeWithUTC(+loan.maturity_time * 1000)}
         </Text>
@@ -360,7 +359,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {getTruncate(
             formatUnitAmount(
@@ -380,7 +379,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {getTruncate(
             formatUnitAmount(loan.interest, borrowToken?.asset.exponent || 6),
@@ -397,7 +396,7 @@ export default function LoanDetailScreen() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -420,7 +419,7 @@ export default function LoanDetailScreen() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -499,7 +498,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {!liquidation?.liquidation.liquidated_collateral_amount
             ? '-'
@@ -518,7 +517,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {!liquidation?.liquidation.liquidated_collateral_amount
             ? '-'
@@ -537,7 +536,7 @@ export default function LoanDetailScreen() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {liquidation?.liquidation.id || '-'}
         </Text>
@@ -576,7 +575,7 @@ export default function LoanDetailScreen() {
             sx={{
               width: '2px',
               height: '20px',
-              background: colors.white1
+              background: isLight ? colors.light_border : colors.dark_border
             }}
           />
 
@@ -592,7 +591,7 @@ export default function LoanDetailScreen() {
             sx={{
               width: '2px',
               height: '20px',
-              background: colors.white1
+              background: isLight ? colors.light_border : colors.dark_border
             }}
           />
 
@@ -680,7 +679,7 @@ export default function LoanDetailScreen() {
               alignItems="center"
               gap="4px"
               sx={{
-                bgcolor: colors.card_bgColor,
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                 borderRadius: '100px',
                 padding: '4px 10px',
                 p: {}
@@ -726,7 +725,7 @@ export default function LoanDetailScreen() {
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               Collateral
             </Text>
@@ -778,7 +777,7 @@ export default function LoanDetailScreen() {
                       cursor: 'pointer',
                       transition: '.4s',
                       ':hover': {
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }
                     }}>
                     {item.label}
@@ -798,7 +797,7 @@ export default function LoanDetailScreen() {
           <Box
             sx={{
               height: '1px',
-              backgroundColor: colors.black_dark,
+              backgroundColor: isLight ? colors.light_border : colors.dark_border,
               my: '16px'
             }}
           />
@@ -807,7 +806,7 @@ export default function LoanDetailScreen() {
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               Loan
             </Text>
@@ -832,7 +831,7 @@ export default function LoanDetailScreen() {
                       cursor: 'pointer',
                       transition: '.4s',
                       ':hover': {
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }
                     }}>
                     {item.label}
@@ -852,7 +851,7 @@ export default function LoanDetailScreen() {
           <Box
             sx={{
               height: '1px',
-              backgroundColor: colors.black_dark,
+              backgroundColor: isLight ? colors.light_border : colors.dark_border,
               my: '16px'
             }}
           />
@@ -861,7 +860,7 @@ export default function LoanDetailScreen() {
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               Liquidation
             </Text>
@@ -879,7 +878,7 @@ export default function LoanDetailScreen() {
                       cursor: 'pointer',
                       transition: '.4s',
                       ':hover': {
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }
                     }}>
                     {item.label}
@@ -899,7 +898,7 @@ export default function LoanDetailScreen() {
           <Box
             sx={{
               height: '1px',
-              backgroundColor: colors.black_dark,
+              backgroundColor: isLight ? colors.light_border : colors.dark_border,
               my: '16px'
             }}
           />
@@ -908,7 +907,7 @@ export default function LoanDetailScreen() {
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               Oracle
             </Text>
@@ -926,7 +925,7 @@ export default function LoanDetailScreen() {
                       cursor: 'pointer',
                       transition: '.4s',
                       ':hover': {
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }
                     }}>
                     {item.label}
@@ -946,7 +945,7 @@ export default function LoanDetailScreen() {
           <Box
             sx={{
               height: '1px',
-              backgroundColor: colors.black_dark,
+              backgroundColor: isLight ? colors.light_border : colors.dark_border,
               my: '16px'
             }}
           />

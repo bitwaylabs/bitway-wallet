@@ -12,7 +12,7 @@ import { useGetDepositInfo, useGetLoanById } from '@/ui/hooks/lending';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useEnvironment } from '@/ui/state/environment/hooks';
-import { useBTCUnit } from '@/ui/state/settings/hooks';
+import { useBTCUnit, useIsLight } from '@/ui/state/settings/hooks';
 import {
   useBitcoinTx,
   useFetchUtxosCallback,
@@ -35,6 +35,7 @@ interface LoanDepositLocationState {
 export default function LoanDepositScreen() {
   const { SIDE_BTC_EXPLORER } = useEnvironment();
   const setUiState = useUpdateUiTxCreateScreen();
+  const isLight = useIsLight();
   const { borrowAmount, collateralAmount, loanId, from } = useLocationState<LoanDepositLocationState>();
 
   const safeBalance = useSafeBalance();
@@ -156,13 +157,13 @@ export default function LoanDepositScreen() {
         </Row>
 
         <Row
-          bg="black_dark2"
           fullX
           style={{
             flexShrink: 0,
             position: 'relative',
             borderRadius: '10px',
-            height: '6px'
+            height: '6px',
+            backgroundColor: isLight ? colors.light_bg : colors.dark_bg
           }}>
           <Row
             bg="main"
@@ -196,7 +197,7 @@ export default function LoanDepositScreen() {
               gap="8px"
               sx={{
                 height: '50px',
-                bgcolor: colors.card_bgColor
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg
               }}>
               <Stack direction="row" alignItems="center" gap="4px">
                 <ImageIcon
@@ -209,7 +210,8 @@ export default function LoanDepositScreen() {
                 <Typography
                   sx={{
                     fontSize: '24px',
-                    fontWeight: 600
+                    fontWeight: 600,
+                    color: isLight ? colors.black : colors.white
                   }}>
                   {+satoshisToAmount(+collateralAmount)}
                 </Typography>
@@ -221,6 +223,7 @@ export default function LoanDepositScreen() {
                 style={{
                   cursor: 'pointer'
                 }}
+                defaultColor={isLight ? 'black' : 'white'}
               />
             </Stack>
             <Stack
@@ -228,7 +231,7 @@ export default function LoanDepositScreen() {
               gap="12px"
               sx={{
                 p: '12px 16px',
-                bgcolor: colors.black
+                bgcolor: isLight ? colors.white : colors.black
               }}>
               <Box
                 sx={{
@@ -240,8 +243,8 @@ export default function LoanDepositScreen() {
                   includeMargin
                   width={130}
                   height={130}
-                  bgColor={colors.white}
-                  fgColor={colors.black}
+                  bgColor={isLight ? colors.white : colors.black}
+                  fgColor={isLight ? colors.black : colors.white}
                 />
               </Box>
               <Stack
@@ -249,7 +252,7 @@ export default function LoanDepositScreen() {
                   cursor: 'pointer',
                   ':hover': {
                     p: {
-                      color: colors.main,
+                      color: isLight ? colors.main : colors.white,
                       textDecorationLine: 'underline'
                     }
                   }
@@ -260,7 +263,8 @@ export default function LoanDepositScreen() {
                 <Typography
                   sx={{
                     fontSize: '12px',
-                    fontWeight: 500
+                    fontWeight: 500,
+                    color: isLight ? colors.black : colors.white
                   }}>
                   {toInfo.address.slice(0, 40)}
                 </Typography>
@@ -268,11 +272,12 @@ export default function LoanDepositScreen() {
                   <Typography
                     sx={{
                       fontSize: '12px',
-                      fontWeight: 500
+                      fontWeight: 500,
+                      color: isLight ? colors.black : colors.white
                     }}>
                     {toInfo.address.slice(40)}
                   </Typography>
-                  <CopyIcon text={toInfo.address} onlyIcon size={12} />
+                  <CopyIcon text={toInfo.address} onlyIcon size={12} defaultColor={isLight ? 'black' : 'white'} />
                 </Stack>
               </Stack>
             </Stack>
@@ -284,7 +289,7 @@ export default function LoanDepositScreen() {
               sx={{
                 minHeight: '42px',
                 p: '12px 16px',
-                bgcolor: colors.card_bgColor
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg
               }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -373,10 +378,10 @@ export default function LoanDepositScreen() {
               sx={{
                 cursor: 'pointer',
                 p: {
-                  color: colors.white
+                  color: isLight ? colors.black : colors.white
                 },
                 path: {
-                  stroke: colors.white
+                  stroke: isLight ? colors.black : colors.white
                 },
                 ':hover': {
                   p: {
@@ -406,7 +411,8 @@ export default function LoanDepositScreen() {
                 sx={{
                   fontSize: '12px',
                   fontWeight: 500,
-                  transition: '.4s'
+                  transition: '.4s',
+                  color: isLight ? colors.black : colors.white
                 }}>
                 Check status
               </Typography>
@@ -430,7 +436,12 @@ export default function LoanDepositScreen() {
                 </g>
                 <defs>
                   <clipPath id="clip0_22981_11416">
-                    <rect width="13.7143" height="13.7143" fill="white" transform="translate(0.0703125 0.142578)" />
+                    <rect
+                      width="13.7143"
+                      height="13.7143"
+                      fill={isLight ? colors.white : colors.black}
+                      transform="translate(0.0703125 0.142578)"
+                    />
                   </clipPath>
                 </defs>
               </svg>

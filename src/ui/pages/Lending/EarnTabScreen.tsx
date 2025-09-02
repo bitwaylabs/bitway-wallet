@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import 'swiper/css';
 
-import { NetworkType } from '@/shared/types';
 import { Column, Content, Footer, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import SearchInput from '@/ui/components/Input/Search';
 import { NavTabBar } from '@/ui/components/NavTabBar';
@@ -9,7 +8,7 @@ import { useGetPoolsData } from '@/ui/hooks/lending';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
 import { useChangeEnvironmentCallback, useEnvironment } from '@/ui/state/environment/hooks';
-import { useChangeNetworkTypeCallback, useNetworkType } from '@/ui/state/settings/hooks';
+import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Stack, Typography } from '@mui/material';
 
@@ -24,56 +23,13 @@ export default function EarnTabScreen() {
   const changeEnvironment = useChangeEnvironmentCallback();
   const changeNetworkType = useChangeNetworkTypeCallback();
   const reloadAccounts = useReloadAccounts();
+  const isLight = useIsLight();
 
   const filterData = useMemo(() => {
     return data.filter((item) => {
       return item.token.asset.symbol.toLowerCase().includes(value.toLowerCase());
     });
   }, [data, value]);
-
-  if (networkType === NetworkType.MAINNET) {
-    return (
-      <Layout>
-        <MainHeader title={''} />
-        <Content mt="lg" classname="fadeIn-page">
-          <Column
-            gap="md"
-            px="lg"
-            full
-            itemsCenter
-            justifyCenter
-            py="md"
-            style={{
-              borderRadius: '10px'
-            }}>
-            <Text
-              text="COMING SOON"
-              color="white"
-              style={{
-                fontWeight: 700
-              }}
-              size="xl"></Text>
-            <Text
-              text="SWITCH TO TESTNET"
-              color="white"
-              style={{
-                fontWeight: 700
-              }}
-              onClick={() => {
-                changeEnvironment(NetworkType.TESTNET);
-                changeNetworkType(NetworkType.TESTNET);
-                reloadAccounts();
-                navigate('MainScreen');
-              }}
-              size="xl"></Text>
-          </Column>
-        </Content>
-        <Footer px="zero" py="zero">
-          <NavTabBar tab="earn" />
-        </Footer>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
@@ -88,7 +44,7 @@ export default function EarnTabScreen() {
               flexGrow: 0
             }}>
             <Text
-              color="white"
+              color={isLight ? 'black' : 'white'}
               size="lg"
               style={{
                 fontWeight: 600
@@ -114,12 +70,12 @@ export default function EarnTabScreen() {
                 },
                 ':hover': {
                   p: {
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   },
                   div: {
                     div: {
-                      color: `${colors.white} !important`,
-                      bgcolor: `${colors.white} !important`
+                      color: `${isLight ? colors.black : colors.white} !important`,
+                      bgcolor: `${isLight ? colors.black : colors.white} !important`
                     }
                   }
                 }
@@ -142,7 +98,7 @@ export default function EarnTabScreen() {
               width: '100%',
               flexShrink: 0,
               borderRadius: '10px',
-              backgroundColor: colors.card_bgColor,
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               position: 'relative'
             }}>
             <svg
@@ -284,7 +240,7 @@ export default function EarnTabScreen() {
             style={{
               flexGrow: 0
             }}>
-            <Text color="white" size="sm">
+            <Text color={isLight ? 'black' : 'white'} size="sm">
               Assets
             </Text>
 
@@ -298,16 +254,11 @@ export default function EarnTabScreen() {
               alignItems="center"
               gap="8px"
               key={item.baseData.id}
+              className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
               sx={{
                 px: '20px',
                 py: '12px',
-                borderRadius: '10px',
-                background: colors.card_bgColor,
-                cursor: 'pointer',
-                transition: '.4s',
-                ':hover': {
-                  background: colors.grey66
-                }
+                cursor: 'pointer'
               }}
               onClick={() => {
                 navigate('EarnSupplyScreen', {
@@ -324,7 +275,7 @@ export default function EarnTabScreen() {
                 }}
               />
               <Text
-                color="white"
+                color={isLight ? 'black' : 'white'}
                 size="md"
                 style={{
                   fontWeight: 600

@@ -6,9 +6,10 @@ import { Empty } from '@/ui/components/Empty';
 import { PoolDataItem, useGetPoolExchangeRate, useGetPoolsData } from '@/ui/hooks/lending';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
 
@@ -67,6 +68,7 @@ export default function MyEarnsScreen() {
 function PoolItemFC({ item }: { item: PoolDataItem }) {
   const currentAccount = useCurrentAccount();
   const navigate = useNavigate();
+  const isLight = useIsLight();
   const [isHover, setIsHover] = useState(false);
   const { balanceList } = useGetBitwayBalanceList(currentAccount.address);
   const stokenBalance = balanceList.find((o) => o.denom === item.baseData.total_ytokens.denom);
@@ -99,14 +101,10 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
       onClick={() => {
         navigate('EarnRedeemScreen', { poolData: item });
       }}
+      className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
       sx={{
         padding: '16px 16px 0',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: '.4s',
-        ':hover': {
-          bgcolor: colors.black_dark
-        }
+        cursor: 'pointer'
       }}>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter gap="md">
@@ -115,12 +113,12 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
             style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {item.token.asset.symbol}
           </Text>
         </Row>
-        <Icon icon="arrow-right" color={isHover ? 'main' : 'white'} size={16} />
+        <Icon icon="arrow-right" color={isHover ? 'main' : isLight ? 'black' : 'white'} size={16} />
       </Row>
       <Row full justifyBetween itemsCenter>
         <Text
@@ -134,7 +132,7 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {getTruncate(depositedAmount, item.token.asset.precision)}
         </Text>
@@ -151,17 +149,11 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {getTruncate(stokenBalance?.formatAmount || '0', item.token?.asset.precision || 6)}
         </Text>
       </Row>
-      <Box
-        sx={{
-          height: '1px',
-          backgroundColor: colors.black_dark
-        }}
-      />
     </Stack>
   );
 }

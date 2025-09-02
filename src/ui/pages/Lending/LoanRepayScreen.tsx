@@ -10,6 +10,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, getTruncate } from '@/ui/utils';
 import { formatTimeWithUTC } from '@/ui/utils/formatter';
@@ -19,6 +20,7 @@ export default function RepayLoanScreen() {
   const currentAccount = useCurrentAccount();
   const { state } = useLocation();
   const { loan_id } = state as { loan_id: string };
+  const isLight = useIsLight();
 
   const { sideChain } = useEnvironment();
   const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
@@ -59,7 +61,7 @@ export default function RepayLoanScreen() {
             sx={{
               fontSize: '14px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {getTruncate(
               formatUnitAmount(loan.borrow_amount.amount, borrowToken?.asset.exponent || 6),
@@ -85,7 +87,7 @@ export default function RepayLoanScreen() {
             sx={{
               fontSize: '14px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {getTruncate(
               formatUnitAmount(realTimeInterest?.interest.amount || '0', borrowToken?.asset.exponent || 6),
@@ -112,7 +114,7 @@ export default function RepayLoanScreen() {
             sx={{
               fontSize: '14px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {getTruncate(
               formatUnitAmount(loan?.collateral_amount || '0', collateralToken?.asset.exponent || 6),
@@ -178,7 +180,7 @@ export default function RepayLoanScreen() {
                   sx={{
                     mt: '32px',
                     fontSize: '12px',
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     maxWidth: '338px',
                     textAlign: 'center',
                     fontWeight: 400
@@ -204,7 +206,7 @@ export default function RepayLoanScreen() {
                       right: '0',
                       top: '0',
                       bottom: '0',
-                      bgcolor: colors.black
+                      bgcolor: isLight ? colors.white : colors.black
                     }}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -231,7 +233,7 @@ export default function RepayLoanScreen() {
                           x2="-6"
                           y2="1"
                           gradientUnits="userSpaceOnUse">
-                          <stop stopColor="#94E360" />
+                          <stop stopColor={colors.main} />
                           <stop offset="1" />
                         </linearGradient>
                       </defs>
@@ -265,7 +267,7 @@ export default function RepayLoanScreen() {
                     fontSize: '20px',
                     fontWeight: 600,
                     lineHeight: '23px',
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }}>
                   {getTruncate(
                     formatUnitAmount(
@@ -296,7 +298,7 @@ export default function RepayLoanScreen() {
                           cursor: 'pointer',
                           transition: '.4s',
                           ':hover': {
-                            color: colors.white
+                            color: isLight ? colors.black : colors.white
                           }
                         }}>
                         {item.label}
@@ -309,7 +311,7 @@ export default function RepayLoanScreen() {
                       gap="8px"
                       sx={{
                         fontSize: '14px',
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {item.value}
                     </Stack>
@@ -334,7 +336,7 @@ export default function RepayLoanScreen() {
               sx={{
                 p: '16px',
                 width: '100%',
-                bgcolor: colors.card_bgColor
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg
               }}>
               <Typography
                 sx={{

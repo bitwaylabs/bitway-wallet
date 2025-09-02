@@ -6,9 +6,9 @@ import { Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import SearchInput from '@/ui/components/Input/Search';
 import { Validator } from '@/ui/services/staking/types';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useStakeState } from '@/ui/state/stake/hooks';
 import { stakeActions } from '@/ui/state/stake/reducer';
-import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
 import { Stack } from '@mui/material';
 
@@ -18,6 +18,7 @@ export default function ValidatorSelectScreen() {
   const dispatch = useAppDispatch();
   const [keywords, setKeywords] = useState('');
   const { state } = useLocation();
+  const isLight = useIsLight();
   const { type, selectValidator } = state as { type: 'validator' | 'validatorDst'; selectValidator?: Validator };
   const { validatorList } = useStakeState();
 
@@ -37,7 +38,6 @@ export default function ValidatorSelectScreen() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
           padding: 0,
           marginTop: 16
         }}>
@@ -50,6 +50,7 @@ export default function ValidatorSelectScreen() {
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
+                className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                 onClick={() => {
                   if (type === 'validator') {
                     dispatch(stakeActions.updateStakeState({ validator: item, amount: '' }));
@@ -60,13 +61,7 @@ export default function ValidatorSelectScreen() {
                 }}
                 sx={{
                   padding: '10px 16px',
-                  cursor: 'pointer',
-                  backgroundColor: colors.card_bgColor,
-                  borderRadius: '8px',
-                  transition: '.4s',
-                  ':hover': {
-                    backgroundColor: colors.black_dark
-                  }
+                  cursor: 'pointer'
                 }}>
                 <Row>
                   <ValidatorLogo
@@ -82,7 +77,7 @@ export default function ValidatorSelectScreen() {
                     style={{
                       gap: '0px'
                     }}>
-                    <Text preset="regular" text={item.description?.moniker}></Text>
+                    <Text preset="regular" text={item.description?.moniker} color={isLight ? 'black' : 'white'}></Text>
                     <Text
                       preset="sub"
                       text={`${getTruncate(

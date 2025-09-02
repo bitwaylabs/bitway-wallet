@@ -6,6 +6,7 @@ import { Column, Content, Header, Image, Layout, LightTooltip } from '@/ui/compo
 import { PoolDataItem } from '@/ui/hooks/lending';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { LendingActions } from '@/ui/state/lending/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate, useLocationState } from '@/ui/utils';
 import { Stack, Typography } from '@mui/material';
@@ -16,6 +17,7 @@ interface LendingSelectTokenLocation {
 
 export default function LendingSelectTokenScreen() {
   const { poolsData } = useLocationState<LendingSelectTokenLocation>();
+  const isLight = useIsLight();
 
   return (
     <Layout>
@@ -27,7 +29,6 @@ export default function LendingSelectTokenScreen() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
           padding: 0,
           marginTop: 16,
           position: 'relative'
@@ -49,7 +50,7 @@ export default function LendingSelectTokenScreen() {
 function PoolItemFC({ item }: { item: PoolDataItem }) {
   const dispatch = useAppDispatch();
   const onClose = () => window.history.go(-1);
-
+  const isLight = useIsLight();
   const data = [
     {
       label: 'Available Liquidity',
@@ -81,15 +82,10 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
         dispatch(LendingActions.update({ poolTokenDenom: item.token.asset.denom }));
         onClose();
       }}
+      className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
       sx={{
         padding: '16px',
-        cursor: 'pointer',
-        backgroundColor: colors.card_bgColor,
-        borderRadius: '12px',
-        transition: '.4s',
-        ':hover': {
-          backgroundColor: colors.black_dark
-        }
+        cursor: 'pointer'
       }}>
       <Stack direction="row" alignItems="center" gap="8px">
         <Image
@@ -101,7 +97,14 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
             borderRadius: '50%'
           }}
         />
-        <Typography>{item.token.asset.symbol}</Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: 400,
+            color: isLight ? colors.black : colors.white
+          }}>
+          {item.token.asset.symbol}
+        </Typography>
       </Stack>
       {data.map((item, index) => (
         <Fragment key={index}>
@@ -117,7 +120,7 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
                   cursor: 'pointer',
                   transition: '.4s',
                   ':hover': {
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }
                 }}>
                 {item.label}
@@ -127,7 +130,7 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
               direction="row"
               sx={{
                 fontSize: '12px',
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               {item.value}
             </Stack>

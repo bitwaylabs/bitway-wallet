@@ -51,7 +51,7 @@ export default function UnlockScreen() {
   };
 
   useEffect(() => {
-    if (password) {
+    if (password.length >= 8) {
       setDisabled(false);
     } else {
       setDisabled(true);

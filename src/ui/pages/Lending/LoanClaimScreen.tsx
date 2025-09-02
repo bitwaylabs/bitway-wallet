@@ -8,6 +8,7 @@ import useGetBitcoinBalanceList from '@/ui/hooks/useGetBitcoinBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useUiTxCreateScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount } from '@/ui/utils';
@@ -33,6 +34,7 @@ export default function LoanClaimScreen() {
   };
 
   const { sideChain } = useEnvironment();
+  const isLight = useIsLight();
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
 
@@ -115,7 +117,7 @@ export default function LoanClaimScreen() {
                   sx={{
                     mt: '32px',
                     fontSize: '12px',
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     maxWidth: '338px',
                     textAlign: 'center',
                     fontWeight: 400
@@ -141,7 +143,7 @@ export default function LoanClaimScreen() {
                       right: '0',
                       top: '0',
                       bottom: '0',
-                      bgcolor: colors.black
+                      bgcolor: isLight ? colors.white : colors.black
                     }}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +170,7 @@ export default function LoanClaimScreen() {
                           x2="-6"
                           y2="1"
                           gradientUnits="userSpaceOnUse">
-                          <stop stopColor="#94E360" />
+                          <stop stopColor={colors.main} />
                           <stop offset="1" />
                         </linearGradient>
                       </defs>
@@ -194,14 +196,15 @@ export default function LoanClaimScreen() {
                     fontSize: '12px',
                     fontWeight: 600,
                     color: colors.grey12
-                  }}></Typography>
-                Your Total Deposits
+                  }}>
+                  Your Total Deposits
+                </Typography>
                 <Typography
                   sx={{
                     fontSize: '20px',
                     fontWeight: 600,
                     lineHeight: '23px',
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }}>
                   {formatUnitAmount(totalDepositUnitAmount, collateralToken?.asset.exponent || 8)}
                 </Typography>
@@ -212,7 +215,7 @@ export default function LoanClaimScreen() {
                   mt: '16px',
                   fontSize: '12px',
                   color: colors.grey12,
-                  bgcolor: colors.card_bgColor,
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                   borderRadius: '10px'
                 }}>
                 If you fail to complete Step 2 or choose to cancel before proceeding, you can cancel and reclaim your
@@ -223,7 +226,7 @@ export default function LoanClaimScreen() {
                 gap="8px"
                 sx={{
                   p: '16px',
-                  bgcolor: colors.card_bgColor,
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                   borderRadius: '10px'
                 }}>
                 {claimData.map((item, index) => (
@@ -238,7 +241,7 @@ export default function LoanClaimScreen() {
                           cursor: 'pointer',
                           transition: '.4s',
                           ':hover': {
-                            color: colors.white
+                            color: isLight ? colors.black : colors.white
                           }
                         }}>
                         {item.label}
@@ -249,7 +252,7 @@ export default function LoanClaimScreen() {
                       alignItems="center"
                       sx={{
                         fontSize: '14px',
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {item.value}
                     </Stack>

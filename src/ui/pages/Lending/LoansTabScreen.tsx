@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 
-import { NetworkType } from '@/shared/types';
 import { Column, Content, Footer, Image, Layout, Row, Text } from '@/ui/components';
 import { Button } from '@/ui/components/Button';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
 import { useChangeEnvironmentCallback } from '@/ui/state/environment/hooks';
-import { useChangeNetworkTypeCallback, useNetworkType } from '@/ui/state/settings/hooks';
+import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 import { Checkbox, Stack, Typography } from '@mui/material';
@@ -23,6 +22,7 @@ export default function LoansTabScreen() {
   const changeEnvironment = useChangeEnvironmentCallback();
   const changeNetworkType = useChangeNetworkTypeCallback();
   const reloadAccounts = useReloadAccounts();
+  const isLight = useIsLight();
 
   useEffect(() => {
     wallet.getShowLoanNotice().then((show) => {
@@ -44,7 +44,7 @@ export default function LoansTabScreen() {
               fontWeight: 700,
               whiteSpace: 'nowrap',
               mt: '12px',
-              color: colors.white
+              color: isLight ? 'black' : 'white'
             }}
             className="animate__animated animate__fadeInUp animate__faster">
             Get a loan with your
@@ -63,7 +63,8 @@ export default function LoansTabScreen() {
               style={{
                 fontSize: '26px',
                 fontWeight: 700,
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                color: isLight ? 'black' : 'white'
               }}>
               native Bitcoin
             </Text>
@@ -105,7 +106,7 @@ export default function LoansTabScreen() {
                     </clipPath>
                   </defs>
                 </svg>
-                <Text size="xs" color="white">
+                <Text size="xs" color={isLight ? 'black' : 'white'}>
                   {item}
                 </Text>
               </Stack>
@@ -118,89 +119,74 @@ export default function LoansTabScreen() {
             sx={{
               mt: '20px'
             }}>
-            {networkType === NetworkType.MAINNET ? (
-              <Button
-                full
-                preset="default"
-                text="Switch to testnet"
-                onClick={() => {
-                  changeEnvironment(NetworkType.TESTNET);
-                  changeNetworkType(NetworkType.TESTNET);
-                  reloadAccounts();
-                  navigate('MainScreen');
-                }}></Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  navigate('LendingTabScreen');
-                }}
-                full
-                preset="primary"
-                text="Borrow Now"></Button>
-            )}
+            <Button
+              onClick={() => {
+                navigate('LendingTabScreen');
+              }}
+              full
+              preset="primary"
+              text="Borrow Now"></Button>
           </Stack>
-          {networkType === NetworkType.TESTNET && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            gap="4px"
+            className="animate__animated animate__fadeInUp animate__faster animate__delay-1s">
             <Stack
               direction="row"
-              justifyContent="center"
-              alignItems="center"
               gap="4px"
-              className="animate__animated animate__fadeInUp animate__faster animate__delay-1s">
-              <Stack
-                direction="row"
-                gap="4px"
-                sx={{
+              sx={{
+                span: {
+                  color: colors.grey12
+                },
+                p: {
+                  color: colors.grey12
+                },
+                ':hover': {
                   span: {
-                    color: colors.grey12
+                    color: isLight ? colors.black : colors.white
                   },
                   p: {
-                    color: colors.grey12
-                  },
-                  ':hover': {
-                    span: {
-                      color: colors.white
-                    },
-                    p: {
-                      color: colors.white
-                    }
+                    color: isLight ? colors.black : colors.white
                   }
+                }
+              }}>
+              <Checkbox
+                checked={!showLoanNotice}
+                onChange={(e) => {
+                  setShowLoanNotice(!e.target.checked);
+                  wallet.setShowLoanNotice(!e.target.checked);
+                }}
+                sx={{
+                  width: '16px',
+                  height: '16px',
+                  color: isLight ? colors.black : colors.white,
+                  padding: '0px',
+                  transition: '.4s',
+                  '&.Mui-checked': {
+                    color: colors.main
+                  },
+                  svg: {
+                    width: '14px',
+                    height: '14px'
+                  }
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  transition: '.4s'
+                }}
+                onClick={() => {
+                  setShowLoanNotice(!showLoanNotice);
+                  wallet.setShowLoanNotice(!showLoanNotice);
                 }}>
-                <Checkbox
-                  checked={!showLoanNotice}
-                  onChange={(e) => {
-                    setShowLoanNotice(!e.target.checked);
-                    wallet.setShowLoanNotice(!e.target.checked);
-                  }}
-                  sx={{
-                    width: '16px',
-                    height: '16px',
-                    color: colors.white,
-                    padding: '0px',
-                    transition: '.4s',
-                    '&.Mui-checked': {
-                      color: colors.main
-                    },
-                    svg: {
-                      width: '14px',
-                      height: '14px'
-                    }
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: '12px',
-                    cursor: 'pointer',
-                    transition: '.4s'
-                  }}
-                  onClick={() => {
-                    setShowLoanNotice(!showLoanNotice);
-                    wallet.setShowLoanNotice(!showLoanNotice);
-                  }}>
-                  Don't show this again
-                </Typography>
-              </Stack>
+                Don't show this again
+              </Typography>
             </Stack>
-          )}
+          </Stack>
         </Column>
       </Content>
 

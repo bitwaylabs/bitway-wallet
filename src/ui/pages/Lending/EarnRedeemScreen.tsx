@@ -19,6 +19,7 @@ import { CoinInput } from '@/ui/components/CoinInput';
 import { PoolDataItem, useGetPoolExchangeRate, useWithdraw } from '@/ui/hooks/lending';
 import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate, useLocationState } from '@/ui/utils';
 import { toUnitAmount } from '@/ui/utils/formatter';
@@ -28,6 +29,7 @@ export default function EarnRedeemScreen() {
   const { poolData } = useLocationState<{
     poolData: PoolDataItem;
   }>();
+  const isLight = useIsLight();
 
   const currentAccount = useCurrentAccount();
 
@@ -86,7 +88,7 @@ export default function EarnRedeemScreen() {
         <Typography
           sx={{
             fontSize: '12px',
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {' '}
           {+exchangeRate}
@@ -100,7 +102,7 @@ export default function EarnRedeemScreen() {
           <Typography
             sx={{
               fontSize: '12px',
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {new BigNumber(withdrawAmount || '0').multipliedBy(exchangeRate).toFixed(6)}&nbsp;
             <small style={{ fontSize: '100%', color: colors.grey12, fontWeight: 500 }}>
@@ -137,7 +139,7 @@ export default function EarnRedeemScreen() {
               sx={{
                 mt: '32px',
                 fontSize: '12px',
-                color: colors.white,
+                color: isLight ? colors.black : colors.white,
                 maxWidth: '338px',
                 textAlign: 'center',
                 fontWeight: 400
@@ -172,7 +174,7 @@ export default function EarnRedeemScreen() {
             }}>
             <Column gap="lg" px="lg" py="md">
               <Row justifyBetween itemsCenter>
-                <Text text="Amount" size="xs" color="white"></Text>
+                <Text text="Amount" size="xs" color={isLight ? 'black' : 'white'}></Text>
                 <Row
                   style={{
                     flexShrink: 0
@@ -195,14 +197,14 @@ export default function EarnRedeemScreen() {
                 alignItems="center"
                 gap="8px"
                 sx={{
-                  bgcolor: colors.card_bgColor,
-                  border: `1px solid ${colors.white20}`,
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+                  border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                   borderRadius: '10px',
                   marginTop: '-8px',
                   p: '8px 10px',
                   transition: '.4s',
                   ':hover': {
-                    border: `1px solid ${colors.white_4}`
+                    border: `1px solid ${isLight ? colors.black : colors.white}`
                   }
                 }}>
                 <CoinInput
@@ -225,7 +227,7 @@ export default function EarnRedeemScreen() {
                     cursor: 'pointer',
                     transition: '.4s',
                     ':hover': {
-                      color: colors.white
+                      color: isLight ? colors.black : colors.white
                     }
                   }}
                   onClick={() => {
@@ -235,15 +237,20 @@ export default function EarnRedeemScreen() {
                 </Typography>
                 <Image src={stokenBalance?.asset.logo} height={28} width={28}></Image>
 
-                <Text text={stokenBalance?.asset.symbol} color="white" size="md"></Text>
+                <Text text={stokenBalance?.asset.symbol} color={isLight ? 'black' : 'white'} size="md"></Text>
               </Stack>
               <Box
                 sx={{
                   height: '1px',
-                  backgroundColor: colors.black_dark
+                  backgroundColor: isLight ? colors.light_border : colors.dark_border
                 }}
               />
-              <Column bg="black">
+              <Column
+                style={{
+                  backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
+                  padding: '12px',
+                  borderRadius: '8px'
+                }}>
                 {data.map((item) => (
                   <Stack direction="row" justifyContent="space-between" alignItems="center" key={item.label}>
                     <LightTooltip title={item.tip} placement="top" arrow>
@@ -256,7 +263,7 @@ export default function EarnRedeemScreen() {
                           cursor: 'pointer',
                           transition: '.4s',
                           ':hover': {
-                            color: colors.white
+                            color: isLight ? colors.black : colors.white
                           }
                         }}>
                         {item.label}
