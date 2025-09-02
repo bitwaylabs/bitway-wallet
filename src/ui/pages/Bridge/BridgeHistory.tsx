@@ -7,6 +7,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, showFromTime } from '@/ui/utils';
 import { formatTimeWithUTC } from '@/ui/utils/formatter';
@@ -20,6 +21,7 @@ export default function BridgeHistory() {
   const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const [isHoverId, setIsHoverId] = useState('');
   const navigate = useNavigate();
+  const isLight = useIsLight();
 
   const { data, isLoading: loading } = useQuery({
     queryKey: ['getBridgeActivities', { userAddress: currentAccount.address }],
@@ -54,6 +56,7 @@ export default function BridgeHistory() {
                 <Stack
                   key={item.id}
                   gap="8px"
+                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   onMouseOver={() => {
                     setIsHoverId(item.txhash || item.btcTxhash);
                   }}
@@ -65,12 +68,7 @@ export default function BridgeHistory() {
                   }}
                   sx={{
                     padding: '16px 16px 0',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: '.4s',
-                    ':hover': {
-                      bgcolor: colors.black_dark
-                    }
+                    cursor: 'pointer'
                   }}>
                   <Row full justifyBetween itemsCenter>
                     <Row itemsCenter gap="md">
@@ -85,7 +83,7 @@ export default function BridgeHistory() {
                         style={{
                           fontSize: '14px',
                           fontWeight: 600,
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }}>
                         {item.tokenSymbol}
                       </Text>
@@ -95,7 +93,7 @@ export default function BridgeHistory() {
                             backgroundColor: colors.white1,
                             p: '0 6px',
                             borderRadius: '4px',
-                            color: colors.white,
+                            color: isLight ? colors.black : colors.white,
                             fontSize: '10px'
                           }}>
                           IBC
@@ -104,7 +102,7 @@ export default function BridgeHistory() {
                     </Row>
                     <Icon
                       icon="arrow-right"
-                      color={isHoverId === (item.txhash || item.btcTxhash) ? 'main' : 'white'}
+                      color={isHoverId === (item.txhash || item.btcTxhash) ? 'main' : isLight ? 'black' : 'white'}
                       size={16}
                     />
                   </Row>
@@ -120,7 +118,7 @@ export default function BridgeHistory() {
                       style={{
                         fontSize: '12px',
                         fontWeight: 500,
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {formatUnitAmount(item.tokenAmount, item.tokenExponent)}
                     </Text>
@@ -138,7 +136,7 @@ export default function BridgeHistory() {
                         style={{
                           fontSize: '12px',
                           fontWeight: 500,
-                          color: colors.white
+                          color: isLight ? colors.black : colors.white
                         }}>
                         {item.status}
                       </Text>
@@ -152,7 +150,7 @@ export default function BridgeHistory() {
                           xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M8.5 2V3.66667M8.5 12.5V15.1667M4.33333 8.5H2M14.6667 8.5H13.6667M12.8047 12.8047L12.3333 12.3333M12.9428 4.11052L12 5.05333M3.78105 13.219L5.66667 11.3333M3.91912 3.97245L5.33333 5.38667"
-                            stroke={colors.white}
+                            stroke={isLight ? colors.black : colors.white}
                             strokeWidth="1.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -173,17 +171,11 @@ export default function BridgeHistory() {
                       style={{
                         fontSize: '12px',
                         fontWeight: 500,
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       {formatTimeWithUTC(item.time)} ({showFromTime(item.time)})
                     </Text>
                   </Row>
-                  <Box
-                    sx={{
-                      height: '1px',
-                      backgroundColor: colors.black_dark
-                    }}
-                  />
                 </Stack>
               );
             })}

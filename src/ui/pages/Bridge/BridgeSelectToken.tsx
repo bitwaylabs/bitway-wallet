@@ -14,7 +14,7 @@ import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
-import { useNetworkType } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Stack } from '@mui/material';
 
@@ -34,6 +34,7 @@ export default function BridgeSelectTokenScreen() {
   const allBridgeChains = useGetAllBridgeChains();
   const { sideChain } = useEnvironment();
   const { fromAsset, fromChain } = useBridgeState();
+  const isLight = useIsLight();
 
   let { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   let { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
@@ -145,7 +146,6 @@ export default function BridgeSelectTokenScreen() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
           padding: 0,
           marginTop: 16
         }}>
@@ -155,14 +155,14 @@ export default function BridgeSelectTokenScreen() {
             alignItems="center"
             sx={[
               {
-                border: `1px solid ${colors.white20}`,
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                 px: '10px',
                 borderRadius: '10px',
-                bgcolor: colors.card_bgColor,
+                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
                 position: 'relative',
                 gap: '8px',
                 ':hover': {
-                  border: `1px solid ${colors.white_4}`
+                  border: `1px solid ${isLight ? colors.black : colors.white}`
                 }
               }
             ]}>
@@ -176,10 +176,14 @@ export default function BridgeSelectTokenScreen() {
                   borderRadius: '8px',
                   flexShrink: '0',
                   padding: '4px 7px',
-                  bgcolor: colors.grey12
+                  bgcolor: isLight ? colors.white : colors.black
                 }}>
                 <ImageIcon url={selectedAsset.asset.logo} style={{ width: '14px', height: '14px' }} />
-                <Text preset="regular" size="xs" text={selectedAsset.asset.symbol} color="white"></Text>
+                <Text
+                  preset="regular"
+                  size="xs"
+                  text={selectedAsset.asset.symbol}
+                  color={isLight ? 'black' : 'white'}></Text>
               </Stack>
             )}
             <Input
@@ -194,7 +198,7 @@ export default function BridgeSelectTokenScreen() {
                 padding: '0',
                 fontSize: '12px',
                 fontWeight: 400,
-                color: colors.white,
+                color: isLight ? colors.black : colors.white,
                 backgroundColor: 'transparent'
               }}
               placeholder={selectedAsset ? 'Search network' : 'Search asset'}
@@ -213,7 +217,7 @@ export default function BridgeSelectTokenScreen() {
                 cursor: 'pointer',
                 display: searchValue ? 'block' : 'none'
               }}>
-              <Icon icon="clear" color={isHover ? 'white' : 'search_icon'} size={20}></Icon>
+              <Icon icon="clear" color={isHover ? (isLight ? 'black' : 'white') : 'search_icon'} size={20}></Icon>
             </div>
           </Stack>
           {selectedAsset ? (
@@ -227,6 +231,7 @@ export default function BridgeSelectTokenScreen() {
                     key={chain.name}
                     direction="row"
                     alignItems="center"
+                    className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                     onClick={() => {
                       if (type === 'from') {
                         const bitcoinChain = allBridgeChains.find((item) => item.isBitcoin)!;
@@ -276,13 +281,7 @@ export default function BridgeSelectTokenScreen() {
                     }}
                     sx={{
                       padding: '10px 16px',
-                      cursor: 'pointer',
-                      backgroundColor: colors.card_bgColor,
-                      borderRadius: '8px',
-                      transition: '.4s',
-                      ':hover': {
-                        backgroundColor: colors.black_dark
-                      }
+                      cursor: 'pointer'
                     }}>
                     <ImageIcon
                       url={chain.logo}
@@ -294,7 +293,7 @@ export default function BridgeSelectTokenScreen() {
                     />
                     <Text
                       size="sm"
-                      color="white"
+                      color={isLight ? 'black' : 'white'}
                       text={chain.name}
                       style={{
                         fontWeight: 600,
@@ -324,19 +323,14 @@ export default function BridgeSelectTokenScreen() {
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
+                    className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                     onClick={() => {
                       setSelectedAsset(asset);
                       setSearchValue('');
                     }}
                     sx={{
                       padding: '10px 16px',
-                      cursor: 'pointer',
-                      backgroundColor: colors.card_bgColor,
-                      borderRadius: '8px',
-                      transition: '.4s',
-                      ':hover': {
-                        backgroundColor: colors.black_dark
-                      }
+                      cursor: 'pointer'
                     }}>
                     <Row>
                       <ImageIcon
@@ -351,7 +345,7 @@ export default function BridgeSelectTokenScreen() {
                         style={{
                           gap: '0px'
                         }}>
-                        <Text preset="regular" text={asset.asset.symbol}></Text>
+                        <Text preset="regular" text={asset.asset.symbol} color={isLight ? 'black' : 'white'}></Text>
                         <Text preset="sub" text={asset.asset.name}></Text>
                       </Column>
                     </Row>
@@ -360,7 +354,11 @@ export default function BridgeSelectTokenScreen() {
                       style={{
                         gap: '0px'
                       }}>
-                      <Text preset="regular" textEnd text={BigNumber(asset.formatAmount).toFormat()}></Text>
+                      <Text
+                        preset="regular"
+                        textEnd
+                        text={BigNumber(asset.formatAmount).toFormat()}
+                        color={isLight ? 'black' : 'white'}></Text>
                       <Text preset="sub" textEnd text={`$${BigNumber(asset.totalValue).toFormat(2)}`}></Text>
                     </Column>
                   </Stack>

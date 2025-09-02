@@ -6,6 +6,7 @@ import { Button } from '@/ui/components/Button';
 import { Input } from '@/ui/components/Input';
 import { Text } from '@/ui/components/Text';
 import { useUnlockCallback } from '@/ui/state/global/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { getUiType, useWallet } from '@/ui/utils';
 
 import { useNavigate } from '../../MainRoute';
@@ -19,6 +20,7 @@ export default function UnlockScreen() {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
+  const isLight = useIsLight();
   const UIType = getUiType();
   const isInNotification = UIType.isNotification;
   const unlock = useUnlockCallback();
@@ -79,7 +81,8 @@ export default function UnlockScreen() {
             textCenter
             style={{
               fontSize: '18px',
-              fontWeight: 500
+              fontWeight: 500,
+              color: isLight ? 'black' : 'white'
             }}
           />
         </Column>

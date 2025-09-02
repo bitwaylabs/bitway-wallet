@@ -11,6 +11,7 @@ import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, parseUnitAmount } from '@/ui/utils';
 import { formatAddress } from '@/ui/utils/format';
@@ -24,6 +25,7 @@ export default function BridgeTabScreen() {
   const { SIDE_STATION_URL } = useEnvironment();
   const [isFromHover, setIsFromHover] = useState(false);
   const [isToHover, setIsToHover] = useState(false);
+  const isLight = useIsLight();
 
   useInitBridge();
 
@@ -59,7 +61,7 @@ export default function BridgeTabScreen() {
               flexGrow: 0
             }}>
             <Text
-              color="white"
+              color={isLight ? 'black' : 'white'}
               size="lg"
               style={{
                 fontWeight: 600
@@ -82,12 +84,12 @@ export default function BridgeTabScreen() {
                 },
                 ':hover': {
                   p: {
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   },
                   div: {
                     div: {
-                      color: `${colors.white} !important`,
-                      bgcolor: `${colors.white} !important`
+                      color: `${isLight ? colors.black : colors.white} !important`,
+                      bgcolor: `${isLight ? colors.black : colors.white} !important`
                     }
                   }
                 }
@@ -111,9 +113,9 @@ export default function BridgeTabScreen() {
               gap: '0'
             }}>
             <Column
-              bg="card_bgColor"
               rounded
               style={{
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
                 padding: '16px'
               }}>
               <Row
@@ -127,7 +129,7 @@ export default function BridgeTabScreen() {
                   <Text
                     text={fromChain?.name}
                     size="sm"
-                    color="white"
+                    color={isLight ? 'black' : 'white'}
                     style={{
                       whiteSpace: 'nowrap'
                     }}
@@ -162,7 +164,7 @@ export default function BridgeTabScreen() {
                 <Row
                   itemsCenter
                   gap="md"
-                  bg="black"
+                  bg={isLight ? 'white' : 'black'}
                   rounded
                   style={{
                     flexShrink: 0,
@@ -183,8 +185,12 @@ export default function BridgeTabScreen() {
                     size={24}
                     src={fromAsset?.asset?.logo}
                   />
-                  <Text text={fromAsset?.asset?.symbol} size="md" color={isFromHover ? 'main' : 'white'} />
-                  <Icon icon="down" size={12} color={isFromHover ? 'main' : 'white'} />
+                  <Text
+                    text={fromAsset?.asset?.symbol}
+                    size="md"
+                    color={isFromHover ? 'main' : isLight ? 'black' : 'white'}
+                  />
+                  <Icon icon="down" size={12} color={isFromHover ? 'main' : isLight ? 'black' : 'white'} />
                 </Row>
               </Row>
             </Column>
@@ -206,32 +212,32 @@ export default function BridgeTabScreen() {
                   height: '38px',
                   width: '38px',
                   borderRadius: '10px',
-                  bgcolor: colors.black,
-                  border: `4px solid ${colors.black1}`
+                  bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+                  border: `4px solid ${isLight ? colors.light_border : colors.dark_border}`
                 }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9" fill="none">
                   <path
                     d="M8.34961 5.18974L5.11999 8.41936C4.97603 8.56328 4.78081 8.64412 4.57725 8.64412C4.37369 8.64412 4.17846 8.56328 4.0345 8.41936L0.804882 5.18974L1.89038 4.10425L4.57725 6.79112L7.26411 4.10425L8.34961 5.18974Z"
-                    fill="white"
+                    fill={isLight ? colors.black : colors.white}
                   />
                   <path
                     d="M5.3457 0.15625L5.3457 7.87642L3.81035 7.87642L3.81035 0.15625L5.3457 0.15625Z"
-                    fill="white"
+                    fill={isLight ? colors.black : colors.white}
                   />
                 </svg>
               </Stack>
             </Stack>
 
             <Column
-              bg="card_bgColor"
               rounded
               style={{
+                backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
                 padding: '16px'
               }}>
               <Row justifyBetween itemsCenter>
                 <Row itemsCenter gap="sm">
                   <Text text="To" size="sm" color="white_muted" />
-                  <Text text={toChain?.name || ''} size="sm" color="white" />
+                  <Text text={toChain?.name || ''} size="sm" color={isLight ? 'black' : 'white'} />
                 </Row>
                 {toAddress && (
                   <Typography
@@ -264,7 +270,7 @@ export default function BridgeTabScreen() {
                 <Row
                   itemsCenter
                   gap="md"
-                  bg="black"
+                  bg={isLight ? 'white' : 'black'}
                   rounded
                   style={{
                     flexShrink: 0,
@@ -285,8 +291,12 @@ export default function BridgeTabScreen() {
                     size={24}
                     src={toAsset?.asset?.logo}
                   />
-                  <Text text={toAsset?.asset?.symbol} size="md" color={isToHover ? 'main' : 'white'} />
-                  <Icon icon="down" size={12} color={isToHover ? 'main' : 'white'} />
+                  <Text
+                    text={toAsset?.asset?.symbol}
+                    size="md"
+                    color={isToHover ? 'main' : isLight ? 'black' : 'white'}
+                  />
+                  <Icon icon="down" size={12} color={isToHover ? 'main' : isLight ? 'black' : 'white'} />
                 </Row>
               </Row>
             </Column>
@@ -328,7 +338,7 @@ export default function BridgeTabScreen() {
                   transition: '.4s',
                   cursor: 'pointer',
                   ':hover': {
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }
                 }}
                 onClick={() => {

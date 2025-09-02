@@ -8,6 +8,7 @@ import { useIbc } from '@/ui/hooks/bridge';
 import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Input as MuiInput, Stack, Typography } from '@mui/material';
 
@@ -16,6 +17,7 @@ import { createCosmosAddressRegex } from './BridgeTargetAddress';
 
 export default function BridgeIbcConfirmScreen() {
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
 
   const { bridgeAmount, toChain, toAsset, toAddress } = useBridgeState();
   const { sendIbc, loading } = useIbc();
@@ -41,7 +43,13 @@ export default function BridgeIbcConfirmScreen() {
             style={{
               gap: '12px'
             }}>
-            <Column relative rounded bg={'card_bgColor'} classname=" p-2 py-3">
+            <Column
+              relative
+              rounded
+              classname=" p-2 py-3"
+              style={{
+                background: isLight ? colors.light_bg : colors.dark_bg
+              }}>
               <DetailRow
                 text={'You will receive'}
                 value={
@@ -53,7 +61,7 @@ export default function BridgeIbcConfirmScreen() {
                         .toFixed(2, BigNumber.ROUND_CEIL)}
                       )
                     </Typography>
-                    <Typography fontSize={'14px'} color={colors.white}>
+                    <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
                       {bridgeAmount}
                     </Typography>
                     <Typography fontSize={'14px'} color={colors.grey12}>
@@ -77,7 +85,7 @@ export default function BridgeIbcConfirmScreen() {
                     <Typography
                       sx={{
                         fontSize: '12px',
-                        color: colors.white
+                        color: isLight ? colors.black : colors.white
                       }}>
                       ({toChain?.name})
                     </Typography>
@@ -97,10 +105,12 @@ export default function BridgeIbcConfirmScreen() {
                       px: '12px',
                       borderRadius: '10px',
                       width: '100%',
-                      border: `1px solid ${isEditError ? colors.red : colors.white20}`,
+                      border: `1px solid ${
+                        isEditError ? colors.red : isLight ? colors.light_border : colors.dark_border
+                      }`,
                       transition: '.4s',
                       ':hover': {
-                        border: `1px solid ${isEditError ? colors.red : colors.white_4}`
+                        border: `1px solid ${isEditError ? colors.red : isLight ? colors.black : colors.white}`
                       }
                     }}>
                     <MuiInput
@@ -112,7 +122,7 @@ export default function BridgeIbcConfirmScreen() {
                       disabled={!isEditToAddress}
                       placeholder={`${toChain?.prefix}...`}
                       sx={{
-                        color: colors.white,
+                        color: isLight ? colors.black : colors.white,
                         fontSize: '12px',
                         textAlign: 'left',
                         bgcolor: 'transparent',
@@ -144,7 +154,7 @@ export default function BridgeIbcConfirmScreen() {
                         ':hover': {
                           svg: {
                             path: {
-                              stroke: colors.white
+                              stroke: isLight ? colors.black : colors.white
                             }
                           }
                         }

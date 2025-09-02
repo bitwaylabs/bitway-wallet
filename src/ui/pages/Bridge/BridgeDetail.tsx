@@ -7,6 +7,7 @@ import { useGetBitwayBalanceList } from '@/ui/hooks/useGetBitwayBalanceList';
 import services from '@/ui/services';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, showFromTime } from '@/ui/utils';
 import { formatAddress } from '@/ui/utils/format';
@@ -16,6 +17,7 @@ import { Box, Stack, Typography } from '@mui/material';
 export default function BridgeDetail() {
   const currentAccount = useCurrentAccount();
   const { state } = useLocation();
+  const isLight = useIsLight();
   const { txHash } = state as { txHash: string };
   const { sideChain, chains, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, UNISAT_IO_API } = useEnvironment();
 
@@ -60,7 +62,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {data.direction}
         </Text>
@@ -75,7 +77,7 @@ export default function BridgeDetail() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {data.status}
           </Text>
@@ -89,7 +91,7 @@ export default function BridgeDetail() {
               xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M8.5 2V3.66667M8.5 12.5V15.1667M4.33333 8.5H2M14.6667 8.5H13.6667M12.8047 12.8047L12.3333 12.3333M12.9428 4.11052L12 5.05333M3.78105 13.219L5.66667 11.3333M3.91912 3.97245L5.33333 5.38667"
-                stroke={colors.white}
+                stroke={isLight ? colors.black : colors.white}
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -107,7 +109,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {formatTimeWithUTC(data.time)} ({showFromTime(data.time)})
         </Text>
@@ -122,7 +124,7 @@ export default function BridgeDetail() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {formatUnitAmount(
               !isDeposit && data.tokenDenom === 'sat' ? `${+data.tokenAmount + +bridgeFee}` : data.tokenAmount,
@@ -133,7 +135,7 @@ export default function BridgeDetail() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.grey12
+              color: isLight ? colors.grey12 : colors.grey12
             }}>
             {bridgeSendAssetInfo?.asset.symbol}
           </Text>
@@ -149,7 +151,7 @@ export default function BridgeDetail() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {formatUnitAmount(
               isDeposit && data.tokenDenom === 'sat' ? `${+data.tokenAmount - +bridgeFee}` : data.tokenAmount,
@@ -176,7 +178,7 @@ export default function BridgeDetail() {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }}>
             {formatUnitAmount(bridgeFee, bridgeFeeAssetInfo?.asset.exponent || 8)}
           </Text>
@@ -201,7 +203,7 @@ export default function BridgeDetail() {
               style={{
                 fontSize: '12px',
                 fontWeight: 500,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               {data.sideTxFeeAmount ? formatUnitAmount(data.sideTxFeeAmount, sideTxInfo?.asset.exponent || 6) : '-'}
             </Text>
@@ -219,7 +221,7 @@ export default function BridgeDetail() {
               style={{
                 fontSize: '12px',
                 fontWeight: 500,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               {data.btcTxFeeAmount ? formatUnitAmount(data.btcTxFeeAmount, 8) : '-'}
             </Text>
@@ -243,7 +245,7 @@ export default function BridgeDetail() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -264,7 +266,7 @@ export default function BridgeDetail() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -288,7 +290,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {data.oppositeChainName}
           <small
@@ -309,7 +311,7 @@ export default function BridgeDetail() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -333,7 +335,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {data.ibcStatus}
         </Text>
@@ -347,7 +349,7 @@ export default function BridgeDetail() {
           sx={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white,
+            color: isLight ? colors.black : colors.white,
             cursor: 'pointer',
             ':hover': {
               color: colors.main
@@ -371,7 +373,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {data.oppositeTxTime ? formatTimeWithUTC(data.oppositeTxTime) : '-'}
         </Text>
@@ -385,7 +387,7 @@ export default function BridgeDetail() {
           style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: colors.white
+            color: isLight ? colors.black : colors.white
           }}>
           {data.oppositeTxFeeAmount ? `${data.oppositeTxFeeAmount} ${data.oppositeTxFeeDenom}` : '-'}
         </Text>
@@ -418,7 +420,7 @@ export default function BridgeDetail() {
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: colors.white
+                color: isLight ? colors.black : colors.white
               }}>
               General Info
             </Text>
@@ -447,7 +449,7 @@ export default function BridgeDetail() {
           <Box
             sx={{
               height: '1px',
-              backgroundColor: colors.black_dark,
+              backgroundColor: isLight ? colors.light_border : colors.dark_border,
               my: '16px'
             }}
           />
@@ -458,7 +460,7 @@ export default function BridgeDetail() {
                   style={{
                     fontSize: '18px',
                     fontWeight: 600,
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }}>
                   Routing Info
                 </Text>
@@ -489,7 +491,7 @@ export default function BridgeDetail() {
               <Box
                 sx={{
                   height: '1px',
-                  backgroundColor: colors.black_dark,
+                  backgroundColor: isLight ? colors.light_border : colors.dark_border,
                   my: '16px'
                 }}
               />

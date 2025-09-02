@@ -15,6 +15,7 @@ import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, parseUnitAmount } from '@/ui/utils';
 import { formatAddress } from '@/ui/utils/format';
@@ -22,16 +23,8 @@ import { Input as MuiInput, Stack, Typography } from '@mui/material';
 
 import { createCosmosAddressRegex } from './BridgeTargetAddress';
 
-export function DetailRow({
-  text,
-  value,
-  tooltip
-}: {
-  text: ReactNode;
-  tooltip?: ReactNode;
-  value: ReactNode;
-  id?: string;
-}) {
+export function DetailRow({ text, value }: { text: ReactNode; tooltip?: ReactNode; value: ReactNode; id?: string }) {
+  const isLight = useIsLight();
   return (
     <div className="flex text-sm items-center justify-between">
       <Stack
@@ -45,7 +38,13 @@ export function DetailRow({
         }}>
         {text}
       </Stack>
-      <span className={'flex  w-full justify-end items-center gap-1'}>{value}</span>
+      <span
+        className={'flex  w-full justify-end items-center gap-1'}
+        style={{
+          color: isLight ? colors.black : colors.white
+        }}>
+        {value}
+      </span>
     </div>
   );
 }
@@ -53,6 +52,7 @@ export function DetailRow({
 export default function BridgeBtcConfirmScreen() {
   const currentAccount = useCurrentAccount();
   const dispatch = useAppDispatch();
+  const isLight = useIsLight();
 
   const { SIDE_BTC_EXPLORER, sideChain } = useEnvironment();
   const { bridgeAmount, fee, feeSummary, params, fromChain, toChain, fromAsset, toAsset, toAddress } = useBridgeState();
@@ -149,8 +149,8 @@ export default function BridgeBtcConfirmScreen() {
                 ':hover': {
                   svg: {
                     path: {
-                      fill: colors.white,
-                      stroke: colors.white
+                      fill: isLight ? colors.black : colors.white,
+                      stroke: isLight ? colors.black : colors.white
                     }
                   }
                 }
@@ -227,7 +227,7 @@ export default function BridgeBtcConfirmScreen() {
                 .toFixed(2, BigNumber.ROUND_CEIL)}
               )
             </Typography>
-            <Typography fontSize={'14px'} color={colors.white}>
+            <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
               {formatUnitAmount(protocolFee || '0', bitcoinFeeInfo?.asset.exponent || 8)}
             </Typography>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -250,7 +250,7 @@ export default function BridgeBtcConfirmScreen() {
                 .toFixed(2, BigNumber.ROUND_CEIL)}
               )
             </Typography>
-            <Typography fontSize={'14px'} color={colors.white}>
+            <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
               {yourReceive}
             </Typography>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -278,7 +278,7 @@ export default function BridgeBtcConfirmScreen() {
                 <Typography
                   sx={{
                     fontSize: '12px',
-                    color: colors.white
+                    color: isLight ? colors.black : colors.white
                   }}>
                   ({toChain?.name})
                 </Typography>
@@ -298,10 +298,10 @@ export default function BridgeBtcConfirmScreen() {
                   px: '12px',
                   borderRadius: '10px',
                   width: '100%',
-                  border: `1px solid ${isEditError ? colors.red : colors.white20}`,
+                  border: `1px solid ${isEditError ? colors.red : isLight ? colors.light_border : colors.dark_border}`,
                   transition: '.4s',
                   ':hover': {
-                    border: `1px solid ${isEditError ? colors.red : colors.white_4}`
+                    border: `1px solid ${isEditError ? colors.red : isLight ? colors.black : colors.white}`
                   }
                 }}>
                 <MuiInput
@@ -313,7 +313,7 @@ export default function BridgeBtcConfirmScreen() {
                   disabled={!isEditToAddress}
                   placeholder={`${toChain.prefix}...`}
                   sx={{
-                    color: colors.white,
+                    color: isLight ? colors.black : colors.white,
                     fontSize: '12px',
                     textAlign: 'left',
                     bgcolor: 'transparent',
@@ -345,7 +345,7 @@ export default function BridgeBtcConfirmScreen() {
                     ':hover': {
                       svg: {
                         path: {
-                          stroke: colors.white
+                          stroke: isLight ? colors.black : colors.white
                         }
                       }
                     }
@@ -405,7 +405,7 @@ export default function BridgeBtcConfirmScreen() {
         text={'Est. Tansaction Fee'}
         value={
           <>
-            <Typography fontSize={'14px'} color={colors.white}>
+            <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
               {withdrawFee}
             </Typography>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -426,7 +426,7 @@ export default function BridgeBtcConfirmScreen() {
                 .toFixed(2, BigNumber.ROUND_CEIL)}
               )
             </Typography>
-            <Typography fontSize={'14px'} color={colors.white}>
+            <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
               {formatUnitAmount(protocolFee || '0', sideFeeInfo?.asset.exponent || 8)}
             </Typography>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -442,7 +442,7 @@ export default function BridgeBtcConfirmScreen() {
         text={'You will receive'}
         value={
           <>
-            <Typography fontSize={'14px'} color={colors.white}>
+            <Typography fontSize={'14px'} color={isLight ? colors.black : colors.white}>
               {yourReceive}
             </Typography>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -485,7 +485,7 @@ export default function BridgeBtcConfirmScreen() {
               style={{
                 fontSize: '14px',
                 padding: '8px',
-                background: colors.card_bgColor,
+                background: isLight ? colors.light_bg : colors.dark_bg,
                 display: isDeposit ? 'flex' : 'none'
               }}>
               <Row relative full justifyBetween color={'grey12'}>
@@ -513,7 +513,7 @@ export default function BridgeBtcConfirmScreen() {
                     <Typography
                       sx={{
                         fontSize: '14px',
-                        color: colors.white,
+                        color: isLight ? colors.black : colors.white,
                         cursor: 'pointer',
                         transition: '.4s',
                         ':hover': {
@@ -527,10 +527,16 @@ export default function BridgeBtcConfirmScreen() {
                       {formatAddress(item.txid || '-', 3)}
                     </Typography>
 
-                    <Typography fontSize={'14px'} className="w-1/3 text-center">
+                    <Typography
+                      fontSize={'14px'}
+                      className="w-1/3 text-center"
+                      color={isLight ? colors.black : colors.white}>
                       {item.vout}
                     </Typography>
-                    <Typography fontSize={'14px'} className="w-1/3 text-right">
+                    <Typography
+                      fontSize={'14px'}
+                      className="w-1/3 text-right"
+                      color={isLight ? colors.black : colors.white}>
                       {formatUnitAmount(item.satoshis.toString() || '0', 8)}
                     </Typography>
                   </Row>
@@ -538,7 +544,13 @@ export default function BridgeBtcConfirmScreen() {
               })}
             </Column>
 
-            <Column relative rounded bg={'card_bgColor'} classname=" p-2 py-3">
+            <Column
+              relative
+              rounded
+              classname=" p-2 py-3"
+              style={{
+                background: isLight ? colors.light_bg : colors.dark_bg
+              }}>
               {isDeposit ? depositDetailItems : withdrawDetailItems}
             </Column>
 

@@ -6,6 +6,7 @@ import { Button, Column, Content, Header, Image, Input, Layout, Row, Text } from
 import { useBridgeState } from '@/ui/state/bridge/hook';
 import { BridgeActions } from '@/ui/state/bridge/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Box } from '@mui/material';
 
@@ -21,6 +22,7 @@ export default function BridgeTargetAddress() {
   const { ibcChannel } = state as { ibcChannel: string };
   const { toChain } = useBridgeState();
   const [value, setValue] = useState('');
+  const isLight = useIsLight();
 
   const { isError, isDisabled } = useMemo(() => {
     let isError = false,
@@ -47,7 +49,6 @@ export default function BridgeTargetAddress() {
       />
       <Content
         style={{
-          backgroundColor: colors.black,
           padding: 0,
           marginTop: 16
         }}>
@@ -58,7 +59,7 @@ export default function BridgeTargetAddress() {
             <Text
               text={toChain?.name}
               size="sm"
-              color="white"
+              color={isLight ? 'black' : 'white'}
               style={{
                 fontWeight: 600
               }}
@@ -69,7 +70,7 @@ export default function BridgeTargetAddress() {
             sx={{
               height: '1px',
               width: '100%',
-              bgcolor: colors.black_dark
+              bgcolor: isLight ? colors.light_border : colors.dark_border
             }}
           />
           <Text textCenter text="Target Address" size="xs" color="white_muted" />
