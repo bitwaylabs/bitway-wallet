@@ -1,3 +1,5 @@
+import { colors } from '@/ui/theme/colors';
+
 import { Card } from '../Card';
 import { Row } from '../Row';
 import { Text } from '../Text';
@@ -10,14 +12,13 @@ const WebsiteBar = ({ session }: { session: { origin: string; icon?: string; nam
         px="zero"
         style={{
           maxWidth: 'max-content'
-        }}
-      >
+        }}>
         {/* <Image src={session.icon} size={fontSizes.logo} /> */}
         <Text
           size="xl"
           style={{
             fontWeight: '500',
-            color: '#828282'
+            color: colors.grey2
           }}
           bg="transparent"
           text={session.origin}

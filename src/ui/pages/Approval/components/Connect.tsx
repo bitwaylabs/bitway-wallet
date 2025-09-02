@@ -9,6 +9,8 @@ import { accountActions } from '@/ui/state/accounts/reducer';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { useCurrentKeyring, useKeyrings } from '@/ui/state/keyrings/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { fontSizes } from '@/ui/theme/font';
 import { shortAddress, useApproval, useWallet } from '@/ui/utils';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -20,6 +22,7 @@ interface MyItemProps {
 }
 
 export function MyItem({ account, selected, onClick }: MyItemProps, ref) {
+  const isLight = useIsLight();
   if (!account) {
     return <div />;
   }
@@ -29,8 +32,8 @@ export function MyItem({ account, selected, onClick }: MyItemProps, ref) {
       justifyBetween
       mt="sm"
       style={{
-        border: '1px solid #2D2D2D',
-        backgroundColor: '#2E2E2F',
+        border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+        backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
         borderRadius: '10px'
       }}
       onClick={onClick}>
@@ -40,7 +43,7 @@ export function MyItem({ account, selected, onClick }: MyItemProps, ref) {
           width: '100%'
         }}>
         <Column gap={'sm'}>
-          <Text text={account.alianName} />
+          <Text text={account.alianName} color={isLight ? 'black' : 'white'} />
           <Text text={`${shortAddress(account.address)}`} preset="sub" />
         </Column>
         <Column selfItemsCenter>
@@ -98,6 +101,7 @@ interface Props {
 
 export default function Connect({ params: { session } }: Props) {
   const [getApproval, resolveApproval, rejectApproval] = useApproval();
+  const isLight = useIsLight();
 
   const handleCancel = () => {
     rejectApproval('User rejected the request.');
@@ -216,7 +220,7 @@ export default function Connect({ params: { session } }: Props) {
           marginTop: '0px',
           borderBottom: '1px solid transparent'
         }}>
-        <Text text="Connect with" preset="large" textCenter mt="zero" color="white" />
+        <Text text="Connect with" preset="large" textCenter mt="zero" color={isLight ? 'black' : 'white'} />
         <img
           style={{
             height: '18px'
@@ -230,14 +234,14 @@ export default function Connect({ params: { session } }: Props) {
           <Row full justifyCenter>
             <Column
               style={{
-                background: '#1E1E1F',
+                background: isLight ? colors.light_bg : colors.dark_bg,
                 maxWidth: 'max-content'
               }}
               gap="zero"
               rounded>
               <Text
                 style={{
-                  color: '#828282'
+                  color: colors.grey2
                 }}
                 text={session?.origin}
                 textCenter
@@ -252,13 +256,24 @@ export default function Connect({ params: { session } }: Props) {
           <Column
             style={{
               marginTop: '5px',
-              background: '#1E1E1F',
+              background: isLight ? colors.light_bg : colors.dark_bg,
               padding: '0 0 10px'
             }}
             gap="zero"
             rounded>
-            <Text text="Select the account to use on this site." textCenter preset="sub" mt="md" />
-            <Text text="Only connect with sites you trust." preset="sub" textCenter />
+            <Text
+              text="Select the account to use on this site."
+              textCenter
+              preset="sub"
+              mt="md"
+              color={isLight ? 'black' : 'white'}
+            />
+            <Text
+              text="Only connect with sites you trust."
+              preset="sub"
+              textCenter
+              color={isLight ? 'black' : 'white'}
+            />
           </Column>
 
           {keyrings.map((keyring) => (

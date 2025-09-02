@@ -1,7 +1,10 @@
 import { useExtensionIsInTab } from '../features/browser/tabs';
+import { useIsLight } from '../state/settings/hooks';
+import { colors } from '../theme/colors';
 
 export const AppDimensions = (props) => {
   const extensionIsInTab = useExtensionIsInTab();
+  const isLight = useIsLight();
 
   return (
     <div
@@ -12,7 +15,7 @@ export const AppDimensions = (props) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: isLight ? colors.white : colors.black
       }}
       {...props}
     />
@@ -21,6 +24,7 @@ export const AppDimensions = (props) => {
 
 export const AppSideDimensions = (props) => {
   // const extensionIsInTab = useExtensionIsInTab();
+  const isLight = useIsLight();
   return (
     <div
       style={{
@@ -30,7 +34,7 @@ export const AppSideDimensions = (props) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: isLight ? colors.white : colors.black
       }}
       {...props}
     />

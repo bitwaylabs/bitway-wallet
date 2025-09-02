@@ -4,6 +4,8 @@ import { KEYRING_TYPE } from '@/shared/constant';
 import { Button, Card, Column, Content, Footer, Layout, Row, Text } from '@/ui/components';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useCurrentKeyring } from '@/ui/state/keyrings/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { useApproval } from '@/ui/utils';
 
 import KeystoneSignScreen from '../../Wallet/KeystoneSignScreen';
@@ -25,6 +27,7 @@ export default function SignText({ params: { data, session } }: Props) {
   const currentAccount = useCurrentAccount();
 
   const currentKeyring = useCurrentKeyring();
+  const isLight = useIsLight();
 
   const [getApproval, resolveApproval, rejectApproval] = useApproval();
   const account = useCurrentAccount();
@@ -71,7 +74,8 @@ export default function SignText({ params: { data, session } }: Props) {
             textCenter
             size="xl"
             style={{
-              fontWeight: '600'
+              fontWeight: '600',
+              color: isLight ? colors.black : colors.white
             }}>
             Signature request
           </Text>
@@ -79,10 +83,10 @@ export default function SignText({ params: { data, session } }: Props) {
           <Text
             textCenter
             style={{
-              color: '#828282',
+              color: colors.grey2,
               borderRadius: '8px',
               padding: '4px 16px',
-              backgroundColor: '#1E1E1F',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               fontSize: '14px',
               maxWidth: 'max-content'
             }}
@@ -96,7 +100,7 @@ export default function SignText({ params: { data, session } }: Props) {
           justifyBetween
           mt="md"
           style={{
-            background: '#1E1E1F',
+            background: isLight ? colors.light_bg : colors.dark_bg,
             padding: '16px 10px 16px 10px',
             borderRadius: '8px',
             position: 'relative'
@@ -108,7 +112,8 @@ export default function SignText({ params: { data, session } }: Props) {
             <Text
               style={{
                 fontWeight: '500',
-                fontSize: '16px'
+                fontSize: '16px',
+                color: isLight ? colors.black : colors.white
               }}>
               Account connected
             </Text>
@@ -116,7 +121,7 @@ export default function SignText({ params: { data, session } }: Props) {
             <Text
               size="sm"
               style={{
-                color: 'white',
+                color: isLight ? colors.black : colors.white,
                 opacity: '0.5',
                 wordBreak: 'break-word'
               }}>
@@ -128,16 +133,16 @@ export default function SignText({ params: { data, session } }: Props) {
               style={{
                 gap: '4px',
                 borderRadius: '10px',
-                backgroundColor: '#94E360',
+                backgroundColor: colors.primary,
                 padding: '4px 10px',
                 fontSize: '12px',
                 width: 'max-content',
-                color: 'black'
+                color: isLight ? colors.black : colors.white
               }}>
               <Text
                 style={{
                   fontWeight: '600',
-                  color: 'black'
+                  color: isLight ? colors.black : colors.white
                 }}
                 size="xs">
                 {currentKeyring.alianName}
@@ -146,7 +151,7 @@ export default function SignText({ params: { data, session } }: Props) {
               <Text
                 style={{
                   fontWeight: '600',
-                  color: 'black'
+                  color: isLight ? colors.black : colors.white
                 }}
                 size="xs">
                 /
@@ -154,7 +159,7 @@ export default function SignText({ params: { data, session } }: Props) {
 
               <Text
                 style={{
-                  color: 'black'
+                  color: isLight ? colors.black : colors.white
                 }}
                 size="xs">
                 {currentAccount.alianName}
@@ -175,7 +180,7 @@ export default function SignText({ params: { data, session } }: Props) {
             style={{
               flexDirection: 'column'
             }}>
-            <Text text="You are signing:" textCenter mt="lg" />
+            <Text text="You are signing:" textCenter mt="lg" color={isLight ? 'black' : 'white'} />
             <div
               style={{
                 userSelect: 'text',
@@ -184,7 +189,8 @@ export default function SignText({ params: { data, session } }: Props) {
                 whiteSpace: 'pre-wrap',
                 wordBreak: 'break-word',
                 flexWrap: 'wrap',
-                lineHeight: '18px'
+                lineHeight: '18px',
+                color: isLight ? colors.black : colors.white
               }}>
               {data.text}
             </div>
