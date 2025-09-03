@@ -1,8 +1,7 @@
-import { Checkbox } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate as useNavigateRouter } from 'react-router-dom';
 
-import { Button, Column, Header, Input, Row, Text } from '@/ui/components';
+import { Button, CheckBox, Column, Header, Input, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useExtensionIsInTab } from '@/ui/features/browser/tabs';
 import { useIsLight } from '@/ui/state/settings/hooks';
@@ -247,10 +246,8 @@ export default function CreatePasswordScreen() {
               alignItems: 'start'
             }}
             justifyBetween>
-            <Checkbox
-              style={{
-                borderRadius: '4px'
-              }}
+            <CheckBox
+              iconSize={20}
               defaultChecked={check}
               onChange={(e) => {
                 setCheck(e.target.checked);

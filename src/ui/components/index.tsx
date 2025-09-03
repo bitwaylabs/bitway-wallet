@@ -2,6 +2,7 @@ import { AddressBar } from './AddressBar';
 import { Button } from './Button';
 import { ButtonGroup, ButtonGroupV2 } from './ButtonGroup';
 import { Card } from './Card';
+import { CheckBox } from './CheckBox';
 import { Column } from './Column';
 import { Content } from './Content';
 import { CopyIcon } from './CopyIcon';
@@ -28,6 +29,7 @@ export {
   ButtonGroup,
   ButtonGroupV2,
   Card,
+  CheckBox,
   Column,
   Content,
   CopyIcon,

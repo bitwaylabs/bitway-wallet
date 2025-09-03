@@ -42,26 +42,6 @@ iframe {
   overflow: clip !important;
 }
 
-.ant-checkbox-inner {
-  width: 20px !important;
-  height: 20px !important;
-  background-color: transparent !important;
-  border-width: 1px !important;
-  border-color: #ffffff33 !important;
-}
-
-.ant-checkbox {
-  width: 20px !important;
-  height: 20px !important;
-
-  color: #000 !important;
-  background-color: #383535 !important;
-}
-
-.ant-checkbox-checked {
-  background-color: #94e360 !important;
-}
-
 .ant-switch {
   background-color: #6a6868 !important;
 }
@@ -83,16 +63,6 @@ iframe {
 .ant-modal-close:focus,
 .ant-modal-close:hover {
   color: #fff !important;
-}
-
-.ant-checkbox,
-.ant-checkbox-checked::after,
-.ant-checkbox-inner {
-  border-radius: 4px !important;
-}
-
-.ant-checkbox-checked .ant-checkbox-inner::after {
-  margin: -1px 0 0 -1px;
 }
 
 div {

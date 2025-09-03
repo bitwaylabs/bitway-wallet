@@ -1,8 +1,7 @@
-import { Checkbox } from 'antd';
 import { useState } from 'react';
 
 import { PAYMENT_CHANNELS, PaymentChannelType } from '@/shared/constant';
-import { Button, Column, Row, Text } from '@/ui/components';
+import { Button, CheckBox, Column, Row, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { BottomModal } from '@/ui/components/BottomModal';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -31,8 +30,7 @@ export default function DisclaimerModal({ channelType, onClose }: { channelType:
           <Row
             onClick={() => {
               onClose();
-            }}
-          >
+            }}>
             <CloseOutlined />
           </Row>
         </Row>
@@ -45,20 +43,18 @@ export default function DisclaimerModal({ channelType, onClose }: { channelType:
           <Text
             mt="lg"
             style={{ fontSize: fontSizes.sm, lineHeight: 2 }}
-            text={'Before proceeding, please carefully read and accept the disclaimer:'}
-          ></Text>
+            text={'Before proceeding, please carefully read and accept the disclaimer:'}></Text>
         </Column>
 
         <Row justifyCenter>
-          <Checkbox
+          <CheckBox
             onChange={() => {
               setUnderstand(!understand);
             }}
             checked={understand}
             style={{ fontSize: fontSizes.sm }}
-          >
-            <Text text="I have read and agree to the above disclaimer" />
-          </Checkbox>
+          />
+          <Text text="I have read and agree to the above disclaimer" />
         </Row>
 
         <Button

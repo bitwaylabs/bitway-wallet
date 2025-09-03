@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 
-import { Column, Content, Footer, Image, Layout, Row, Text } from '@/ui/components';
+import { CheckBox, Column, Content, Footer, Image, Layout, Row, Text } from '@/ui/components';
 import { Button } from '@/ui/components/Button';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import MainHeader from '@/ui/pages/Main/MainHeader';
@@ -10,7 +10,7 @@ import { useChangeEnvironmentCallback } from '@/ui/state/environment/hooks';
 import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
-import { Checkbox, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
 
@@ -36,7 +36,7 @@ export default function LoansTabScreen() {
       <Content gap="lg" classname="fadeIn-page">
         <Column fullY>
           <Row mt="lg">
-            <Image src="./images/img/loan-banner.png" size="100%" />
+            <Image src={isLight ? './images/img/loan-banner-light.png' : './images/img/loan-banner.png'} size="100%" />
           </Row>
           <Typography
             sx={{
@@ -152,7 +152,7 @@ export default function LoansTabScreen() {
                   }
                 }
               }}>
-              <Checkbox
+              <CheckBox
                 checked={!showLoanNotice}
                 onChange={(e) => {
                   setShowLoanNotice(!e.target.checked);
@@ -161,12 +161,6 @@ export default function LoansTabScreen() {
                 sx={{
                   width: '16px',
                   height: '16px',
-                  color: isLight ? colors.black : colors.white,
-                  padding: '0px',
-                  transition: '.4s',
-                  '&.Mui-checked': {
-                    color: colors.main
-                  },
                   svg: {
                     width: '14px',
                     height: '14px'

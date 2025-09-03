@@ -126,7 +126,7 @@ export function MyItem({ account, autoNav }: MyItemProps, ref) {
                 setIsClickCopy(true);
               }}
               icon={isClickCopy ? 'check-circle-broken' : 'copy2'}
-              color={isClickCopy ? 'primary' : isHovered ? 'white' : 'search_icon'}
+              color={isClickCopy ? 'primary' : isHovered ? (isLight ? 'black' : 'white') : 'search_icon'}
               size={14}
             />
             <Text

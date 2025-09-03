@@ -1,9 +1,9 @@
-import { Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { colors } from '@/ui/theme/colors';
 import { Typography } from '@mui/material';
 
+import { CheckBox } from '../CheckBox';
 import { Row } from '../Row';
 import { LightTooltip } from '../Tooltip';
 
@@ -31,11 +31,12 @@ export function RBFBar({ defaultValue, onChange }: { defaultValue?: boolean; onC
           RBF
         </Typography>
       </LightTooltip>
-      <Checkbox
+      <CheckBox
+        iconSize={20}
         onChange={() => {
           setEnableRBF(!enableRBF);
         }}
-        checked={enableRBF}></Checkbox>
+        checked={enableRBF}></CheckBox>
     </Row>
   );
 }

@@ -47,7 +47,7 @@ export function ButtonGroupV2(props: IButtonGroupProps) {
           style={{
             position: 'absolute',
             height,
-            backgroundColor: isLight ? colors.light_bg : colors.grey_dark,
+            backgroundColor: colors.main,
             borderRadius: '10px',
             transition: 'all 0.3s ease',
             left: buttonRefs.current[activeIndex]?.offsetLeft ?? 0,
@@ -63,14 +63,7 @@ export function ButtonGroupV2(props: IButtonGroupProps) {
                 height,
                 padding: size === 'small' ? '0 10px' : '0 22px',
                 borderRadius: '10px',
-                color:
-                  activeIndex === index
-                    ? isLight
-                      ? colors.black
-                      : colors.white
-                    : isLight
-                    ? colors.black
-                    : colors.white,
+                color: activeIndex === index ? colors.black : isLight ? colors.black : colors.white,
                 fontSize: '12px',
                 opacity: value === item.key ? 1 : 0.8,
                 cursor: 'pointer',

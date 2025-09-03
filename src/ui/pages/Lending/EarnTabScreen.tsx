@@ -92,7 +92,6 @@ export default function EarnTabScreen() {
           </Row>
           <Row
             itemsCenter
-            bg="card_bgColor"
             style={{
               height: '98px',
               width: '100%',
@@ -141,7 +140,7 @@ export default function EarnTabScreen() {
                   x2="94.9727"
                   y2="46.4216"
                   gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#94E360" />
+                  <stop stopColor={colors.main} />
                   <stop offset="1" stopColor="#17171C" />
                 </linearGradient>
                 <linearGradient
@@ -151,7 +150,7 @@ export default function EarnTabScreen() {
                   x2="234.033"
                   y2="45.9231"
                   gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#94E360" />
+                  <stop stopColor={colors.main} />
                   <stop offset="1" stopColor="#17171C" />
                 </linearGradient>
                 <linearGradient
@@ -161,7 +160,7 @@ export default function EarnTabScreen() {
                   x2="164.807"
                   y2="97.1331"
                   gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#94E360" />
+                  <stop stopColor={colors.main} />
                   <stop offset="1" stopColor="#17171C" />
                 </linearGradient>
                 <linearGradient
@@ -171,7 +170,7 @@ export default function EarnTabScreen() {
                   x2="165.197"
                   y2="4.91747"
                   gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#94E360" />
+                  <stop stopColor={colors.main} />
                   <stop offset="1" stopColor="#17171C" />
                 </linearGradient>
               </defs>
@@ -181,7 +180,7 @@ export default function EarnTabScreen() {
                 sx={{
                   fontSize: '14px',
                   fontWeight: 700,
-                  color: colors.white,
+                  color: isLight ? colors.black : colors.white,
                   ml: '16px'
                 }}>
                 Deposit to&nbsp;
@@ -197,7 +196,7 @@ export default function EarnTabScreen() {
                 sx={{
                   fontSize: '14px',
                   fontWeight: 700,
-                  color: colors.white,
+                  color: isLight ? colors.black : colors.white,
                   ml: '16px'
                 }}>
                 Start earning yield
@@ -217,13 +216,13 @@ export default function EarnTabScreen() {
                 width: '80px',
                 fontSize: '12px',
                 fontWeight: 600,
-                color: colors.white,
-                border: `1px solid ${colors.white1}`,
+                color: isLight ? colors.black : colors.white,
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
                 cursor: 'pointer',
                 transition: '.4s',
                 ':hover': {
                   background: colors.main,
-                  color: colors.black
+                  color: isLight ? colors.black : colors.white
                 }
               }}
               onClick={() => {

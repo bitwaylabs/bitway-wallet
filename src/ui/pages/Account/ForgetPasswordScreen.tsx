@@ -1,13 +1,13 @@
-import { Checkbox } from 'antd';
 import { useState } from 'react';
 import Lottie from 'react-lottie';
 import { useNavigate as useNavigateRouter } from 'react-router-dom';
 
 import * as animationData from '@/ui/assets/lottie/forget-pwd.json';
-import { Button, Column, Header, Row, Text } from '@/ui/components';
+import { Button, CheckBox, Column, Header, Row, Text } from '@/ui/components';
 import { useExtensionIsInTab } from '@/ui/features/browser/tabs';
 import { useAppDispatch } from '@/ui/state/hooks';
 import { keyringsActions } from '@/ui/state/keyrings/reducer';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
 
@@ -22,6 +22,7 @@ export default function CreateHDWalletScreen() {
   const wallet = useWallet();
   const dispatch = useAppDispatch();
   const isInTab = useExtensionIsInTab();
+  const isLight = useIsLight();
 
   // const strongText = useMemo(() => {
   //   if (!password) {
@@ -42,7 +43,7 @@ export default function CreateHDWalletScreen() {
   return (
     <div
       style={{
-        backgroundColor: colors.black,
+        backgroundColor: isLight ? colors.white : colors.black,
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -87,11 +88,12 @@ export default function CreateHDWalletScreen() {
               alignItems: 'center',
               padding: '16px',
               gap: '8px',
-              backgroundColor: '#222222',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px'
             }}>
-            <Checkbox
+            <CheckBox
               checked={checked1}
+              iconSize={20}
               onChange={(e) => {
                 setChecked1(e.target.checked);
               }}
@@ -99,7 +101,7 @@ export default function CreateHDWalletScreen() {
             <Text
               text="Side Wallet does not store your password and cannot assist in recovering it."
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 opacity: 0.5,
                 fontSize: '12px',
                 lineHeight: '18px'
@@ -111,12 +113,13 @@ export default function CreateHDWalletScreen() {
               alignItems: 'center',
               padding: '16px',
               gap: '8px',
-              backgroundColor: '#222222',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px',
               marginTop: '10px'
             }}>
-            <Checkbox
+            <CheckBox
               checked={checked2}
+              iconSize={20}
               onChange={(e) => {
                 setChecked2(e.target.checked);
               }}
@@ -124,7 +127,7 @@ export default function CreateHDWalletScreen() {
             <Text
               text="If you forget your password and have not backed it up, you will permanently lose access to it and your assets. Always ensure that you back up your wallet and keep your seed phrase or private key secure before resetting."
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 opacity: 0.5,
                 fontSize: '12px',
                 lineHeight: '18px'
@@ -136,20 +139,22 @@ export default function CreateHDWalletScreen() {
               alignItems: 'center',
               padding: '16px',
               gap: '8px',
-              backgroundColor: '#222222',
+              backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
               borderRadius: '14px',
               marginTop: '10px'
             }}>
-            <Checkbox
+            <CheckBox
               checked={checked3}
+              iconSize={20}
               onChange={(e) => {
                 setChecked3(e.target.checked);
               }}
+              sx={{}}
             />
             <Text
               text="If you forget your password, you can reset the wallet by re-importing it using your seed phrase without losing your assets."
               style={{
-                color: '#fff',
+                color: isLight ? colors.black : colors.white,
                 opacity: 0.5,
                 fontSize: '12px',
                 lineHeight: '18px'

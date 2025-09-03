@@ -7,7 +7,9 @@ import { Input } from '@/ui/components/Input';
 import { Text } from '@/ui/components/Text';
 import { useUnlockCallback } from '@/ui/state/global/hooks';
 import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
 import { getUiType, useWallet } from '@/ui/utils';
+import { Typography } from '@mui/material';
 
 import { useNavigate } from '../../MainRoute';
 
@@ -127,19 +129,22 @@ export default function UnlockScreen() {
           {errorMsg}
         </div>
         <Button disabled={disabled} text={btnText} preset="primary" onClick={btnClick} style={{ marginTop: '8px' }} />
-        <Text
-          text={<span className="hover:text-white">Forget Password</span>}
-          style={{
-            marginTop: '16px',
-            color: '#828282',
+        <Typography
+          sx={{
+            mt: '16px',
+            color: colors.grey2,
+            textAlign: 'center',
             fontSize: '14px',
-            lineHeight: '24px'
+            cursor: 'pointer',
+            '&:hover': {
+              color: isLight ? colors.black : colors.white
+            }
           }}
-          textCenter
           onClick={() => {
             navigate('ForgetPasswordScreen');
-          }}
-        />
+          }}>
+          Forget Password
+        </Typography>
       </Column>
     </Layout>
   );

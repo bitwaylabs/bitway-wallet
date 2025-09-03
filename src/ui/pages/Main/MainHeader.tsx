@@ -52,7 +52,7 @@ export default function Index({ title }) {
             },
             ':hover': {
               img: {
-                display: 'block'
+                display: isLight ? 'none' : 'block'
               },
               svg: {
                 rect: {
@@ -63,7 +63,7 @@ export default function Index({ title }) {
                   fill: isLight ? colors.black : colors.white
                 },
                 '&.expand_svg': {
-                  display: 'none'
+                  display: isLight ? 'block' : 'none'
                 }
               }
             }

@@ -1,9 +1,10 @@
-import { Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { fontSizes } from '@/ui/theme/font';
+import { Stack } from '@mui/material';
 
 import { Button } from '../Button';
+import { CheckBox } from '../CheckBox';
 import { Column } from '../Column';
 import { Icon } from '../Icon';
 import { Popover } from '../Popover';
@@ -48,48 +49,46 @@ export const NoticePopover = ({ onClose }: { onClose: () => void }) => {
             }}
             text={'Please be aware that:'}
           />
-          <div style={{ marginTop: 0, display: 'flex' }}>
-            <Checkbox
+          <Stack direction="row" alignItems="center" gap="4px">
+            <CheckBox
               style={{
                 display: 'flex',
                 alignItems: 'self-start'
               }}
+              iconSize={20}
               checked={checked1}
               onChange={(e) => {
                 setChecked1(e.target.checked);
               }}
-            >
-              <div style={{ fontSize: fontSizes.sm }}>
-                This is an experimental product; do not use it on the mainnet.
-              </div>
-            </Checkbox>
-          </div>
+            />
+            <div style={{ fontSize: fontSizes.sm }}>This is an experimental product; do not use it on the mainnet.</div>
+          </Stack>
 
-          <div style={{ display: 'flex' }}>
-            <Checkbox
+          <Stack direction="row" alignItems="center" gap="4px">
+            <CheckBox
               style={{
                 display: 'flex',
                 alignItems: 'self-start'
               }}
+              iconSize={20}
               checked={checked2}
               onChange={(e) => setChecked2(e.target.checked)}
-            >
-              <div style={{ fontSize: fontSizes.sm }}>Ordinals assets are not currently supported.</div>
-            </Checkbox>
-          </div>
+            />
+            <div style={{ fontSize: fontSizes.sm }}>Ordinals assets are not currently supported.</div>
+          </Stack>
 
-          <div style={{ display: 'flex' }}>
-            <Checkbox
+          <Stack direction="row" alignItems="center" gap="4px">
+            <CheckBox
               style={{
                 display: 'flex',
                 alignItems: 'self-start'
               }}
+              iconSize={20}
               checked={checked3}
               onChange={(e) => setChecked3(e.target.checked)}
-            >
-              <div style={{ fontSize: fontSizes.sm }}>Atomicals assets are not currently supported.</div>
-            </Checkbox>
-          </div>
+            />
+            <div style={{ fontSize: fontSizes.sm }}>Atomicals assets are not currently supported.</div>
+          </Stack>
         </Column>
 
         <Row mt={'md'} full>

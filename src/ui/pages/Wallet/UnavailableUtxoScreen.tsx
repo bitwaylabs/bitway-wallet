@@ -1,8 +1,7 @@
-import { Checkbox } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 
 import { UNCONFIRMED_HEIGHT } from '@/shared/constant';
-import { Button, Card, Column, Content, Footer, Header, Layout, Row, Text } from '@/ui/components';
+import { Button, Card, CheckBox, Column, Content, Footer, Header, Layout, Row, Text } from '@/ui/components';
 import { Loading } from '@/ui/components/ActionComponent/Loading';
 import Arc20PreviewCard from '@/ui/components/Arc20PreviewCard';
 import AssetTag from '@/ui/components/AssetTag';
@@ -62,8 +61,7 @@ export default function UnavailableUtxoScreen() {
                 return (
                   <Card
                     key={item.txid + '' + item.vout}
-                    style={{ flexDirection: 'column', borderColor: selected ? 'gold' : 'transparent', borderWidth: 1 }}
-                  >
+                    style={{ flexDirection: 'column', borderColor: selected ? 'gold' : 'transparent', borderWidth: 1 }}>
                     <Row full justifyBetween itemsCenter>
                       <Row itemsCenter>
                         <Text
@@ -123,13 +121,13 @@ export default function UnavailableUtxoScreen() {
                       <Row>
                         <Text text={''} preset="sub" />
 
-                        <Checkbox
+                        <CheckBox
                           onChange={(e) => {
                             selectedUtxoIds[item.txid + '' + item.vout] = e.target.checked;
                             setSelectedUtxoIds(Object.assign({}, selectedUtxoIds));
                           }}
                           style={{ fontSize: fontSizes.sm }}
-                        ></Checkbox>
+                        />
                       </Row>
                     </Row>
                   </Card>

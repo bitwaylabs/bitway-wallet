@@ -9,7 +9,7 @@ import { useIsLight } from '@/ui/state/settings/hooks';
 import { stakeActions } from '@/ui/state/stake/reducer';
 import { colors } from '@/ui/theme/colors';
 import { getTruncate } from '@/ui/utils';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import ValidatorSelect from './ValidatorSelect';
 
@@ -143,13 +143,8 @@ export default function Index({ activeValidators }: { activeValidators: Validato
           <Text text={delegateToken?.asset.symbol} color={isLight ? 'black' : 'white'} size="md"></Text>
         </Row>
       </Stack>
-      <Box
-        sx={{
-          height: '1px',
-          backgroundColor: isLight ? colors.light_border : colors.dark_border
-        }}
-      />
-      <Column style={{ backgroundColor: isLight ? colors.light_bg : colors.dark_bg, padding: '8px' }}>
+      <Column
+        style={{ backgroundColor: isLight ? colors.light_bg : colors.dark_bg, padding: '8px', borderRadius: '10px' }}>
         {data.map((item) => (
           <Stack direction="row" justifyContent="space-between" alignItems="center" key={item.label}>
             <LightTooltip title={item.tips} placement="top" arrow>

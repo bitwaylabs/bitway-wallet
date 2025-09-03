@@ -1,9 +1,9 @@
-import { Checkbox, Switch } from 'antd';
+import { Switch } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { AddressFlagType } from '@/shared/constant';
 import { checkAddressFlag } from '@/shared/utils';
-import { Button, Card, Column, Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components';
+import { Button, Card, CheckBox, Column, Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import { EnableUnconfirmedPopover } from '@/ui/components/EnableUnconfirmedPopover';
 import { Popover } from '@/ui/components/Popover';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -67,9 +67,11 @@ export default function ProtectionScreen() {
             <Column fullX>
               <Text
                 text={'Unconfirmed Balance Not Spendable'}
-                preset="bold"
-                size="sm"
+                size="md"
                 color={isLight ? 'black' : 'white'}
+                style={{
+                  fontWeight: 500
+                }}
               />
               <Row>
                 <Text
@@ -80,25 +82,30 @@ export default function ProtectionScreen() {
                   }
                 />
               </Row>
-              <Row style={{ borderTopWidth: 1, borderColor: colors.border }} my="md" />
 
-              <Row justifyBetween>
-                <Column fullX gap="zero">
-                  {enableUnconfirmed ? (
-                    <Text
-                      text={'Mandatory use of unconfirmed balance '}
-                      size="xs"
-                      color={isLight ? 'black' : 'white'}
-                    />
-                  ) : (
-                    <Text text={'Mandatory use of unconfirmed balance'} size="xs" color={isLight ? 'black' : 'white'} />
-                  )}
+              <Column fullX gap="zero">
+                {enableUnconfirmed ? (
                   <Text
-                    text={`Only applies to current address (${shortAddress(currentAccount.address)})`}
-                    preset="sub"
+                    text={'Mandatory use of unconfirmed balance '}
+                    color={isLight ? 'black' : 'white'}
+                    size="sm"
+                    style={{
+                      fontWeight: 400
+                    }}
                   />
-                </Column>
-
+                ) : (
+                  <Text
+                    text={'Mandatory use of unconfirmed balance'}
+                    size="sm"
+                    color={isLight ? 'black' : 'white'}
+                    style={{
+                      fontWeight: 400
+                    }}
+                  />
+                )}
+                <Text text={`Only applies to current address (${shortAddress(currentAccount.address)})`} preset="sub" />
+              </Column>
+              <Row justifyEnd>
                 <Switch
                   onChange={async () => {
                     if (enableUnconfirmed) {
@@ -122,7 +129,14 @@ export default function ProtectionScreen() {
         <Column>
           <Card style={{ borderRadius: 10 }}>
             <Column>
-              <Text text={'signData requests'} preset="bold" size="sm" color={isLight ? 'black' : 'white'} />
+              <Text
+                text={'signData requests'}
+                size="md"
+                color={isLight ? 'black' : 'white'}
+                style={{
+                  fontWeight: 500
+                }}
+              />
               <Row>
                 <Text
                   preset="sub"
@@ -136,7 +150,7 @@ export default function ProtectionScreen() {
               <Row style={{ borderTopWidth: 1, borderColor: colors.border }} my="md" />
 
               <Row justifyBetween>
-                <Text text={'Allow signData requests'} size="xs" color={isLight ? 'black' : 'white'} />
+                <Text text={'Allow signData requests'} size="sm" color={isLight ? 'black' : 'white'} />
 
                 <Switch
                   onChange={() => {
@@ -201,7 +215,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
         <div
           className="w-[68px] h-[68px] rounded-full flex items-center justify-center"
           style={{
-            backgroundColor: isLight ? colors.light_bg : colors.dark_bg
+            backgroundColor: isLight ? colors.white : colors.dark_bg
           }}>
           <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center bg-[#F0B622] bg-opacity-10">
             <Image src="/images/icons/alert-triangle.svg" size={24} />
@@ -242,11 +256,13 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
             </Row>
             <Row>
               <Row>
-                <Checkbox
+                <CheckBox
+                  iconSize={20}
                   onChange={() => {
                     setUnderstand(!understand);
                   }}
-                  checked={understand}></Checkbox>
+                  checked={understand}
+                />
                 <Text
                   size="xs"
                   color={isLight ? 'black' : 'white'}

@@ -60,7 +60,9 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             />
 
             <Box position="absolute" bottom="2px" right="2px">
-              {isBitwayChain && <Image src="./images/img/bitway-dark.png" size={16} />}
+              {isBitwayChain && (
+                <Image src={isLight ? './images/img/bitway-light.png' : './images/img/bitway-dark.png'} size={16} />
+              )}
 
               {isBitcoinChain && (
                 <ImageIcon
@@ -144,7 +146,10 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               fontSize: '12px',
               fontWeight: 500,
               color: isLight ? colors.grey12 : colors.white,
-              borderRadius: '0 0 0 8px'
+              borderRadius: '0 0 0 8px',
+              ':hover': {
+                color: isLight ? colors.black : colors.white
+              }
             }}
             onClick={() => {
               navigate('/stake');
@@ -160,8 +165,11 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
               fontSize: '12px',
               fontWeight: 500,
               color: isLight ? colors.grey12 : colors.white,
-              borderLeft: `1px solid ${isLight ? colors.light_border : colors.white20}`,
-              borderRadius: '0 0 8px 0'
+              borderLeft: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+              borderRadius: '0 0 8px 0',
+              ':hover': {
+                color: isLight ? colors.black : colors.white
+              }
             }}
             className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
             onClick={() => {

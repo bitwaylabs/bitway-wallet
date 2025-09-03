@@ -181,7 +181,7 @@ export default function WalletTabScreen() {
                 text={getTruncate(accountBalanceByUSD.split('.')[0], 0)}
                 style={{
                   fontSize: '38px',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   lineHeight: '32px',
                   color: isLight ? colors.black : colors.white
                 }}
@@ -191,7 +191,7 @@ export default function WalletTabScreen() {
                 text={`.${accountBalanceByUSD.split('.')[1]}`}
                 style={{
                   fontSize: '38px',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   lineHeight: '32px',
                   color: isLight ? colors.black : colors.white
                 }}
@@ -276,7 +276,7 @@ export default function WalletTabScreen() {
                     sx={{
                       color: isLight ? colors.black : colors.white,
                       fontSize: '12px',
-                      fontWeight: 500,
+                      fontWeight: 400,
                       lineHeight: '17px'
                     }}>
                     {item.label}
