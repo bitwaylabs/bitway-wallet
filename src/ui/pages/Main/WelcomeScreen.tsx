@@ -31,7 +31,7 @@ export default function WelcomeScreen() {
       ${!isInTab ? 'border border-white/10' : 'border-none'}
     `}
       style={{
-        backgroundColor: isLight ? colors.light_bg : colors.dark_bg
+        backgroundColor: isLight ? colors.white : colors.dark_bg
       }}>
       {state?.addWallet && <Header onBack={() => navigateRouter(-1)} title="Add Wallet" />}
 
@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
               flex: 1,
               alignItems: 'center'
             }}
-            gap="lg">
+            gap="xl">
             <Row
               justifyCenter
               itemsCenter

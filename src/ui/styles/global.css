@@ -44,6 +44,9 @@ iframe {
 
 .ant-switch {
   background-color: #6a6868 !important;
+  &.light {
+    background-color: #c5c5c5 !important;
+  }
 }
 
 .ant-switch {
@@ -54,8 +57,14 @@ iframe {
       background-color: #000;
     }
   }
-}
+  &.light.ant-switch-checked {
+    background-color: #94e360 !important;
 
+    .ant-switch-handle::before {
+      background-color: #000;
+    }
+  }
+}
 .ant-modal-close {
   transform: scale(0.5);
 }
@@ -177,7 +186,7 @@ div {
 }
 
 .light.bg-item-hover-v2:hover {
-  background-color: #f7f7f7;
+  background-color: #2d2d2d4d;
 }
 
 .bg-item-hover-v3:hover {

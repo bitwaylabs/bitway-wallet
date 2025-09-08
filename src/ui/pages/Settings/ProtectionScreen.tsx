@@ -3,7 +3,20 @@ import { useEffect, useState } from 'react';
 
 import { AddressFlagType } from '@/shared/constant';
 import { checkAddressFlag } from '@/shared/utils';
-import { Button, Card, CheckBox, Column, Content, Header, Icon, Image, Layout, Row, Text } from '@/ui/components';
+import {
+  Button,
+  Card,
+  CheckBox,
+  Column,
+  Content,
+  Header,
+  Icon,
+  Image,
+  Layout,
+  Row,
+  SwitchMui,
+  Text
+} from '@/ui/components';
 import { EnableUnconfirmedPopover } from '@/ui/components/EnableUnconfirmedPopover';
 import { Popover } from '@/ui/components/Popover';
 import { useCurrentAccount } from '@/ui/state/accounts/hooks';
@@ -152,7 +165,7 @@ export default function ProtectionScreen() {
               <Row justifyBetween>
                 <Text text={'Allow signData requests'} size="sm" color={isLight ? 'black' : 'white'} />
 
-                <Switch
+                <SwitchMui
                   onChange={() => {
                     if (enableSignData) {
                       wallet.setEnableSignData(false).then(() => {
@@ -162,7 +175,8 @@ export default function ProtectionScreen() {
                       setEnableSignDataPopoverVisible(true);
                     }
                   }}
-                  checked={enableSignData}></Switch>
+                  checked={enableSignData}
+                />
               </Row>
             </Column>
           </Card>

@@ -136,7 +136,7 @@ class PreferenceService {
         enableSignData: false,
         autoLockTime: DEFAULT_LOCKTIME,
         showLoanNotice: true,
-        isLight: true
+        isLight: false
       }
     });
     if (!this.store.locale || this.store.locale !== defaultLang) {

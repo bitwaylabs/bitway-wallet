@@ -1,5 +1,6 @@
 import React, { CSSProperties, useState } from 'react';
 
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { spacing } from '@/ui/theme/spacing';
 
@@ -71,109 +72,8 @@ const $baseViewStyle: CSSProperties = {
   paddingLeft: spacing.small,
   paddingRight: spacing.small,
   fontSize: '14px',
-  position: 'relative'
-};
-
-// button view theme
-const $viewPresets = {
-  default: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.grey_dark
-  }) as CSSProperties,
-
-  primary: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.blue_dark
-  } as CSSProperties),
-
-  danger: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.red
-  } as CSSProperties),
-
-  approval: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.orange
-  } as CSSProperties),
-
-  reset: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.green_light,
-    border: '1px solid #22AB38',
-    maxWidth: 'max-content',
-    padding: '0px 12px',
-    margin: 'auto'
-  } as CSSProperties),
-
-  bar: Object.assign({}, $baseViewStyle, {
-    backgroundColor: colors.black_dark,
-    justifyContent: 'space-between',
-    paddingTop: spacing.medium,
-    paddingBottom: spacing.medium
-  } as CSSProperties),
-
-  ghost: Object.assign({}, $baseViewStyle, {
-    border: `1px solid ${colors.blue_dark}`,
-    justifyContent: 'center',
-    paddingTop: spacing.medium,
-    paddingBottom: spacing.medium
-  } as CSSProperties),
-
-  ghostDanger: Object.assign({}, $baseViewStyle, {
-    border: '1px solid rgb(255 255 255 / 40%)',
-    justifyContent: 'center',
-    paddingTop: spacing.medium,
-    paddingBottom: spacing.medium
-  } as CSSProperties)
-};
-
-// button hover theme
-const $hoverViewPresets: Record<Presets, CSSProperties> = {
-  default: {
-    backgroundColor: colors.grey_dark,
-    boxShadow: ''
-    // boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset'
-  },
-  primary: {
-    // 移除 &::before 相关代码，改用 className
-  },
-  approval: {
-    backgroundColor: colors.orange_dark
-  },
-  danger: {
-    backgroundColor: colors.red_dark
-  },
-  bar: {
-    backgroundColor: '#383535'
-  },
-  ghost: {},
-  ghostDanger: {},
-  reset: {}
-};
-
-const $baseTextStyle: CSSProperties = {
-  textAlign: 'center',
-  flexShrink: 1,
-  flexGrow: 0,
-  // zIndex: 2,
-  color: colors.white,
-  paddingLeft: spacing.tiny,
-  paddingRight: spacing.tiny
-};
-
-const $textPresets: Record<Presets, CSSProperties> = {
-  default: Object.assign({}, $baseTextStyle, { color: colors.white }),
-  primary: Object.assign({}, $baseTextStyle, { color: colors.black }),
-  approval: Object.assign({}, $baseTextStyle, { color: colors.white }),
-  danger: Object.assign({}, $baseTextStyle, { color: colors.white }),
-  bar: Object.assign({}, $baseTextStyle, { textAlign: 'left', fontWeight: 'bold' } as CSSProperties),
-
-  reset: Object.assign({}, $baseTextStyle, { fontWeight: 400 } as CSSProperties),
-  ghost: Object.assign({}, $baseTextStyle, { fontWeight: 400, color: colors.blue_dark } as CSSProperties),
-  ghostDanger: Object.assign({}, $baseTextStyle, { fontWeight: 400, color: colors.red } as CSSProperties)
-};
-
-const $rightAccessoryStyle: CSSProperties = { marginLeft: spacing.extraSmall, zIndex: 1 };
-const $leftAccessoryStyle: CSSProperties = { marginRight: spacing.extraSmall, zIndex: 1 };
-const $baseDisabledViewStyle: CSSProperties = {
-  cursor: 'not-allowed',
-  opacity: 0.5,
-  backgroundColor: colors.grey_dark
+  position: 'relative',
+  transition: '0.4s'
 };
 
 export function Button(props: ButtonProps) {
@@ -194,6 +94,110 @@ export function Button(props: ButtonProps) {
     loading,
     ...rest
   } = props;
+
+  const isLight = useIsLight();
+
+  // button view theme
+  const $viewPresets = {
+    default: Object.assign({}, $baseViewStyle, {
+      backgroundColor: isLight ? colors.light_bg : colors.grey_dark
+    }) as CSSProperties,
+
+    primary: Object.assign({}, $baseViewStyle, {
+      backgroundColor: colors.blue_dark
+    } as CSSProperties),
+
+    danger: Object.assign({}, $baseViewStyle, {
+      backgroundColor: colors.red
+    } as CSSProperties),
+
+    approval: Object.assign({}, $baseViewStyle, {
+      backgroundColor: colors.orange
+    } as CSSProperties),
+
+    reset: Object.assign({}, $baseViewStyle, {
+      backgroundColor: colors.green_light,
+      border: '1px solid #22AB38',
+      maxWidth: 'max-content',
+      padding: '0px 12px',
+      margin: 'auto'
+    } as CSSProperties),
+
+    bar: Object.assign({}, $baseViewStyle, {
+      backgroundColor: colors.black_dark,
+      justifyContent: 'space-between',
+      paddingTop: spacing.medium,
+      paddingBottom: spacing.medium
+    } as CSSProperties),
+
+    ghost: Object.assign({}, $baseViewStyle, {
+      border: `1px solid ${colors.blue_dark}`,
+      justifyContent: 'center',
+      paddingTop: spacing.medium,
+      paddingBottom: spacing.medium
+    } as CSSProperties),
+
+    ghostDanger: Object.assign({}, $baseViewStyle, {
+      border: '1px solid rgb(255 255 255 / 40%)',
+      justifyContent: 'center',
+      paddingTop: spacing.medium,
+      paddingBottom: spacing.medium
+    } as CSSProperties)
+  };
+
+  // button hover theme
+  const $hoverViewPresets: Record<Presets, CSSProperties> = {
+    default: {
+      backgroundColor: isLight ? colors.light_bg_hover : colors.grey_dark,
+      boxShadow: ''
+      // boxShadow: '0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset'
+    },
+    primary: {
+      // 移除 &::before 相关代码，改用 className
+    },
+    approval: {
+      backgroundColor: colors.orange_dark
+    },
+    danger: {
+      backgroundColor: colors.red_dark
+    },
+    bar: {
+      backgroundColor: '#383535'
+    },
+    ghost: {},
+    ghostDanger: {},
+    reset: {}
+  };
+
+  const $baseTextStyle: CSSProperties = {
+    textAlign: 'center',
+    flexShrink: 1,
+    flexGrow: 0,
+    // zIndex: 2,
+    color: colors.white,
+    paddingLeft: spacing.tiny,
+    paddingRight: spacing.tiny
+  };
+
+  const $textPresets: Record<Presets, CSSProperties> = {
+    default: Object.assign({}, $baseTextStyle, { color: isLight ? colors.black : colors.white }),
+    primary: Object.assign({}, $baseTextStyle, { color: colors.black }),
+    approval: Object.assign({}, $baseTextStyle, { color: colors.white }),
+    danger: Object.assign({}, $baseTextStyle, { color: colors.white }),
+    bar: Object.assign({}, $baseTextStyle, { textAlign: 'left', fontWeight: 'bold' } as CSSProperties),
+
+    reset: Object.assign({}, $baseTextStyle, { fontWeight: 400 } as CSSProperties),
+    ghost: Object.assign({}, $baseTextStyle, { fontWeight: 400, color: colors.blue_dark } as CSSProperties),
+    ghostDanger: Object.assign({}, $baseTextStyle, { fontWeight: 400, color: colors.red } as CSSProperties)
+  };
+
+  const $rightAccessoryStyle: CSSProperties = { marginLeft: spacing.extraSmall, zIndex: 1 };
+  const $leftAccessoryStyle: CSSProperties = { marginRight: spacing.extraSmall, zIndex: 1 };
+  const $baseDisabledViewStyle: CSSProperties = {
+    cursor: 'not-allowed',
+    opacity: 0.5,
+    backgroundColor: colors.grey_dark
+  };
 
   const preset: Presets = props.preset || 'default';
   const [hover, setHover] = useState(false);
@@ -260,6 +264,11 @@ export function Button(props: ButtonProps) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
       {LeftAccessory && <div style={$leftAccessoryStyle}>{LeftAccessory}</div>}
+      {typeof icon === 'string' ? (
+        <Icon icon={icon} color={icon === 'expand' ? 'black' : icon === 'plus' ? 'primary' : 'white'} />
+      ) : (
+        icon
+      )}
       <Icon icon={icon} color={icon === 'expand' ? 'black' : icon === 'plus' ? 'primary' : 'white'} />
       {loading ? (
         <svg

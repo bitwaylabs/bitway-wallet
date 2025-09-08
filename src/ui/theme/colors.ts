@@ -87,6 +87,7 @@ export const colors = {
   green_1: '#94E36033',
   light_border: '#1E1E1F1A',
   light_bg: '#f7f7f7',
+  light_bg_hover: '#2d2d2d4d',
   dark_border: '#ffffff20',
   dark_bg: '#17171C'
 };

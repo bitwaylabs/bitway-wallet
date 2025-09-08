@@ -19,6 +19,7 @@ import { Mask } from './Mask';
 import { Row } from './Row';
 import { StepBar } from './StepBar';
 import { SuccessAnimation } from './SuccessAnimation';
+import { SwitchMui } from './Switch';
 import { Text } from './Text';
 import { TextArea } from './TextArea';
 import { LightTooltip } from './Tooltip';
@@ -47,6 +48,7 @@ export {
   Row,
   StepBar,
   SuccessAnimation,
+  SwitchMui,
   Text,
   TextArea
 };

@@ -19,7 +19,7 @@ export function CheckBox(
         padding: '0px',
         transition: '.4s',
         '&.Mui-checked': {
-          color: colors.main
+          color: isLight ? colors.black : colors.white
         },
         svg: {
           width: `${iconSize - 2}px`,

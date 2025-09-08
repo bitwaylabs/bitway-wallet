@@ -158,9 +158,15 @@ export default function SecurityTabScreen() {
                     cursor: 'pointer'
                   }}>
                   <Row full justifyBetween>
-                    <Column justifyCenter>
+                    <Column
+                      justifyCenter
+                      style={{
+                        gap: '0'
+                      }}>
                       <Text text={item.label || item.desc} preset="regular-bold" color={isLight ? 'black' : 'white'} />
-                      <Text text={item.value} preset="sub" color={isLight ? 'black' : 'white'} />
+                      {item.value && (
+                        <Text text={item.value} preset="sub" color={isLight ? 'black' : 'white'} mt="md" />
+                      )}
                     </Column>
 
                     <Column justifyCenter>

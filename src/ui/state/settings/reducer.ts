@@ -29,7 +29,7 @@ export const initialState: SettingsState = {
   },
   skippedVersion: '',
   autoLockTime: DEFAULT_LOCKTIME,
-  isLight: true
+  isLight: false
 };
 
 const slice = createSlice({

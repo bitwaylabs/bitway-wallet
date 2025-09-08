@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { CHAINS_ENUM } from '@/shared/constant';
 import { Column, Content, Header, Image, Layout } from '@/ui/components';
 import { useIsLight } from '@/ui/state/settings/hooks';
-import { colors } from '@/ui/theme/colors';
 
 import { useNavigate } from '../MainRoute';
 
@@ -28,7 +27,6 @@ export default function SelectNetworkScreen() {
       />
       <Content
         style={{
-          backgroundColor: isLight ? colors.white : colors.black,
           marginTop: '32px'
         }}>
         <Column
@@ -51,7 +49,13 @@ export default function SelectNetworkScreen() {
               cursor: 'pointer'
             }}
             size={'100%'}
-            src={number === 0 ? '/images/icons/wallet/btc-selected.svg' : '/images/icons/wallet/btc-select-dark.svg'}
+            src={
+              number === 0
+                ? '/images/icons/wallet/btc-selected.svg'
+                : isLight
+                ? '/images/icons/wallet/btc-select-light.svg'
+                : '/images/icons/wallet/btc-select-dark.svg'
+            }
           />
         </Column>
 
@@ -76,7 +80,11 @@ export default function SelectNetworkScreen() {
             }}
             size={'100%'}
             src={
-              number === 1 ? '/images/icons/wallet/bitway-selected.svg' : '/images/icons/wallet/bitway-select-dark.svg'
+              number === 1
+                ? '/images/icons/wallet/bitway-selected.svg'
+                : isLight
+                ? '/images/icons/wallet/bitway-select-light.svg'
+                : '/images/icons/wallet/bitway-select-dark.svg'
             }
           />
         </Column>
