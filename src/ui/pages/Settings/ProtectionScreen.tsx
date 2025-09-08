@@ -224,7 +224,7 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
   const [understand, setUnderstand] = useState(false);
   const isLight = useIsLight();
   return (
-    <Popover>
+    <Popover onClose={onCancel}>
       <Column justifyCenter itemsCenter>
         <div
           className="w-[68px] h-[68px] rounded-full flex items-center justify-center"
@@ -288,19 +288,6 @@ export const EnableSignDataPopover = ({ onNext, onCancel }: { onNext: () => void
         </Column>
 
         <Row full mt="lg">
-          <Button
-            text="Cancel"
-            full
-            preset="default"
-            onClick={(e) => {
-              if (onCancel) {
-                onCancel();
-              }
-            }}
-            style={{
-              fontWeight: '600'
-            }}
-          />
           <Button
             text="Continue"
             style={{

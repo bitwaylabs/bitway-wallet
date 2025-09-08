@@ -11,7 +11,7 @@ import { Text } from '../Text';
 export const EnableUnconfirmedPopover = ({ onClose, onConfirm }: { onClose: () => void; onConfirm: () => void }) => {
   const isLight = useIsLight();
   return (
-    <Popover>
+    <Popover onClose={onClose}>
       <Column justifyCenter itemsCenter>
         <div
           className="w-[68px] h-[68px] rounded-full flex items-center justify-center"
@@ -48,20 +48,6 @@ export const EnableUnconfirmedPopover = ({ onClose, onConfirm }: { onClose: () =
             onClick={(e) => {
               if (onConfirm) {
                 onConfirm();
-              }
-            }}
-            style={{
-              fontWeight: 600,
-              fontSize: fontSizes.sm,
-              height: 48
-            }}
-          />
-          <Button
-            text="Cancel"
-            preset="default"
-            onClick={(e) => {
-              if (onClose) {
-                onClose();
               }
             }}
             style={{

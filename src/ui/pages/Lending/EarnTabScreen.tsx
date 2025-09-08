@@ -214,10 +214,10 @@ export default function EarnTabScreen() {
                 borderRadius: '20px',
                 height: '28px',
                 width: '80px',
-                fontSize: '12px',
+                fontSize: '10px',
                 fontWeight: 600,
                 color: isLight ? colors.black : colors.white,
-                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                border: `1px solid ${isLight ? colors.black : colors.dark_border}`,
                 cursor: 'pointer',
                 transition: '.4s',
                 ':hover': {
@@ -243,7 +243,7 @@ export default function EarnTabScreen() {
               Assets
             </Text>
 
-            <Text color="white_muted" size="sm">
+            <Text color="white_muted" size="xs">
               Est.APR
             </Text>
           </Row>

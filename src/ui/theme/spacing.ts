@@ -18,7 +18,7 @@ export const spacingGap = {
   xxl: 40,
   xl: 20,
   lg: 12,
-  md: 8,
+  md: 10,
   smm: 6,
   sm: 4,
   xs: 2,

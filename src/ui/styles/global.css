@@ -33,6 +33,10 @@ iframe,
   z-index: 10;
 }
 
+.light.popover-container {
+  background-color: #000000cc;
+}
+
 iframe {
   overflow-clip-margin: content-box !important;
   border-width: 0;

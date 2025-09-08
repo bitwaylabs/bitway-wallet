@@ -13,6 +13,7 @@ import { satoshisToAmount, satoshisToBTC } from '@/ui/utils';
 import { Stack } from '@mui/material';
 
 import { Card } from '../Card';
+import { CheckBox } from '../CheckBox';
 import { Column } from '../Column';
 import { CopyableAddress } from '../CopyableAddress';
 import { Icon } from '../Icon';
@@ -56,11 +57,11 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
       sx={{
         borderRadius: '8px',
         overflow: 'hidden',
-        border: `1px solid ${checked ? colors.main : 'transparent'}`,
+        border: `1px solid ${checked ? (isLight ? colors.light_border : colors.dark_border) : 'transparent'}`,
         cursor: 'pointer',
         transition: '.4s',
         '&:hover': {
-          border: `1px solid ${colors.main}`
+          border: `1px solid ${isLight ? colors.light_border : colors.white}`
         }
       }}>
       <Column full gap={'zero'}>
@@ -82,7 +83,7 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
               top: '-10px'
             }}
             justifyCenter>
-            {checked && <Icon color={'primary'} contain={'contain'} icon="check-circle" />}
+            {checked && <CheckBox checked iconSize={16} />}
           </Column>
         </Row>
         <Row
@@ -91,14 +92,14 @@ export function AddressTypeCard(props: AddressTypeCardProps) {
           px="md"
           py="md"
           style={{
-            background: colors.green_1
+            borderTop: `1px dashed ${isLight ? colors.light_border : colors.dark_border}`
           }}>
           <Row justifyCenter>
             <Icon icon="btc" size={fontSizes.iconMiddle} />
             <Text
               text={`${balance} BTC`}
               style={{
-                color: colors.main
+                color: isLight ? colors.black : colors.white
               }}
             />
           </Row>

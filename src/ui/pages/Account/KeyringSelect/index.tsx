@@ -13,6 +13,7 @@ import { keyringsActions } from '@/ui/state/keyrings/reducer';
 import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { useWallet } from '@/ui/utils';
+import { Stack } from '@mui/material';
 
 import './index.less';
 
@@ -39,17 +40,24 @@ function MyItem({ keyring, autoNav }: MyItemProps, ref) {
 
   return (
     <>
-      <Row
-        justifyBetween
-        classname="accountItem"
-        style={{
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{
           height: '44px',
           alignItems: 'center',
           padding: '0 16px',
           borderRadius: '10px',
           marginTop: '4px',
-          background: selected ? colors.green_1 : 'transparent',
-          cursor: 'pointer'
+          background: isLight ? colors.light_bg : colors.dark_bg,
+          border: `1px solid ${
+            selected ? (isLight ? colors.black : colors.dark_border) : isLight ? colors.light_bg : colors.dark_bg
+          }`,
+          cursor: 'pointer',
+          transition: '.4s',
+          ':hover': {
+            border: `1px solid ${isLight ? colors.black : colors.dark_border}`
+          }
         }}
         onClick={async (e) => {
           if (!keyring.accounts[0]) {
@@ -99,7 +107,7 @@ function MyItem({ keyring, autoNav }: MyItemProps, ref) {
             </g>
           </svg>
         </div>
-      </Row>
+      </Stack>
     </>
   );
 }

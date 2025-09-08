@@ -1,10 +1,11 @@
 import { SIDE_CHAIN_MAINNET } from '@/shared/constant';
 import { NetworkType } from '@/shared/types';
-import { Column, Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
+import { CheckBox, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
 import { useChangeEnvironmentCallback } from '@/ui/state/environment/hooks';
 import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
+import { Stack } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
 
@@ -29,28 +30,28 @@ export default function NetworkTypeScreen() {
           marginTop: 16
         }}>
         <Column gap={'md'}>
-          <Row
-            rounded
-            style={{
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
+            sx={{
               height: 56,
               padding: '16px 10px',
-              backgroundColor:
-                networkType === NetworkType.MAINNET
-                  ? colors.backgroundChoose
-                  : isLight
-                  ? colors.light_bg
-                  : colors.dark_bg,
+              cursor: 'pointer',
               border: `1px solid ${
                 networkType === NetworkType.MAINNET
-                  ? colors.backgroundChoose
+                  ? isLight
+                    ? colors.light_border
+                    : colors.dark_border
                   : isLight
-                  ? colors.light_border
-                  : colors.dark_border
-              }`
+                  ? colors.light_bg
+                  : colors.dark_bg
+              }`,
+              '&:hover': {
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
+              }
             }}
-            full
-            justifyBetween
-            itemsCenter
             onClick={async () => {
               if (networkType === NetworkType.MAINNET) return;
               await changeEnvironment(NetworkType.MAINNET);
@@ -63,33 +64,33 @@ export default function NetworkTypeScreen() {
             </Row>
             {networkType === NetworkType.MAINNET && (
               <Column>
-                <Icon color={'primary'} contain={'contain'} icon="check-circle" />
+                <CheckBox checked iconSize={16} />
               </Column>
             )}
-          </Row>
+          </Stack>
 
-          <Row
-            rounded
-            style={{
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
+            sx={{
               height: 56,
               padding: '16px 10px',
-              backgroundColor:
-                networkType === NetworkType.TESTNET
-                  ? colors.backgroundChoose
-                  : isLight
-                  ? colors.light_bg
-                  : colors.dark_bg,
+              cursor: 'pointer',
               border: `1px solid ${
                 networkType === NetworkType.TESTNET
-                  ? colors.backgroundChoose
+                  ? isLight
+                    ? colors.light_border
+                    : colors.dark_border
                   : isLight
-                  ? colors.light_border
-                  : colors.dark_border
-              }`
+                  ? colors.light_bg
+                  : colors.dark_bg
+              }`,
+              '&:hover': {
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
+              }
             }}
-            full
-            justifyBetween
-            itemsCenter
             onClick={async () => {
               if (networkType === NetworkType.TESTNET) return;
               await changeEnvironment(NetworkType.TESTNET);
@@ -102,10 +103,10 @@ export default function NetworkTypeScreen() {
             </Row>
             {networkType === NetworkType.TESTNET && (
               <Column>
-                <Icon color={'primary'} contain={'contain'} icon="check-circle" />
+                <CheckBox checked iconSize={16} />
               </Column>
             )}
-          </Row>
+          </Stack>
         </Column>
       </Content>
     </Layout>

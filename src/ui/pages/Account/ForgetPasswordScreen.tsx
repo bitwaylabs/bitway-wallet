@@ -64,7 +64,8 @@ export default function CreateHDWalletScreen() {
         <Column
           style={{
             flex: 1,
-            overflow: 'auto'
+            overflow: 'auto',
+            gap: '10px'
           }}>
           <Row
             justifyCenter
@@ -80,7 +81,7 @@ export default function CreateHDWalletScreen() {
                   animationData
                 }
               }
-              width={180}
+              width={80}
             />
           </Row>
           <Row

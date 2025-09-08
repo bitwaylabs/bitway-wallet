@@ -9,7 +9,11 @@ import { Row } from '../Row';
 export const Popover = ({ children, onClose }: { children: React.ReactNode; onClose?: () => void }) => {
   const isLight = useIsLight();
   return (
-    <div className="popover-container">
+    <div
+      className={`popover-container ${isLight ? 'light' : ''}`}
+      onClick={() => {
+        onClose && onClose();
+      }}>
       <div
         style={{
           backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
@@ -17,6 +21,9 @@ export const Popover = ({ children, onClose }: { children: React.ReactNode; onCl
           padding: 20,
           borderRadius: 15,
           position: 'relative'
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
         }}>
         {onClose && (
           <Row

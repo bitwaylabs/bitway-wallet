@@ -1,6 +1,7 @@
-import { Column, Content, Header, Icon, Layout, Row, Text } from '@/ui/components';
+import { CheckBox, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
+import { Stack } from '@mui/material';
 
 export default function LanguageTypeScreen() {
   const isLight = useIsLight();
@@ -18,38 +19,44 @@ export default function LanguageTypeScreen() {
           marginTop: '16px'
         }}>
         <Column gap={'md'}>
-          <Row
-            rounded
-            style={{
-              padding: '16px 10px'
-            }}
-            full
-            justifyBetween
-            itemsCenter
-            classname={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
+            sx={{
+              padding: '16px 10px',
+              cursor: 'pointer',
+              border: `1px solid ${isLight ? colors.light_bg : colors.dark_bg}`,
+              ':hover': {
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
+              }
+            }}>
             <Row itemsCenter>
               <Text text={'Automatic (Browser default)'} color={isLight ? 'black' : 'white'} />
             </Row>
-          </Row>
+          </Stack>
 
-          <Row
-            rounded
-            style={{
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
+            sx={{
               padding: '16px 10px',
-              backgroundColor: colors.backgroundChoose,
-              border: `1px solid ${colors.backgroundChoose}`
-            }}
-            full
-            justifyBetween
-            itemsCenter
-            classname={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}>
+              cursor: 'pointer',
+              border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+              ':hover': {
+                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
+              }
+            }}>
             <Row itemsCenter>
               <Text text={'English'} color={isLight ? 'black' : 'white'} />
             </Row>
             <Column>
-              <Icon color={'primary'} contain={'contain'} icon="check-circle" />
+              <CheckBox checked iconSize={16} />
             </Column>
-          </Row>
+          </Stack>
         </Column>
       </Content>
     </Layout>
