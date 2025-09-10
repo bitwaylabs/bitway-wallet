@@ -88,7 +88,7 @@ export default function AboutScreen() {
                 <Text preset="regular" text={'Terms of Service'} color={isLight ? 'black' : 'white'}></Text>
                 <Icon
                   onClick={() => {
-                    window.open('https://docs.bitway.com/about/privacy-policy ', '_blank');
+                    window.open('https://docs.bitway.com', '_blank');
                   }}
                   icon={'link'}
                   size={18}
@@ -113,7 +113,7 @@ export default function AboutScreen() {
 
                 <Icon
                   onClick={() => {
-                    window.open('https://docs.bitway.com/about/privacy-policy ', '_blank');
+                    window.open('https://docs.bitway.com ', '_blank');
                   }}
                   icon={'link'}
                   size={18}

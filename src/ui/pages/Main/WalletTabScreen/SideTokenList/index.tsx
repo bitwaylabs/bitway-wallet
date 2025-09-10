@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { CHAINS_ENUM } from '@/shared/constant';
@@ -13,6 +13,26 @@ import { useEnvironment } from '@/ui/state/environment/hooks';
 import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Box, Skeleton, Stack } from '@mui/material';
+
+// 指定的排序规则
+const customOrder = ['BTC', 'BTCT', 'BTW', 'USDC'];
+
+function customSort(data: Array<BalanceItem>) {
+  data.sort((x, y) => {
+    const indexX = customOrder.indexOf(x.asset.symbol);
+    const indexY = customOrder.indexOf(y.asset.symbol);
+
+    if (indexX !== -1 && indexY !== -1) {
+      return indexX - indexY;
+    }
+
+    if (indexX !== -1) return -1;
+    if (indexY !== -1) return 1;
+
+    return x.asset.symbol.localeCompare(y.asset.symbol);
+  });
+  return data;
+}
 
 export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balanceVisible: boolean }) {
   const { sideChain } = useEnvironment();
@@ -183,8 +203,6 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
   );
 }
 
-const STATIC_TOKENS = ['ubtw', 'sat', 'ibc/65D0BEC6DAD96C7F5043D1E54E54B6BB5D5B3AEC3FF6CEBB75B9E059F3580EA3'];
-
 export default function SideTokenList({ balanceVisible }) {
   const currentAccount = useCurrentAccount();
   const isLight = useIsLight();
@@ -195,19 +213,9 @@ export default function SideTokenList({ balanceVisible }) {
 
   const loading = sideLoading || btcLoading;
 
-  const balanceList = [...bitwayBalanceList, ...btcBalanceList];
-
-  const allZeroBalanceList = balanceList.every((item) => !+item.amount);
-
-  const filterList = allZeroBalanceList
-    ? balanceList
-        .filter((item) => STATIC_TOKENS.includes(item.denom))
-        .sort((a, b) => {
-          const aIndex = STATIC_TOKENS.indexOf(a.denom);
-          const bIndex = STATIC_TOKENS.indexOf(b.denom);
-          return aIndex - bIndex;
-        })
-    : balanceList.filter((item) => !!+item.amount).sort((a, b) => +b.totalValue - +a.totalValue);
+  const filterList = useMemo(() => {
+    return customSort([...bitwayBalanceList, ...btcBalanceList]);
+  }, [bitwayBalanceList, btcBalanceList]);
 
   return (
     <Column>
@@ -224,9 +232,9 @@ export default function SideTokenList({ balanceVisible }) {
           />
         </>
       ) : (
-        filterList.map((item) => {
+        filterList.map((item, index) => {
           return (
-            <Fragment key={item.denom + item.asset.chain}>
+            <Fragment key={item.denom + index}>
               <TokenItem token={item} balanceVisible={balanceVisible} />
             </Fragment>
           );

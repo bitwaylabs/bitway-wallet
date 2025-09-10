@@ -100,7 +100,7 @@ export default function CreateHDWalletScreen() {
               }}
             />
             <Text
-              text="Side Wallet does not store your password and cannot assist in recovering it."
+              text="Bitway Wallet does not store your password and cannot assist in recovering it."
               style={{
                 color: isLight ? colors.black : colors.white,
                 opacity: 0.5,

@@ -6,6 +6,7 @@ import { Button, Column, Content, Header, Icon, Input, Layout, LightTooltip, Row
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useSend } from '@/ui/hooks/useSend';
 import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { useResetUiTxCreateScreen, useUpdateUiTxCreateSendSideScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { isValidAddress } from '@/ui/utils';
@@ -15,6 +16,7 @@ export default function RegisterEvmAddress() {
   const setUiState = useUpdateUiTxCreateSendSideScreen();
   const reset = useResetUiTxCreateScreen();
   const { EVM_COLLECTOR, sideChain } = useEnvironment();
+  const isLight = useIsLight();
 
   useEffect(() => {
     setUiState({ base: 'uside', toInfo: { address: EVM_COLLECTOR, domain: '' } });
@@ -78,7 +80,7 @@ export default function RegisterEvmAddress() {
                     cursor: 'pointer',
                     transition: '.4s',
                     ':hover': {
-                      color: colors.white
+                      color: isLight ? colors.black : colors.white
                     }
                   }}>
                   Burn Address

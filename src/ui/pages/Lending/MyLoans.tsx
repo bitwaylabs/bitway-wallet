@@ -124,11 +124,11 @@ export default function MyLoansScreen() {
                   onClick={() => {
                     navigate('LoanDetailScreen', { loan_id: item.vault_address });
                   }}
-                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   sx={{
                     padding: '16px 16px 0',
                     borderRadius: '8px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    backgroundColor: isLight ? colors.light_bg : colors.dark_bg
                   }}>
                   <Row full justifyBetween itemsCenter>
                     <Row itemsCenter gap="md">

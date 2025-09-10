@@ -747,7 +747,7 @@ export default function SignPsbt({
               color={isLight ? 'black' : 'white'}
             />
             <Text
-              text="Your access to this page has been restricted by Side Wallet as it might be unsafe."
+              text="Your access to this page has been restricted by Bitway Wallet as it might be unsafe."
               mt="md"
               color={isLight ? 'black' : 'white'}
             />
@@ -756,7 +756,7 @@ export default function SignPsbt({
 
         <Footer>
           <Row full>
-            <Button text="Reject (blocked by Side Wallet)" preset="danger" onClick={handleCancel} full />
+            <Button text="Reject (blocked by Bitway Wallet)" preset="danger" onClick={handleCancel} full />
           </Row>
         </Footer>
       </Layout>

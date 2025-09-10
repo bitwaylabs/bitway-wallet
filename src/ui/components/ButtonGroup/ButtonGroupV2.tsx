@@ -41,7 +41,8 @@ export function ButtonGroupV2(props: IButtonGroupProps) {
           borderRadius: '10px',
           padding: '6px',
           gap: '0',
-          position: 'relative'
+          position: 'relative',
+          border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
         }}>
         <div
           style={{

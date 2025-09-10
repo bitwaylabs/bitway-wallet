@@ -8,12 +8,12 @@ export const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   const isLight = useIsLight();
   return {
     [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: isLight ? colors.white : colors.black,
+      backgroundColor: isLight ? colors.white : colors.dark_bg,
       color: isLight ? colors.black : colors.white,
       boxShadow: theme.shadows[1],
       fontSize: 11,
       '& .MuiTooltip-arrow': {
-        color: isLight ? colors.black : colors.white
+        color: isLight ? colors.black : colors.dark_bg
       }
     }
   };

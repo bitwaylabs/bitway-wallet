@@ -472,7 +472,14 @@ export default function BridgeDetail() {
                       <Typography
                         sx={{
                           fontSize: '12px',
-                          color: colors.grey12
+                          color: colors.grey12,
+                          textDecoration: 'dotted underline',
+                          textUnderlineOffset: '2px',
+                          cursor: 'pointer',
+                          transition: '.4s',
+                          ':hover': {
+                            color: isLight ? colors.black : colors.white
+                          }
                         }}>
                         {item.label}
                       </Typography>

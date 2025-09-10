@@ -385,14 +385,14 @@ export const SERVICE_BASE_URL_TESTNET = 'https://api.bitway.com/indexer-station-
 // MAINNET
 export const SERVICE_BASE_URL_MAINNET = 'https://api.bitway.com/indexer-station-mainnet';
 export const SIDE_CHAIN_MAINNET: IChain = {
-  chainID: 'sidechain-1',
+  chainID: 'bitway-1',
   name: 'Bitway',
   prefix: 'bc',
-  rpcUrl: 'https://rpc.side.one',
-  restUrl: 'https://rest.side.one',
-  denom: 'uside',
+  rpcUrl: 'https://rpc.bitway.com',
+  restUrl: 'https://rest.bitway.com',
+  denom: 'ubtw',
   hdPath: "m/44'/118/0'/0/0",
   logo: 'https://api.bitway.com/static/token/logo/bitway.png',
   faucetUrl: '',
-  explorerUrl: 'https://app.side.one/explorer'
+  explorerUrl: 'https://app.bitway.com/explorer'
 };

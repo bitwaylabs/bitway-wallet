@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import Lottie from 'react-lottie';
 
-import { Button, Column, Content, Header, Image, Input, Layout, Text } from '@/ui/components';
+import * as animationData from '@/ui/assets/lottie/auto-lock.json';
+import { Button, Column, Content, Header, Input, Layout, Text } from '@/ui/components';
 import { useTools } from '@/ui/components/ActionComponent';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAppDispatch } from '@/ui/state/hooks';
@@ -31,7 +33,14 @@ export default function AutoLockScreen() {
             paddingBottom: '25px'
           }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Image src="/images/img/auto-lock.png" width={90} height={90} />
+            <Lottie
+              loop={true}
+              options={{
+                autoplay: true,
+                animationData
+              }}
+              width={90}
+            />
           </div>
 
           <Text

@@ -101,10 +101,10 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
       onClick={() => {
         navigate('EarnRedeemScreen', { poolData: item });
       }}
-      className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
       sx={{
-        padding: '16px 16px 0',
-        cursor: 'pointer'
+        padding: '16px 16px',
+        cursor: 'pointer',
+        backgroundColor: isLight ? colors.light_bg : colors.dark_bg
       }}>
       <Row full justifyBetween itemsCenter>
         <Row itemsCenter gap="md">

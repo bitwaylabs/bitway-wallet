@@ -190,7 +190,7 @@ export default function SettingsTabScreen() {
           </g>
           <defs>
             <clipPath id="clip0_48_7983">
-              <rect width="16" height="16" fill={isLight ? colors.white : colors.black} />
+              <rect width="16" height="16" fill={isLight ? colors.black : colors.white} />
             </clipPath>
           </defs>
         </svg>
