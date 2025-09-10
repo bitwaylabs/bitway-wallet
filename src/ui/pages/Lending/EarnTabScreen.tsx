@@ -226,7 +226,7 @@ export default function EarnTabScreen() {
                 }
               }}
               onClick={() => {
-                window.open(`${SIDE_STATION_URL}/bridge/portal`, '_blank');
+                window.open(`${SIDE_STATION_URL}/transfer/peg`, '_blank');
               }}>
               Bridge Here
             </Stack>

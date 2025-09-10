@@ -138,7 +138,7 @@ export default function BridgeTabScreen() {
         tooltip={`This bridge requires ${confirmations} confirmations to ensure the transaction’s irreversibility and security.`}></DetailRow>
 
       <DetailRow
-        text={'Bridge Fee'}
+        text={'Peg Fee'}
         value={
           <>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -197,7 +197,7 @@ export default function BridgeTabScreen() {
       <DetailRow text={'Est. Bridge Time'} value={'About 10 minutes'}></DetailRow>
 
       <DetailRow
-        text={'Bridge Fee'}
+        text={'Peg Fee'}
         value={
           <>
             <Typography fontSize={'14px'} color={colors.grey12}>

@@ -342,7 +342,7 @@ export default function BridgeTabScreen() {
                   }
                 }}
                 onClick={() => {
-                  window.open(`${SIDE_STATION_URL}/bridge/portal`);
+                  window.open(`${SIDE_STATION_URL}/transfer/peg`);
                 }}>
                 Bridge on web app
               </Typography>

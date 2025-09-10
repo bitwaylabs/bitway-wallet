@@ -177,7 +177,7 @@ export function useGetBridgeButtonTips() {
     if (fromAsset?.denom === bridgeFeeAssetInfo?.denom && +bridgeAmount === +balance) {
       return {
         transferBtcDisabled: true,
-        transferBtcButtonTips: 'Please reserve sufficient funds for network and bridge fees.'
+        transferBtcButtonTips: 'Please reserve sufficient funds for network and peg fees.'
       };
     }
 

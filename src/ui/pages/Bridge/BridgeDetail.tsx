@@ -171,7 +171,7 @@ export default function BridgeDetail() {
       tip: 'xxx'
     },
     {
-      label: 'Bridge Fees',
+      label: 'Peg Fees',
       value: (
         <>
           <Text

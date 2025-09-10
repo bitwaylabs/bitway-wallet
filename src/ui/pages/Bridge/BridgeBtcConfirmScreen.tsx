@@ -217,7 +217,7 @@ export default function BridgeBtcConfirmScreen() {
         tooltip={`This bridge requires ${confirmations} confirmations to ensure the transaction’s irreversibility and security.`}></DetailRow>
 
       <DetailRow
-        text={'Bridge Fees'}
+        text={'Peg Fees'}
         value={
           <>
             <Typography fontSize={'14px'} color={colors.grey12}>
@@ -416,7 +416,7 @@ export default function BridgeBtcConfirmScreen() {
       <DetailRow text={'Est. Bridge Time'} value={'About 10 minutes'}></DetailRow>
 
       <DetailRow
-        text={'Bridge Fees'}
+        text={'Peg Fees'}
         value={
           <>
             <Typography fontSize={'14px'} color={colors.grey12}>
