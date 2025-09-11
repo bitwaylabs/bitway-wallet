@@ -383,7 +383,7 @@ export const DEFAULT_LOCKTIME = 5;
 export const SERVICE_BASE_URL_TESTNET = 'https://api.bitway.com/indexer-station-devnet';
 
 // MAINNET
-export const SERVICE_BASE_URL_MAINNET = 'https://api.bitway.com/indexer-station-mainnet';
+export const SERVICE_BASE_URL_MAINNET = 'https://api.bitway.com/bitway-mainnet';
 export const SIDE_CHAIN_MAINNET: IChain = {
   chainID: 'bitway-1',
   name: 'Bitway',
