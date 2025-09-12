@@ -144,3 +144,92 @@ export function calcToTime(timestamp: number | string) {
     text
   };
 }
+
+export enum TimePeriod {
+  YEAR = 'Y',
+  MONTH = 'M',
+  WEEK = 'W',
+  DAY = 'days',
+  HOUR = 'H',
+  MINUTE = 'm',
+  SECOND = 's'
+}
+
+export function convertTimePeriod(period: string): {
+  value: number;
+  period: TimePeriod;
+  label: string;
+} {
+  if (period.includes(TimePeriod.SECOND)) {
+    const [sec] = period.split(TimePeriod.SECOND);
+    const seconds = +sec;
+
+    // if (seconds >= 31536000) {
+    //   // 365天
+    //   const years = Math.floor(seconds / 31536000);
+    //   return `${years}Y`;
+    // } else
+    if (seconds >= 2592000) {
+      // 30天
+      const months = Math.floor(seconds / 2592000);
+      return {
+        value: months,
+        period: TimePeriod.MONTH,
+        label: `${months}${TimePeriod.MONTH}`
+      };
+    } else if (seconds >= 604800) {
+      // 7天
+      const weeks = Math.floor(seconds / 604800);
+      return {
+        value: weeks,
+        period: TimePeriod.WEEK,
+        label: `${weeks}${TimePeriod.WEEK}`
+      };
+    } else if (seconds >= 86400 * 2) {
+      // 48小时
+      const days = Math.floor(seconds / 86400);
+      return {
+        value: days,
+        period: TimePeriod.DAY,
+        label: `${days}${TimePeriod.DAY}`
+      };
+    } else if (seconds >= 86400) {
+      // 24小时
+      const days = Math.floor(seconds / 86400);
+      return {
+        value: days,
+        period: TimePeriod.DAY,
+        label: `${days}${TimePeriod.DAY}`
+      };
+    } else if (seconds >= 3600) {
+      // 60分钟
+      const hours = Math.floor(seconds / 3600);
+      return {
+        value: hours,
+        period: TimePeriod.HOUR,
+        label: `${hours}${TimePeriod.HOUR}`
+      };
+    } else if (seconds >= 60) {
+      // 60秒
+      const minutes = Math.floor(seconds / 60);
+      return {
+        value: minutes,
+        period: TimePeriod.MINUTE,
+        label: `${minutes}${TimePeriod.MINUTE}`
+      };
+    } else {
+      return {
+        value: seconds,
+        period: TimePeriod.SECOND,
+        label: `${seconds}${TimePeriod.SECOND}`
+      };
+    }
+  }
+
+  // 如果不是秒格式，直接返回原值
+  return {
+    value: 0,
+    period: TimePeriod.SECOND,
+    label: `${0}${TimePeriod.SECOND}`
+  };
+}

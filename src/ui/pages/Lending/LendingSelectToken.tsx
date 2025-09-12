@@ -17,7 +17,6 @@ interface LendingSelectTokenLocation {
 
 export default function LendingSelectTokenScreen() {
   const { poolsData } = useLocationState<LendingSelectTokenLocation>();
-  const isLight = useIsLight();
 
   return (
     <Layout>

@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
-import 'swiper/css';
+import { Fragment, PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-import { Button, Column, Content, Footer, Icon, Image, Layout, LightTooltip, Row, Text } from '@/ui/components';
+import { Button, Content, Footer, Icon, Image, Layout, LightTooltip, Row } from '@/ui/components';
 import { CoinInput } from '@/ui/components/CoinInput';
 import { NavTabBar } from '@/ui/components/NavTabBar';
+import { Slider } from '@/ui/components/Slider';
 import {
   useCreateLoan,
   useGetDlcEventCount,
@@ -19,245 +19,258 @@ import { useCurrentAccount } from '@/ui/state/accounts/hooks';
 import { useLendingState } from '@/ui/state/lending/hook';
 import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
-import { formatUnitAmount, getTruncate } from '@/ui/utils';
-import { toUnitAmount } from '@/ui/utils/formatter';
-import { Box, Checkbox, Popover, Stack, Typography } from '@mui/material';
+import { formatUnitAmount, getTruncate, parseUnitAmount } from '@/ui/utils';
+import { convertTimePeriod, TimePeriod } from '@/ui/utils/formatter';
+import { Box, BoxProps, Link, Popover, Stack, Typography } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
 
-export default function LendingTanScreen() {
-  const currentAccount = useCurrentAccount();
+const periodTextMap: Record<TimePeriod, string> = {
+  Y: 'Years',
+  M: 'Months',
+  W: 'Weeks',
+  days: 'Days',
+  H: 'Hours',
+  m: 'Minutes',
+  s: 'Seconds'
+};
+
+const BaseBox = (props: PropsWithChildren & BoxProps) => {
+  const { sx, ...restProps } = props;
   const isLight = useIsLight();
+  return (
+    <Box
+      sx={{
+        borderRadius: '10px',
+        background: isLight ? colors.light_bg : colors.dark_bg,
+        ...sx
+      }}
+      {...restProps}>
+      {props.children}
+    </Box>
+  );
+};
 
-  const [collateralAmount, setcollateralAmount] = useState('');
-  const [isHover, setIsHover] = useState(false);
-  const [maturity, setmaturity] = useState('');
-
-  const { poolTokenDenom } = useLendingState();
-
-  const navigator = useNavigate();
-
-  const [borrowAmount, setBorrowAmount] = useState('');
+export default function Index() {
+  const isLight = useIsLight();
+  const navigate = useNavigate();
+  const currentAccount = useCurrentAccount();
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
-
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
-
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-  const open = !!anchorEl;
-
-  const satBalance = bitcoinBalanceList.find((b) => b.denom === 'sat');
-
-  const poolTokenBalance = balanceList.find((b) => b.denom == poolTokenDenom);
-
+  const { poolTokenDenom } = useLendingState();
+  const [bitcoinAmount, setBitcoinAmount] = useState('');
   const { data: poolsData } = useGetPoolsData();
-
-  const poolData = poolsData.find((p) => p.token.denom === poolTokenBalance?.denom);
-  const requestFeeToken = balanceList.find((item) => item.denom === poolData?.baseData.config.request_fee.denom);
-
+  const poolData = poolsData.find((p) => p.token.denom === poolTokenDenom);
+  const { dlcPrice } = useGetDlcPrice(poolData?.baseData.config);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [currentLtv, setCurrentLtv] = useState(80);
   useEffect(() => {
     if (!poolData) return;
-
-    setmaturity(poolData?.baseData.config.tranches[0].maturity);
+    setCurrentLtv(poolData.baseData.config.max_ltv * 100);
   }, [poolData]);
 
-  const collateralValue = useMemo(() => {
-    if (!collateralAmount || !satBalance) return '0';
-    const value = BigNumber(collateralAmount).times(satBalance.denomPrice).toString();
-    return value;
-  }, [collateralAmount, satBalance]);
+  const { bitcoinToken, requestFeeToken } = useMemo(() => {
+    const bitcoinToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
+    const requestFeeToken = balanceList.find((item) => item.denom === poolData?.baseData.config.request_fee.denom);
+    return { bitcoinToken, requestFeeToken };
+  }, [bitcoinBalanceList, balanceList, poolData?.baseData.config.request_fee.denom]);
 
-  const borrowValue = useMemo(() => {
-    if (!borrowAmount || !poolTokenBalance) return '0';
-    const value = BigNumber(borrowAmount).times(poolTokenBalance.denomPrice).toString();
+  const borrowTokenAmount = useMemo(() => {
+    if (!bitcoinAmount || !dlcPrice || !currentLtv) return '0';
+    return new BigNumber(bitcoinAmount)
+      .multipliedBy(dlcPrice)
+      .multipliedBy(currentLtv)
+      .div(100)
+      .toFixed(poolData?.token.asset.precision || 6, BigNumber.ROUND_DOWN);
+  }, [bitcoinAmount, dlcPrice, currentLtv]);
 
-    return value;
-  }, [borrowAmount, poolTokenBalance]);
+  const durationMap = useMemo(() => {
+    const _durationMap: Record<
+      TimePeriod,
+      Array<{
+        maturity: string;
+        value: number;
+        index: number;
+        borrow_apr: number;
+      }>
+    > = {};
+    (poolData?.baseData.config.tranches || [])
+      .sort((a, b) => +b.maturity - +a.maturity)
+      .forEach((item) => {
+        const { value, period } = convertTimePeriod(`${item.maturity}s`);
+        if (_durationMap[period]) {
+          _durationMap[period].push({
+            maturity: item.maturity,
+            value,
+            index: _durationMap[period].length,
+            borrow_apr: item.borrow_apr
+          });
+        } else {
+          _durationMap[period] = [
+            {
+              maturity: item.maturity,
+              value,
+              index: 0,
+              borrow_apr: item.borrow_apr
+            }
+          ];
+        }
+      });
+    return _durationMap;
+  }, [poolData]);
+
+  const [durationData, setDurationData] = useState<
+    | {
+        maturity: string;
+        value: number;
+        period: TimePeriod;
+        index: number;
+        borrow_apr: number;
+      }
+    | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const periodArr = Object.keys(durationMap) as TimePeriod[];
+    if (periodArr.length > 0) {
+      const period = periodArr[0];
+      const index = 0;
+      setDurationData({
+        maturity: durationMap[period][index].maturity,
+        value: durationMap[period][index].value,
+        period: period,
+        index: index,
+        borrow_apr: durationMap[period][index].borrow_apr
+      });
+    }
+  }, [durationMap]);
+
+  const annualPercentageRate = useMemo(() => {
+    if (!durationData || durationData.index === -1) return '-';
+    return new BigNumber(365)
+      .multipliedBy(24)
+      .multipliedBy(60)
+      .multipliedBy(60)
+      .div(durationData.maturity)
+      .multipliedBy(poolData?.baseData.config.origination_fee_factor || '0')
+      .plus(durationData.borrow_apr)
+      .multipliedBy(100)
+      .toFixed(2, BigNumber.ROUND_DOWN);
+  }, [durationData, poolData]);
 
   const { liquidationPrice } = useGetLiquidationPrice({
-    bitcoinAmount: collateralAmount,
+    bitcoinAmount,
     borrowToken: poolData?.token,
-    borrowTokenAmount: borrowAmount,
+    borrowTokenAmount,
     poolId: poolData?.baseData.id || '',
-    maturity: maturity
+    maturity: durationData?.maturity || ''
   });
 
   const { data: dlcEventCount } = useGetDlcEventCount();
 
-  const { dlcPrice } = useGetDlcPrice(poolData?.baseData.config);
-
-  // 最大可借数量: 比特币数量 * 比特币相对价格(BTC/xx) * 最大LTV
-  const { borrowMaxAmount } = useMemo(() => {
-    let borrowMaxAmount = '0';
-    try {
-      if (!satBalance || !poolData?.token) {
-        return {
-          borrowMaxAmount: '0'
-        };
-      }
-      borrowMaxAmount = new BigNumber(collateralAmount || '0')
-        .multipliedBy(dlcPrice || '0')
-        .multipliedBy(poolData.baseData.config.max_ltv)
-        .toFixed(+poolData.token.asset.precision, BigNumber.ROUND_DOWN);
-    } catch (error) {
-      return {
-        borrowMaxAmount: '0'
-      };
-    }
-
-    return { borrowMaxAmount };
-  }, [collateralAmount, borrowAmount, poolData, satBalance, poolTokenBalance]);
-
   // 健康因子: 比特币数量 * 比特币相对价格(BTC/xx) * 清算LTV / 借入数量
   const { healthFactor } = useMemo(() => {
-    if (BigNumber(collateralAmount || 0).eq(0) || BigNumber(borrowAmount || 0).eq(0) || !poolData?.baseData.config) {
+    if (BigNumber(bitcoinAmount || 0).eq(0) || BigNumber(borrowTokenAmount || 0).eq(0) || !poolData?.baseData.config) {
       return {
         healthFactor: '-'
       };
     }
     return {
-      healthFactor: new BigNumber(collateralAmount)
-        .times(dlcPrice || 0)
+      healthFactor: new BigNumber(bitcoinAmount)
+        .times(dlcPrice)
         .times(poolData?.baseData.config.liquidation_threshold || 0)
-        .div(borrowAmount || 1)
+        .div(borrowTokenAmount || 1)
         .toFixed(2)
     };
-  }, [borrowAmount, poolTokenBalance, collateralAmount, poolData]);
+  }, [borrowTokenAmount, bitcoinAmount, poolData?.token.denomPrice, bitcoinToken?.denomPrice, poolData?.baseData]);
 
-  const borrow_apr = poolData?.baseData.config.tranches.find((item) => item.maturity === maturity)?.borrow_apr || 0;
+  const { createLoan, loading, referralCode } = useCreateLoan();
 
-  const currentLtv = useMemo(
-    () =>
-      new BigNumber(borrowAmount || 0)
-        .div(+collateralAmount || 1)
-        .div(dlcPrice || '1')
-        .multipliedBy(100)
-        .toFixed(2),
-    [borrowAmount, collateralAmount, dlcPrice]
+  const minBorrowAmount = formatUnitAmount(
+    poolData?.baseData.config.min_borrow_amount || '0',
+    poolData?.token.asset.exponent || 6
+  );
+  const maxBorrowAmount = formatUnitAmount(
+    poolData?.baseData.config.max_borrow_amount || '0',
+    poolData?.token.asset.exponent || 6
   );
 
-  const { loading, createLoan, referralCode } = useCreateLoan();
+  const { isDisabled, buttonText } = useMemo(() => {
+    let isDisabled = false,
+      buttonText = 'Request Loan';
+    if (loading) {
+      isDisabled = true;
+    } else if (poolData?.baseData.config.paused) {
+      isDisabled = true;
+      buttonText = 'Pool is paused';
+    } else if (bitcoinAmount && +bitcoinAmount === +(bitcoinToken?.formatAmount || '0')) {
+      isDisabled = true;
+      buttonText = 'Insufficient for Network Fees';
+    } else if (!+bitcoinAmount || !+borrowTokenAmount) {
+      isDisabled = true;
+    } else if (+borrowTokenAmount < +minBorrowAmount) {
+      isDisabled = true;
+      buttonText = `Min borrow amount: ${minBorrowAmount} ${poolData?.token.asset.symbol}`;
+    } else if (+borrowTokenAmount > +maxBorrowAmount) {
+      isDisabled = true;
+      buttonText = `Max borrow amount: ${maxBorrowAmount} ${poolData?.token.asset.symbol}`;
+    } else if (+(requestFeeToken?.amount || '0') < +(poolData?.baseData.config.request_fee.amount || '0')) {
+      isDisabled = true;
+      buttonText = 'Insufficient BTW Balance';
+    } else if (!dlcEventCount || +dlcEventCount?.count === 0) {
+      isDisabled = true;
+      buttonText = 'No available DLC events';
+    }
+    return { isDisabled, buttonText };
+  }, [
+    loading,
+    bitcoinAmount,
+    borrowTokenAmount,
+    dlcEventCount,
+    healthFactor,
+    poolData,
+    minBorrowAmount,
+    maxBorrowAmount,
+    requestFeeToken
+  ]);
 
   const data = [
     {
-      label: 'Referral Code',
-      value: referralCode,
-      tips: ''
-    },
-    {
       label: 'Health Factor',
-      value: (
-        <Typography
-          sx={{
-            fontSize: '12px',
-            color:
-              healthFactor === '-'
-                ? colors.white
-                : +healthFactor > 2
-                ? colors.green
-                : +healthFactor <= 1.2
-                ? colors.red
-                : +healthFactor > 1.5
-                ? colors.yellow
-                : colors.main
-          }}>
-          {healthFactor}
-        </Typography>
-      ),
-      tip: 'A measure of how safe your loan is. A value above 1.0 means you’re safe from liquidation'
-    },
-    {
-      label: 'Current LTV',
-      value: (
-        <Typography
-          sx={{
-            fontSize: '12px',
-            color:
-              healthFactor === '-'
-                ? colors.white
-                : +healthFactor > 2
-                ? colors.green
-                : +healthFactor <= 1.2
-                ? colors.red
-                : +healthFactor > 1.5
-                ? colors.yellow
-                : colors.main
-          }}>
-          {`${new BigNumber(borrowAmount || 0)
-            .div(+collateralAmount || 1)
-            .div(dlcPrice || '1')
-            .multipliedBy(100)
-            .toFixed(2)}%`}
-        </Typography>
-      ),
-      tip: 'The ratio between your input borrow amount and your collateral value'
-    },
-    {
-      label: 'Max LTV',
-      value: poolData?.baseData.config.max_ltv ? (
-        <>
+      value:
+        healthFactor !== '-' ? (
           <Typography
             sx={{
-              fontSize: '12px',
-              color: colors.grey12
+              fontSize: '14px',
+              color:
+                healthFactor === '-'
+                  ? isLight
+                    ? colors.black
+                    : colors.white
+                  : +healthFactor > 2
+                  ? colors.green
+                  : +healthFactor <= 1.2
+                  ? colors.red
+                  : +healthFactor > 1.5
+                  ? colors.yellow
+                  : colors.main
             }}>
-            {`${poolData?.baseData.config.max_ltv * 100}%`}
+            {healthFactor}
           </Typography>
-        </>
-      ) : (
-        '-'
-      ),
-      tip: 'The maximum loan-to-value ratio you’re allowed to borrow'
+        ) : (
+          '-'
+        ),
+      tips: 'A measure of how safe your loan is. A value above 1.0 means you’re safe from liquidation'
     },
     {
-      label: 'Liquidation LTV',
-      value: (
-        <Typography
-          sx={{
-            fontSize: '12px',
-            color: colors.grey12
-          }}>
-          {!poolData ? '-' : `${poolData?.baseData.config.liquidation_threshold * 100}%`}
-        </Typography>
-      ),
-      tip: 'The LTV threshold at which your position becomes eligible for liquidation'
+      label: `Liquidation Price (${
+        +bitcoinAmount && +borrowTokenAmount && liquidationPrice ? liquidationPrice?.pair : '-'
+      })`,
+      value: `${liquidationPrice ? getTruncate(liquidationPrice?.price, 8) : '-'}`,
+      tips: 'The collateral price at which liquidation would be triggered'
     },
     {
-      label: `Liquidation Price (${liquidationPrice?.pair})`,
-      value: `${getTruncate(liquidationPrice?.price || '0', 8)}`,
-      tip: 'The collateral price at which liquidation would be triggered'
-    },
-    {
-      label: 'Interest Rate',
-      value: `${new BigNumber(borrow_apr).multipliedBy(100).toFixed(2)}%`,
-      tip: 'The annual percentage rate (APR) applied to your loan'
-    },
-    {
-      label: 'Max Interest',
-      value: (
-        <>
-          {new BigNumber(borrowAmount || 0)
-            .multipliedBy(poolData?.borrowApy || 0)
-            .div(100)
-            .div(365)
-            .multipliedBy(maturity || 0)
-            .div(60)
-            .div(60)
-            .div(24)
-            .toFixed(poolData?.token.asset.precision || 0)}
-          <small
-            style={{
-              fontSize: '100%',
-              color: colors.grey12,
-              marginLeft: '2px'
-            }}>
-            {poolData?.token.asset.symbol}
-          </small>
-        </>
-      ),
-      tip: 'The maximum interest that can accrue on your loan'
-    },
-    {
-      label: 'Request Fees',
+      label: 'Request Fee',
       value: (
         <>
           {formatUnitAmount(
@@ -274,87 +287,41 @@ export default function LendingTanScreen() {
           </small>
         </>
       ),
-      tip: 'Upfront fees required to initiate the loan'
+      tips: 'Upfront fees required to initiate the loan'
     },
     {
-      label: 'Origination Fee',
-      value: (
-        <>
-          {`${new BigNumber(poolData?.baseData.config.origination_fee_factor || '0').multipliedBy(100).toFixed(2)}%`}
-          &nbsp;
-          <small
-            style={{
-              fontSize: '100%',
-              color: colors.grey12,
-              marginRight: '2px'
-            }}>
-            (
-            {getTruncate(
-              new BigNumber(borrowAmount)
-                .multipliedBy(poolData?.baseData.config.origination_fee_factor || '0')
-                .toFixed(poolData?.token.asset.precision || 6),
-              poolData?.token.asset.precision || 6
-            )}
-          </small>
-          <small
-            style={{
-              fontSize: '100%',
-              color: colors.grey12
-            }}>
-            {poolData?.token.asset.symbol})
-          </small>
-        </>
-      ),
-      tips: 'Upfront fees required to initiate the loan'
+      label: 'Referral',
+      value: referralCode || '-',
+      tips: ''
     }
   ];
 
-  const [isChecked, setIsChecked] = useState(false);
-  const [isHoverMaturity, setIsHoverMaturity] = useState(false);
-
-  const { isDisabled, buttonText } = useMemo(() => {
-    let isDisabled = false,
-      buttonText = 'Request Loan';
-    if (poolData?.baseData.config.paused) {
-      isDisabled = true;
-      buttonText = 'Pool is paused';
-    } else if (collateralAmount && +collateralAmount === +(satBalance?.formatAmount || '0')) {
-      isDisabled = true;
-      buttonText = 'Insufficient for Network Fees';
-    } else if (!+collateralAmount || !+borrowAmount) {
-      isDisabled = true;
-    } else if (!dlcEventCount || +dlcEventCount?.count === 0) {
-      isDisabled = true;
-      buttonText = 'No available DLC events';
-    } else if (healthFactor === '-' || (+healthFactor <= 1.2 && !isChecked) || +currentLtv >= 80) {
-      isDisabled = true;
-    } else if (
-      +borrowAmount <
-      +formatUnitAmount(poolData?.baseData.config.min_borrow_amount || '0', poolData?.token.asset.exponent || '6')
-    ) {
-      isDisabled = true;
-      buttonText = `Min borrow amount: ${formatUnitAmount(
-        poolData?.baseData.config.min_borrow_amount || '0',
-        poolData?.token.asset.exponent || '6'
-      )}`;
-    } else if (
-      +borrowAmount >
-      +formatUnitAmount(poolData?.baseData.config.max_borrow_amount || '0', poolData?.token.asset.exponent || '6')
-    ) {
-      isDisabled = true;
-      buttonText = `Max borrow amount: ${formatUnitAmount(
-        poolData?.baseData.config.min_borrow_amount || '0',
-        poolData?.token.asset.exponent || '6'
-      )}`;
-    } else if (+(requestFeeToken?.amount || '0') < +(poolData?.baseData.config.request_fee.amount || '0')) {
-      isDisabled = true;
-      buttonText = 'Insufficient BTW Balance';
+  const loanData = [
+    {
+      label: `Loan Amount (in ${poolData?.token.asset.symbol})`,
+      value: bitcoinAmount ? getTruncate(borrowTokenAmount, poolData?.token.asset.precision || 6) : '-'
+    },
+    {
+      label: 'Annual Percentage Rate',
+      tips: `(APR includes an ${new BigNumber(durationData?.borrow_apr || 0)
+        .multipliedBy(100)
+        .toFixed(2)}% annual interest rate plus a ${new BigNumber(
+        poolData?.baseData.config.origination_fee_factor || '0'
+      )
+        .multipliedBy(100)
+        .toFixed(2)}% origination fee, annualized.)`,
+      value: `${annualPercentageRate}%`
+    },
+    {
+      label: `Origination Fee (in ${poolData?.token.asset.symbol})`,
+      tips: '(deducted from disbursement at origination)',
+      value: bitcoinAmount
+        ? `${new BigNumber(poolData?.baseData.config.origination_fee_factor || '0')
+            .multipliedBy(borrowTokenAmount)
+            .toFixed(poolData?.token.asset.precision || 6, BigNumber.ROUND_DOWN)}`
+        : '-'
     }
-    return {
-      isDisabled,
-      buttonText
-    };
-  }, [loading, poolData, collateralAmount, borrowAmount, dlcEventCount, healthFactor, isChecked]);
+  ];
 
   return (
     <>
@@ -365,294 +332,500 @@ export default function LendingTanScreen() {
             gap: '0'
           }}>
           <Stack>
-            <Row full justifyBetween itemsCenter mt="lg">
-              <Text
-                color={isLight ? 'black' : 'white'}
-                size="lg"
-                style={{
-                  fontWeight: 600
-                }}>
-                Borrow
-              </Text>
-
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap="4px"
-                onClick={() => {
-                  navigator('MyLoansScreen');
-                }}
-                sx={{
-                  cursor: 'pointer',
-                  p: {
-                    color: colors.grey12,
-                    transition: '.4s'
-                  },
-                  div: {
-                    transition: '.4s'
-                  },
-                  ':hover': {
-                    p: {
+            <BaseBox
+              sx={{
+                p: '16px'
+              }}>
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Stack direction="row" alignItems="center" gap="4px">
+                  <Typography
+                    sx={{
+                      fontSize: '12px',
                       color: isLight ? colors.black : colors.white
-                    },
-                    div: {
-                      div: {
-                        color: `${isLight ? colors.black : colors.white} !important`,
-                        bgcolor: `${isLight ? colors.black : colors.white} !important`
-                      }
-                    }
-                  }
-                }}>
-                <Typography
-                  sx={{
-                    fontSize: '12px',
-                    mt: '-1px'
-                  }}>
-                  My Loans
-                </Typography>
-                <Icon icon="arrow-right" color="white_muted" size={16} />
+                    }}>
+                    Collateral
+                  </Typography>
+                  {bitcoinAmount ? (
+                    <Typography
+                      sx={{
+                        fontSize: '12px',
+                        color: colors.grey12
+                      }}>
+                      ~$
+                      {getTruncate(
+                        new BigNumber(bitcoinToken?.denomPrice || '0')
+                          .multipliedBy(bitcoinAmount || 0)
+                          .toFixed(2, BigNumber.ROUND_DOWN),
+                        2
+                      )}
+                    </Typography>
+                  ) : null}
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                  <Icon icon="wallet-icon" color="white_muted" size={12} />
+                  &nbsp;
+                  <Typography
+                    sx={{
+                      fontSize: '10px',
+                      color: colors.grey12
+                    }}>
+                    {getTruncate(bitcoinToken?.formatAmount || '0', bitcoinToken?.asset.precision || 8)}
+                  </Typography>
+                </Stack>
               </Stack>
-            </Row>
-            <Row full justifyBetween itemsCenter mt="lg">
-              <Row itemsCenter>
-                <Text color={isLight ? 'black' : 'white'} size="xs">
-                  Collateral
-                </Text>
-                {+collateralValue ? (
-                  <Text
-                    style={{
-                      maxWidth: '90px',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      textAlign: 'right'
-                    }}
-                    size="xs"
-                    color="white_muted">
-                    ~${getTruncate(collateralValue, 2)}
-                  </Text>
-                ) : null}
-              </Row>
-
-              <Row itemsCenter gap="sm">
-                <Icon color="white_muted" icon="wallet-icon" size={12} />
-                <Text text={BigNumber(satBalance?.formatAmount || '0').toFormat()} color="white_muted" size="xs"></Text>
-              </Row>
-            </Row>
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{
-                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
-                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
-                borderRadius: '10px',
-                marginTop: '4px',
-                p: '8px 10px',
-                transition: '.4s',
-                ':hover': {
-                  border: `1px solid ${isLight ? colors.black : colors.white}`
-                }
-              }}>
-              <CoinInput
-                size={22}
-                coin={{
-                  amount: collateralAmount,
-                  denom: 'sat'
-                }}
-                max={satBalance?.formatAmount || '0'}
-                onChange={(value) => {
-                  setcollateralAmount(value);
-                  setBorrowAmount('');
-                }}
-              />
-              <Row
-                style={{
-                  flexShrink: 0
-                }}>
-                <Image src="/images/icons/btc.svg" height={24} width={24}></Image>
-                <Text text={satBalance?.asset.symbol || 'BTC'} color={isLight ? 'black' : 'white'} size="md"></Text>
-              </Row>
-            </Stack>
-            <Row full justifyBetween itemsCenter mt="medium">
-              <Row itemsCenter>
-                <Text color={isLight ? 'black' : 'white'} size="xs">
-                  I want to borrow
-                </Text>
-                {+borrowValue ? (
-                  <Text
-                    style={{
-                      maxWidth: '90px',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      textAlign: 'right'
-                    }}
-                    size="xs"
-                    color="white_muted">
-                    ~${getTruncate(borrowValue, 2)}
-                  </Text>
-                ) : null}
-              </Row>
-              <Row itemsCenter gap="sm">
-                <Icon icon="wallet-icon" color="white_muted" size={12} />
-                <Text
-                  text={BigNumber(poolTokenBalance?.formatAmount || '0').toFormat()}
-                  color="white_muted"
-                  size="xs"></Text>
-              </Row>
-            </Row>
-            <Stack
-              direction="row"
-              alignItems="center"
-              sx={{
-                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
-                border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
-                borderRadius: '10px',
-                marginTop: '4px',
-                p: '8px 10px',
-                transition: '.4s',
-                ':hover': {
-                  border: `1px solid ${isLight ? colors.black : colors.white}`
-                }
-              }}>
-              <CoinInput
-                size={22}
-                coin={{
-                  amount: borrowAmount,
-                  denom: poolTokenBalance?.denom || 'uusdc'
-                }}
-                max={borrowMaxAmount || '0'}
-                onChange={(value) => {
-                  setBorrowAmount(value);
-                }}
-              />
-              <Stack
-                direction="row"
-                alignItems="center"
-                flexShrink={0}
-                gap="8px"
+              <Box
                 sx={{
-                  cursor: 'pointer'
-                }}
-                onMouseOver={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-                onClick={() => {
-                  navigator('LendingSelectTokenScreen', {
-                    poolsData
-                  });
-                }}>
-                <Image src={poolTokenBalance?.asset.logo} height={24} width={24}></Image>
-                <Typography
-                  sx={{
-                    fontSize: '16px',
-                    color: isHover ? colors.main : isLight ? colors.black : colors.white
-                  }}>
-                  {poolTokenBalance?.asset.symbol || 'USDC'}
-                </Typography>
-                <Icon icon="down" size={10} color={isHover ? 'main' : isLight ? 'black' : 'white'}></Icon>
-              </Stack>
-            </Stack>
-            {healthFactor !== '-' && +healthFactor <= 1.2 && (
-              <Stack
-                direction="row"
-                alignItems="flex-start"
-                gap="2px"
-                sx={{
-                  mt: '16px',
-                  p: '14px 10px',
+                  display: 'flex',
+                  alignItems: 'center',
                   borderRadius: '10px',
-                  bgcolor: colors.red1,
-                  fontSize: '12px'
+                  gap: '4px',
+                  mt: '2px',
+                  padding: '8px',
+                  height: '50px',
+                  bgcolor: isLight ? colors.white : colors.black
                 }}>
-                <Checkbox
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  flexShrink={0}
+                  gap="4px"
                   sx={{
-                    p: '4px',
-                    color: isLight ? colors.black : colors.white,
-                    '&.Mui-checked': {
-                      color: colors.red
-                    }
-                  }}
-                  checked={isChecked}
-                  onChange={() => setIsChecked(!isChecked)}></Checkbox>
-                <Typography
-                  sx={{
-                    fontSize: '12px',
-                    color: colors.red
+                    height: '100%',
+                    bgcolor: isLight ? colors.light_bg : colors.dark_bg,
+                    borderRadius: '8px',
+                    p: '0 8px'
                   }}>
-                  I acknowledge that borrowing at this LTV increases my risk of liquidation.
-                </Typography>
-              </Stack>
-            )}
-            <Box
+                  <Image src={bitcoinToken?.asset.logo} height={24} width={24}></Image>
+                  <Typography
+                    sx={{
+                      fontSize: '14px',
+                      color: isLight ? colors.black : colors.white
+                    }}>
+                    {bitcoinToken?.asset.symbol || 'BTC'}
+                  </Typography>
+                </Stack>
+                <CoinInput
+                  size={22}
+                  coin={{
+                    amount: bitcoinAmount,
+                    denom: bitcoinToken?.denom || 'sat'
+                  }}
+                  max={bitcoinToken?.formatAmount || '0'}
+                  onChange={(value) => {
+                    setBitcoinAmount(value);
+                  }}
+                />
+              </Box>
+            </BaseBox>
+
+            <BaseBox
               sx={{
-                px: '12px',
-                py: '14px',
-                mt: '16px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                cursor: 'pointer',
-                bgcolor: isLight ? colors.light_bg : colors.dark_bg,
-                transition: '.4s',
-                borderRadius: '8px',
-                ':hover': {
-                  bgcolor: isLight ? colors.light_bg : colors.dark_bg
-                }
-              }}
-              onMouseOver={() => setIsHoverMaturity(true)}
-              onMouseLeave={() => setIsHoverMaturity(false)}
-              onClick={(event: React.MouseEvent<HTMLDivElement>) => {
-                event.stopPropagation();
-                setAnchorEl(event.currentTarget);
+                p: '16px',
+                mt: '8px'
               }}>
               <Typography
                 sx={{
                   fontSize: '12px',
                   color: isLight ? colors.black : colors.white
                 }}>
-                Maturity
+                LTV&nbsp;
+                <small
+                  style={{
+                    fontSize: '100%',
+                    color: colors.grey12
+                  }}>
+                  ({poolData ? poolData.baseData.config.max_ltv * 100 : 80}% max)
+                </small>
               </Typography>
-              <Stack direction="row" alignItems="center" gap="8px">
-                <Box
+              <Box
+                sx={{
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  borderRadius: '10px',
+                  gap: '4px',
+                  mt: '2px',
+                  padding: '8px',
+                  height: '50px',
+                  bgcolor: isLight ? colors.white : colors.black
+                }}>
+                <Stack direction="row" alignItems="center">
+                  <CoinInput
+                    size={22}
+                    coin={{
+                      amount: `${currentLtv}`,
+                      denom: ''
+                    }}
+                    max={poolData ? `${poolData.baseData.config.max_ltv * 100}` : '80'}
+                    onChange={(value) => {
+                      setCurrentLtv(+value);
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      fontSize: '20px',
+                      color: isLight ? colors.black : colors.white,
+                      position: 'absolute',
+                      top: '50%',
+                      right: '24px',
+                      transform: 'translateY(-50%)'
+                    }}>
+                    %
+                  </Typography>
+                </Stack>
+              </Box>
+              <Stack
+                sx={{
+                  mt: '16px'
+                }}>
+                <Slider
+                  maxProcess={poolData ? poolData.baseData.config.max_ltv * 100 : 80}
+                  onChange={(value) => {
+                    setCurrentLtv(value);
+                  }}
+                  value={currentLtv}
+                  isLight={isLight}
+                />
+              </Stack>
+            </BaseBox>
+
+            <BaseBox
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: '16px',
+                mt: '8px',
+                gap: '8px'
+              }}>
+              <Stack>
+                <Typography
                   sx={{
                     fontSize: '12px',
-                    color: isLight ? colors.black : colors.white,
+                    color: isLight ? colors.black : colors.white
+                  }}>
+                  Loan Duration&nbsp;
+                  <small
+                    style={{
+                      fontSize: '100%',
+                      color: colors.grey12
+                    }}>
+                    ({convertTimePeriod(`${poolData?.baseData.config.tranches[0].maturity}s`).label}
+                    &nbsp;max)
+                  </small>
+                </Typography>
+                <Box
+                  sx={{
+                    position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px'
+                    borderRadius: '10px',
+                    gap: '4px',
+                    mt: '2px',
+                    padding: '8px',
+                    height: '50px',
+                    bgcolor: isLight ? colors.white : colors.black
                   }}>
-                  {new BigNumber(maturity || 0).div(3600).div(24).toFixed(0)}
-                  <Typography
-                    style={{
-                      display: 'inline'
+                  <CoinInput
+                    size={22}
+                    coin={{
+                      amount: `${durationData?.value}`,
+                      denom: ''
                     }}
-                    sx={{ fontSize: '12px', color: colors.grey12 }}>
-                    days
-                  </Typography>
-                  <Box
+                    onChange={(value) => {
+                      if (!durationData) return;
+                      const regex = /^\d+(\.\d+)?$/;
+                      if (!value || (regex.test(value) && +value >= 0)) {
+                        const index = durationMap[durationData.period].findIndex((item) => item.value === +value);
+                        setDurationData({
+                          value: +value,
+                          index,
+                          period: durationData.period,
+                          borrow_apr: durationMap[durationData.period][index]?.borrow_apr || 0,
+                          maturity: durationMap[durationData.period][index]?.maturity || '1'
+                        });
+                      }
+                    }}
+                    onBlur={() => {
+                      if (!durationData) return;
+                      if (!durationMap[durationData.period].find((item) => item.value === durationData.value)) {
+                        const index = 0;
+                        setDurationData({
+                          index,
+                          period: durationData.period,
+                          borrow_apr: durationMap[durationData.period][index].borrow_apr,
+                          value: durationMap[durationData.period][index].value,
+                          maturity: durationMap[durationData.period][index].maturity
+                        });
+                      }
+                    }}
+                  />
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap="16px"
                     sx={{
-                      transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: '.4s'
+                      position: 'absolute',
+                      top: '50%',
+                      right: '8px',
+                      transform: 'translateY(-50%)'
                     }}>
-                    <Icon icon="down" size={12} color={isHoverMaturity ? 'main' : isLight ? 'black' : 'white'}></Icon>
-                  </Box>
+                    <Stack
+                      gap="4px"
+                      sx={{
+                        svg: {
+                          cursor: 'pointer',
+                          path: {
+                            fill: colors.grey12,
+                            transition: '.4s'
+                          },
+                          ':hover': {
+                            path: {
+                              fill: isLight ? colors.black : colors.white
+                            }
+                          }
+                        }
+                      }}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="9"
+                        viewBox="0 0 12 9"
+                        fill="none"
+                        onClick={() => {
+                          if (!durationData) return;
+                          const lastIndex = durationData.index - 1;
+                          if (durationMap[durationData.period][lastIndex]) {
+                            setDurationData({
+                              maturity: durationMap[durationData.period][lastIndex].maturity,
+                              value: durationMap[durationData.period][lastIndex].value,
+                              period: durationData.period,
+                              index: lastIndex,
+                              borrow_apr: durationMap[durationData.period][lastIndex].borrow_apr
+                            });
+                          }
+                        }}>
+                        <path d="M0 8.75L6 0.75L12 8.75H0Z" />
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="9"
+                        viewBox="0 0 12 9"
+                        fill="none"
+                        onClick={() => {
+                          if (!durationData) return;
+                          const nextIndex = durationData.index + 1;
+                          if (durationMap[durationData.period][nextIndex]) {
+                            setDurationData({
+                              maturity: durationMap[durationData.period][nextIndex].maturity,
+                              value: durationMap[durationData.period][nextIndex].value,
+                              period: durationData.period,
+                              index: nextIndex,
+                              borrow_apr: durationMap[durationData.period][nextIndex].borrow_apr
+                            });
+                          }
+                        }}>
+                        <path d="M0 0.75L6 8.75L12 0.75H0Z" />
+                      </svg>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      gap="2px"
+                      sx={{
+                        cursor: 'pointer'
+                      }}
+                      onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+                        event.stopPropagation();
+                        if (Object.keys(durationMap).length > 1) {
+                          setAnchorEl(event.currentTarget);
+                        }
+                      }}>
+                      <Typography
+                        sx={{
+                          fontSize: '14px',
+                          color: isLight ? colors.black : colors.white,
+                          fontWeight: 500
+                        }}>
+                        {durationData ? periodTextMap[durationData.period] : ''}
+                      </Typography>
+                      {Object.keys(durationMap).length > 0 && (
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          style={{
+                            transform: anchorEl ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: '.4s'
+                          }}>
+                          <g id="Component/icon/ic_Chevron Down">
+                            <path
+                              id="Shape"
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M12 13.5858L16.2929 9.29289C16.6834 8.90237 17.3166 8.90237 17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L12 13.5858Z"
+                              fill={anchorEl ? colors.main : isLight ? colors.black : colors.white}
+                            />
+                          </g>
+                        </svg>
+                      )}
+                    </Stack>
+                  </Stack>
                 </Box>
               </Stack>
-            </Box>
-            {!isDisabled && (
-              <Column
+              <Stack
+                sx={{
+                  flexShrink: 0,
+                  width: '120px'
+                }}>
+                <Typography
+                  sx={{
+                    fontSize: '12px',
+                    color: isLight ? colors.black : colors.white
+                  }}>
+                  Funded in
+                </Typography>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap="8px"
+                  sx={{
+                    mt: '2px',
+                    height: '50px',
+                    bgcolor: isLight ? colors.white : colors.black,
+                    borderRadius: '10px',
+                    p: '8px',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => {
+                    navigate('LendingSelectTokenScreen', {
+                      poolsData
+                    });
+                  }}>
+                  <Image src={poolData?.token.asset.logo} height={24} width={24}></Image>
+                  <Typography
+                    sx={{
+                      fontSize: '14px',
+                      color: isLight ? colors.black : colors.white
+                    }}>
+                    {poolData?.token.asset.symbol || 'BTC'}
+                  </Typography>
+                  <Icon icon="down" size={10} color={isLight ? 'black' : 'white'}></Icon>
+                </Stack>
+              </Stack>
+            </BaseBox>
+
+            <BaseBox
+              sx={{
+                p: '14px 10px',
+                mt: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="20"
+                viewBox="0 0 16 20"
+                fill="none"
                 style={{
-                  marginTop: '16px',
-                  borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
-                  backgroundColor: isLight ? colors.light_bg : colors.dark_bg
-                }}
-                py="lg">
+                  flexShrink: 0
+                }}>
+                <path
+                  d="M5.4987 9.58314L7.16536 11.2498L10.9154 7.49981M14.6654 9.99981C14.6654 14.0902 10.2037 17.0651 8.58036 18.0122C8.39586 18.1198 8.30362 18.1737 8.17343 18.2016C8.0724 18.2232 7.925 18.2232 7.82396 18.2016C7.69378 18.1737 7.60153 18.1198 7.41704 18.0122C5.79367 17.0651 1.33203 14.0902 1.33203 9.99981V6.01448C1.33203 5.34822 1.33203 5.01509 1.441 4.72873C1.53726 4.47576 1.69368 4.25004 1.89675 4.07109C2.12661 3.86851 2.43853 3.75154 3.06237 3.5176L7.53053 1.84204C7.70378 1.77707 7.7904 1.74459 7.87952 1.73171C7.95856 1.72029 8.03883 1.72029 8.11788 1.73171C8.20699 1.74459 8.29362 1.77707 8.46686 1.84204L12.935 3.5176C13.5589 3.75154 13.8708 3.86851 14.1006 4.07109C14.3037 4.25004 14.4601 4.47576 14.5564 4.72873C14.6654 5.01509 14.6654 5.34822 14.6654 6.01448V9.99981Z"
+                  stroke={isLight ? colors.black : colors.white}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <Typography fontSize={'12px'} color={colors.grey12}>
+                Your collateral remains in a non-custodial Bitcoin vault (2-of-2 multisig). You do not transfer custody
+                to Bitway or to any third party, and any movement of funds requires your authorization. We are
+                technically unable to rehypothecate your Bitcoin. For more details, see our&nbsp;
+                <Link
+                  sx={{
+                    color: colors.grey12,
+                    textDecoration: 'underline',
+                    textDecorationColor: colors.grey12
+                  }}
+                  target="_blank"
+                  href={'https://docs.bitway.com'}>
+                  technical documentation
+                </Link>
+                .
+              </Typography>
+            </BaseBox>
+
+            <BaseBox
+              sx={{
+                p: '16px',
+                mt: '8px'
+              }}>
+              {loanData.map((item) => (
+                <Stack
+                  key={item.label}
+                  sx={{
+                    pb: '16px',
+                    borderBottom: `1px solid ${isLight ? colors.white1 : colors.grey1}`,
+                    '&:not(:first-of-type)': {
+                      mt: '16px'
+                    }
+                  }}>
+                  <Typography
+                    sx={{
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      color: isLight ? colors.black : colors.white
+                    }}>
+                    {item.value}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: isLight ? colors.black : colors.white,
+                      mt: '4px'
+                    }}>
+                    {item.label}
+                  </Typography>
+                  {item.tips && (
+                    <Typography
+                      sx={{
+                        fontSize: '12px',
+                        color: colors.grey12
+                      }}>
+                      {item.tips}
+                    </Typography>
+                  )}
+                </Stack>
+              ))}
+              <BaseBox
+                sx={{
+                  p: '12px',
+                  mt: '16px',
+                  bgcolor: isLight ? colors.white : colors.black
+                }}>
                 {data.map((item, index) => (
                   <Fragment key={index}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <LightTooltip title={item.tip} arrow placement="top">
-                        <Stack
-                          direction="row"
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{
+                        ':not(:first-of-type)': {
+                          mt: '8px'
+                        }
+                      }}>
+                      <LightTooltip title={item.tips} arrow placement="top">
+                        <Typography
                           sx={{
-                            fontSize: '12px',
+                            fontSize: '14px',
                             color: colors.grey12,
                             textDecoration: 'dotted underline',
                             textUnderlineOffset: '2px',
@@ -663,12 +836,12 @@ export default function LendingTanScreen() {
                             }
                           }}>
                           {item.label}
-                        </Stack>
+                        </Typography>
                       </LightTooltip>
                       <Stack
                         direction="row"
                         sx={{
-                          fontSize: '12px',
+                          fontSize: '14px',
                           color: isLight ? colors.black : colors.white
                         }}>
                         {item.value}
@@ -676,22 +849,22 @@ export default function LendingTanScreen() {
                     </Stack>
                   </Fragment>
                 ))}
-              </Column>
-            )}
-            <Row mt="lg" mb="lg">
+              </BaseBox>
+            </BaseBox>
+            <Row style={{ marginTop: '16px' }} full>
               <Button
                 onClick={() => {
-                  if (!poolData || !maturity) {
+                  if (!poolData || !durationData) {
                     return;
                   }
                   createLoan({
                     borrowAmount: {
                       denom: poolData.token.denom,
-                      amount: toUnitAmount(borrowAmount, poolData.token.asset.exponent)
+                      amount: parseUnitAmount(borrowTokenAmount, poolData.token.asset.exponent)
                     },
-                    maturityTime: maturity || '0',
+                    maturityTime: durationData.maturity || '0',
                     poolId: poolData.baseData.id,
-                    btcUnitAmount: toUnitAmount(collateralAmount, satBalance?.asset.exponent || 8)
+                    btcUnitAmount: parseUnitAmount(bitcoinAmount, bitcoinToken?.asset.exponent || 8)
                   });
                 }}
                 disabled={isDisabled}
@@ -705,86 +878,49 @@ export default function LendingTanScreen() {
         <Footer px="zero" py="zero">
           <NavTabBar tab="loans" />
         </Footer>
-      </Layout>
-      <Popover
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        sx={{
-          '.MuiPaper-root': {
-            mt: '4px',
-            p: '12px',
-            backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
-            borderRadius: '10px',
-            width: '100%',
-            border: `1px solid ${isLight ? colors.light_border : colors.dark_border}`
-          }
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={() => setAnchorEl(null)}>
-        {poolData?.baseData.config.tranches.map((item, index) => {
-          const selected = item.maturity === maturity;
-          return (
-            <Box
-              key={index}
-              sx={{
-                p: '8px 10px',
-                borderRadius: '10px',
-                cursor: 'pointer',
-                mt: index !== 0 ? '10px' : '0px',
-                background: selected ? (isLight ? colors.light_bg : colors.dark_bg) : 'transparent',
-                ':hover': {
-                  bgcolor: isLight ? colors.light_bg : colors.dark_bg
-                },
-                position: 'relative'
-              }}
-              onClick={() => {
-                setmaturity(item.maturity);
-                setAnchorEl(null);
-              }}>
-              <Typography
-                sx={{
-                  fontSize: '14px'
+        <Popover
+          disableEscapeKeyDown
+          anchorEl={anchorEl}
+          open={!!anchorEl}
+          onClose={(event: React.MouseEvent<HTMLDivElement>) => {
+            setAnchorEl(null);
+            event.stopPropagation();
+          }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}>
+          <Stack onClick={(event) => event.stopPropagation()} direction="column">
+            {(Object.keys(durationMap) as TimePeriod[]).map((item) => (
+              <Box
+                key={item}
+                className={`item ${durationData?.period === item && 'active'}`}
+                onClick={() => {
+                  setAnchorEl(null);
+                  setDurationData({
+                    maturity: durationMap[item][0].maturity,
+                    value: durationMap[item][0].value,
+                    period: item,
+                    index: durationMap[item][0].index,
+                    borrow_apr: durationMap[item][0].borrow_apr
+                  });
                 }}
-                color={isLight ? 'black' : 'white'}>
-                {new BigNumber(item.maturity).div(3600).div(24).toFixed(0)} days&nbsp;
-                <small
-                  style={{
-                    color: colors.main,
-                    fontSize: '100%'
-                  }}>
-                  ({new BigNumber(item.borrow_apr).multipliedBy(100).toFixed(2)}%)
-                </small>
-              </Typography>
-              {selected && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)'
-                  }}>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M13.3346 4L6.0013 11.3333L2.66797 8"
-                      stroke={isLight ? colors.black : colors.white}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Box>
-              )}
-            </Box>
-          );
-        })}
-      </Popover>
+                sx={{
+                  color: isLight ? colors.black : colors.white,
+                  fontSize: '16px',
+                  lineHeight: '18px',
+                  whiteSpace: 'nowrap'
+                }}>
+                {periodTextMap[item]}
+              </Box>
+            ))}
+          </Stack>
+        </Popover>
+      </Layout>
     </>
   );
 }

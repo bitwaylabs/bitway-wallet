@@ -10,13 +10,14 @@ import { colors } from '../theme/colors';
 export type CoinInputProps = {
   coin: Coin;
   onChange?: (value: string) => void;
+  onBlur?: () => void;
   readOnly?: boolean;
   size?: number;
   color?: string;
   decimalScale?: number;
   max?: string;
 };
-export function CoinInput({ coin, onChange, readOnly, size, color, decimalScale, max }: CoinInputProps) {
+export function CoinInput({ coin, onChange, readOnly, size, color, decimalScale, max, onBlur }: CoinInputProps) {
   const isLight = useIsLight();
   return (
     <NumericFormat
@@ -39,6 +40,7 @@ export function CoinInput({ coin, onChange, readOnly, size, color, decimalScale,
       valueIsNumericString
       thousandSeparator
       placeholder={'0'}
+      onBlur={onBlur}
       onInput={(event: SyntheticInputEvent) => {
         if (max) {
           const value = event.target.value.replace(/,/g, '');
