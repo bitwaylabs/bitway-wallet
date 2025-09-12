@@ -103,6 +103,7 @@ function PoolItemFC({ item }: { item: PoolDataItem }) {
       }}
       sx={{
         padding: '16px 16px',
+        borderRadius: '8px',
         cursor: 'pointer',
         backgroundColor: isLight ? colors.light_bg : colors.dark_bg
       }}>

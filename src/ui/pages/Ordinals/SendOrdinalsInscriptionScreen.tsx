@@ -8,6 +8,7 @@ import { FeeRateBar } from '@/ui/components/FeeRateBar';
 import InscriptionPreview from '@/ui/components/InscriptionPreview';
 import { OutputValueBar } from '@/ui/components/OutputValueBar';
 import { RBFBar } from '@/ui/components/RBFBar';
+import { useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useFetchUtxosCallback,
   useOrdinalsTx,
@@ -21,6 +22,7 @@ import { useNavigate } from '../MainRoute';
 export default function SendOrdinalsInscriptionScreen() {
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
+  const networkType = useNetworkType();
 
   const { state } = useLocation();
   const { inscription } = state as {
@@ -101,7 +103,7 @@ export default function SendOrdinalsInscriptionScreen() {
       return;
     }
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
 

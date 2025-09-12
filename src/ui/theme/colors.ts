@@ -34,7 +34,7 @@ export const colors = {
   yellow_light: '#fcd226',
   warning_yellow: '#F0B622',
   red_dark: '#c92b40',
-  red: '#ED334B',
+  red: '#FF2929',
   red_light: '#f05266',
   red_disconnect: '#FF4545',
   red1: '#FF29291A',

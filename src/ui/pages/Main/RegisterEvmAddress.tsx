@@ -6,7 +6,7 @@ import { Button, Column, Content, Header, Icon, Input, Layout, LightTooltip, Row
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useSend } from '@/ui/hooks/useSend';
 import { useEnvironment } from '@/ui/state/environment/hooks';
-import { useIsLight } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { useResetUiTxCreateScreen, useUpdateUiTxCreateSendSideScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { isValidAddress } from '@/ui/utils';
@@ -17,6 +17,7 @@ export default function RegisterEvmAddress() {
   const reset = useResetUiTxCreateScreen();
   const { EVM_COLLECTOR, sideChain } = useEnvironment();
   const isLight = useIsLight();
+  const networkType = useNetworkType();
 
   useEffect(() => {
     setUiState({ base: 'uside', toInfo: { address: EVM_COLLECTOR, domain: '' } });
@@ -31,7 +32,7 @@ export default function RegisterEvmAddress() {
 
   const disabled = useMemo(() => {
     let _disabled = false;
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       _disabled = true;
     } else if (!+inputAmount) {
       _disabled = true;

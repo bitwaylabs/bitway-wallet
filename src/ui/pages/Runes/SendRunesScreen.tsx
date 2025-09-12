@@ -10,6 +10,7 @@ import { FeeRateBar } from '@/ui/components/FeeRateBar';
 import { OutputValueBar } from '@/ui/components/OutputValueBar';
 import { RBFBar } from '@/ui/components/RBFBar';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useFetchAssetUtxosRunesCallback,
   useFetchUtxosCallback,
@@ -26,6 +27,7 @@ export default function SendRunesScreen() {
     runeBalance: RuneBalance;
     runeInfo: RuneInfo;
   };
+  const networkType = useNetworkType();
 
   const runeBalance = props.runeBalance;
 
@@ -96,7 +98,7 @@ export default function SendRunesScreen() {
     setError('');
     setDisabled(true);
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
     if (!inputAmount) {
@@ -197,8 +199,7 @@ export default function SendRunesScreen() {
               itemsCenter
               onClick={() => {
                 setInputAmount(runesUtils.toDecimalAmount(availableBalance, runeBalance.divisibility));
-              }}
-            >
+              }}>
               <Text text="MAX" preset="sub" style={{ color: colors.white_muted }} />
               <Text
                 text={`${runesUtils.toDecimalAmount(availableBalance, runeBalance.divisibility)} ${runeInfo.symbol}`}
@@ -260,8 +261,7 @@ export default function SendRunesScreen() {
           text="Next"
           onClick={(e) => {
             navigate('TxConfirmScreen', { rawTxInfo });
-          }}
-        ></Button>
+          }}></Button>
       </Content>
     </Layout>
   );

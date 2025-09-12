@@ -12,7 +12,7 @@ import { useGetDepositInfo, useGetLoanById } from '@/ui/hooks/lending';
 import MainHeader from '@/ui/pages/Main/MainHeader';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useEnvironment } from '@/ui/state/environment/hooks';
-import { useBTCUnit, useIsLight } from '@/ui/state/settings/hooks';
+import { useBTCUnit, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useBitcoinTx,
   useFetchUtxosCallback,
@@ -55,6 +55,7 @@ export default function LoanDepositScreen() {
   const fetchUtxos = useFetchUtxosCallback();
   const [disabled, setDisabled] = useState(true);
   const tools = useTools();
+  const networkType = useNetworkType();
 
   useEffect(() => {
     tools.showLoading(true);
@@ -101,7 +102,7 @@ export default function LoanDepositScreen() {
     setError('');
     setDisabled(true);
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
     if (!toSatoshis) {

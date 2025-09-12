@@ -811,7 +811,7 @@ export default function LoanDetailScreen() {
               Loan
             </Text>
             {loan.status === 'Authorized' ? (
-              <StatusWithPending text="Pending" />
+              <StatusWithPending text="Pending" confirms={txsConfirms[0].confirms} />
             ) : loan.status === 'Open' ? (
               <>{!loanDetailCex?.disbursementBlockHeight && <StatusWithPending text="Pending" />}</>
             ) : ['Repaid', 'Closed'].includes(loan.status) ? (
@@ -1068,6 +1068,7 @@ export default function LoanDetailScreen() {
 }
 
 function StatusWithToExplorer({ text }: { text: string; url?: string }) {
+  const isLight = useIsLight();
   return (
     <Box
       sx={{
@@ -1075,32 +1076,34 @@ function StatusWithToExplorer({ text }: { text: string; url?: string }) {
         borderRadius: '4px',
         fontSize: '10px',
         backgroundColor: colors.white1,
-        color: colors.white
+        color: isLight ? colors.black : colors.white
       }}>
       {text}
     </Box>
   );
 }
 
-function StatusWithPending({ text }: { text: string }) {
+function StatusWithPending({ text, confirms }: { text: string; confirms?: number }) {
+  const isLight = useIsLight();
   return (
     <Stack
       direction="row"
       alignItems="center"
       sx={{
         height: '30px',
-        bgcolor: colors.white1,
+        bgcolor: isLight ? colors.light_bg : colors.white1,
         padding: '4px 8px',
         borderRadius: '4px'
       }}>
       <Typography
         sx={{
           fontSize: '10px',
-          color: colors.white,
+          color: isLight ? colors.black : colors.white,
           fontWeight: 500,
           whiteSpace: 'nowrap'
         }}>
-        {text}
+        {text}&nbsp;
+        <small style={{ fontSize: '100%', color: colors.grey12 }}>{confirms ? `(${confirms}/6)` : ''}</small>
       </Typography>
       <svg
         className="animate-[spin_3s_linear_infinite] inline-block ml-1"

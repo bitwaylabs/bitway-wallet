@@ -19,7 +19,7 @@ export default function ValidatorSelectScreen() {
   const [keywords, setKeywords] = useState('');
   const { state } = useLocation();
   const isLight = useIsLight();
-  const { type, selectValidator } = state as { type: 'validator' | 'validatorDst'; selectValidator?: Validator };
+  const { type } = state as { type: 'validator' | 'validatorDst'; selectValidator?: Validator };
   const { validatorList } = useStakeState();
 
   const filterValidators = useMemo(() => {
@@ -43,6 +43,10 @@ export default function ValidatorSelectScreen() {
         }}>
         <Column px="xl" gap="md">
           <SearchInput value={keywords} onChange={setKeywords} placeholder="Search validator" />
+          <Row justifyBetween itemsCenter>
+            <Text preset="sub" text="Validator" color={'white_muted'}></Text>
+            <Text preset="sub" text="Commission" color={'white_muted'}></Text>
+          </Row>
           {filterValidators?.map((item) => {
             return (
               <Stack
@@ -63,29 +67,29 @@ export default function ValidatorSelectScreen() {
                   padding: '10px 16px',
                   cursor: 'pointer'
                 }}>
-                <Row>
+                <Row
+                  itemsCenter
+                  style={{
+                    gap: '4px'
+                  }}>
                   <ValidatorLogo
                     sx={{
                       width: '38px',
                       height: '38px',
                       mr: '13px',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      flexShrink: '0'
                     }}
                     data={item.description?.identity}
                   />
-                  <Column
-                    style={{
-                      gap: '0px'
-                    }}>
-                    <Text preset="regular" text={item.description?.moniker} color={isLight ? 'black' : 'white'}></Text>
-                    <Text
-                      preset="sub"
-                      text={`${getTruncate(
-                        new BigNumber(item?.commission?.commission_rates?.rate || '0').multipliedBy(100).toString(),
-                        2
-                      )}%`}></Text>
-                  </Column>
+                  <Text preset="regular" text={item.description?.moniker} color={isLight ? 'black' : 'white'}></Text>
                 </Row>
+                <Text
+                  preset="sub"
+                  text={`${getTruncate(
+                    new BigNumber(item?.commission?.commission_rates?.rate || '0').multipliedBy(100).toString(),
+                    2
+                  )}%`}></Text>
               </Stack>
             );
           })}

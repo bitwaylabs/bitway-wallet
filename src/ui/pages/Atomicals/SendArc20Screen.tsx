@@ -7,6 +7,7 @@ import { useTools } from '@/ui/components/ActionComponent';
 import { FeeRateBar } from '@/ui/components/FeeRateBar';
 import { RBFBar } from '@/ui/components/RBFBar';
 import { useNavigate } from '@/ui/pages/MainRoute';
+import { useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useAtomicalsTx,
   useFetchAssetUtxosAtomicalsFTCallback,
@@ -27,6 +28,7 @@ export default function SendArc20Screen() {
 
   const navigate = useNavigate();
   const atomicalsTx = useAtomicalsTx();
+  const networkType = useNetworkType();
   const [inputAmount, setInputAmount] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [toInfo, setToInfo] = useState<{
@@ -70,7 +72,7 @@ export default function SendArc20Screen() {
     setError('');
     setDisabled(true);
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
     if (!inputAmount) {
@@ -155,8 +157,7 @@ export default function SendArc20Screen() {
               itemsCenter
               onClick={() => {
                 setInputAmount(arc20AvailableBalance.toString());
-              }}
-            >
+              }}>
               <Text text="MAX" preset="sub" style={{ color: colors.white_muted }} />
               <Text text={`${arc20AvailableBalance} ${arc20Balance.ticker}`} preset="bold" size="sm" />
             </Row>
@@ -198,8 +199,7 @@ export default function SendArc20Screen() {
           text="Next"
           onClick={(e) => {
             navigate('TxConfirmScreen', { rawTxInfo });
-          }}
-        ></Button>
+          }}></Button>
       </Content>
     </Layout>
   );

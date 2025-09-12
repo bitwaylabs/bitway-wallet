@@ -10,7 +10,7 @@ import { RBFBar } from '@/ui/components/RBFBar';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAccountBalance } from '@/ui/state/accounts/hooks';
 // import { useSendRune } from '@/ui/state/send/hook';
-import { useBTCUnit, useIsLight } from '@/ui/state/settings/hooks';
+import { useBTCUnit, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useBitcoinTx,
   useFetchUtxosCallback,
@@ -35,6 +35,7 @@ export default function CreateSendBtc() {
   const bitcoinTx = useBitcoinTx();
   const btcUnit = useBTCUnit();
   const isLight = useIsLight();
+  const networkType = useNetworkType();
 
   const { token } = useLocationState<LocationState>();
   const [disabled, setDisabled] = useState(true);
@@ -99,7 +100,7 @@ export default function CreateSendBtc() {
     setError('');
     setDisabled(true);
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
     if (!toSatoshis) {

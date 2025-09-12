@@ -27,7 +27,10 @@ export default function StakeScreen() {
 
   useEffect(() => {
     if (!validator && bondedValidators.length > 0) {
-      dispatch(stakeActions.updateStakeState({ validator: bondedValidators[0] }));
+      const pingPubValidator = bondedValidators.find((item) =>
+        item.description?.moniker.toLocaleLowerCase().includes('ping')
+      );
+      dispatch(stakeActions.updateStakeState({ validator: pingPubValidator || bondedValidators[0] }));
     }
   }, [bondedValidators]);
 

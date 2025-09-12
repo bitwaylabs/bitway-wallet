@@ -27,55 +27,55 @@ export const loanStatusStyle: Record<
 > = {
   Unspecified: { lightBgColor: '', lightColor: '', darkBgColor: '', darkColor: '' },
   Requested: {
-    darkBgColor: colors.card_bgColor,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.grey62,
     lightBgColor: colors.light_bg,
     lightColor: colors.grey62
   },
   Cancelled: {
-    darkBgColor: colors.card_bgColor,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.grey64,
     lightBgColor: colors.light_bg,
     lightColor: colors.grey64
   },
   Authorized: {
-    darkBgColor: colors.card_bgColor,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.grey62,
     lightBgColor: colors.light_bg,
     lightColor: colors.grey62
   },
   Rejected: {
-    darkBgColor: colors.card_bgColor,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.grey64,
     lightBgColor: colors.light_bg,
     lightColor: colors.grey64
   },
   Open: {
-    darkBgColor: colors.green10,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.green,
     lightBgColor: colors.light_bg,
     lightColor: colors.green
   },
   Repaid: {
-    darkBgColor: colors.green10,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.green,
     lightBgColor: colors.light_bg,
     lightColor: colors.green
   },
   Defaulted: {
-    darkBgColor: colors.blue3,
-    darkColor: colors.main,
+    darkBgColor: colors.dark_bg,
+    darkColor: colors.red,
     lightBgColor: colors.light_bg,
-    lightColor: colors.main
+    lightColor: colors.red
   },
   Liquidated: {
-    darkBgColor: colors.red11,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.red,
     lightBgColor: colors.light_bg,
     lightColor: colors.red
   },
   Closed: {
-    darkBgColor: colors.card_bgColor,
+    darkBgColor: colors.dark_bg,
     darkColor: colors.grey64,
     lightBgColor: colors.light_bg,
     lightColor: colors.grey64
@@ -125,7 +125,7 @@ export default function MyLoansScreen() {
                     navigate('LoanDetailScreen', { loan_id: item.vault_address });
                   }}
                   sx={{
-                    padding: '16px 16px 0',
+                    padding: '16px 16px',
                     borderRadius: '8px',
                     cursor: 'pointer',
                     backgroundColor: isLight ? colors.light_bg : colors.dark_bg

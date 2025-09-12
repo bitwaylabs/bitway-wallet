@@ -2,6 +2,8 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { useLocation } from 'react-router-dom';
 
+import { NetworkType } from '@/shared/types';
+
 export * from './hooks';
 export * from './WalletContext';
 const UI_TYPE = {
@@ -113,9 +115,12 @@ export async function sleep(timeSec: number) {
   });
 }
 
-export function isValidAddress(address: string) {
-  if (!address) return false;
-  return true;
+export function isValidAddress(address: string, networkType: NetworkType) {
+  let regex = /^(tb|bitway)/;
+  if (networkType === NetworkType.MAINNET) {
+    regex = /^(bc|bitway)/;
+  }
+  return regex.test(address);
 }
 
 export const copyToClipboard = (textToCopy: string | number) => {

@@ -7,7 +7,7 @@ import { Button, Column, Header, Icon, Input, Layout, Row, Text } from '@/ui/com
 import ImageIcon from '@/ui/components/ImageIcon';
 import { useSend } from '@/ui/hooks/useSend';
 import { useNavigate } from '@/ui/pages/MainRoute';
-import { useIsLight } from '@/ui/state/settings/hooks';
+import { useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { useUpdateUiTxCreateSendSideScreen } from '@/ui/state/ui/hooks';
 import { colors } from '@/ui/theme/colors';
 import { formatUnitAmount, isValidAddress } from '@/ui/utils';
@@ -16,6 +16,7 @@ export default function CreateSendSide() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const setUiState = useUpdateUiTxCreateSendSideScreen();
+  const networkType = useNetworkType();
   const isLight = useIsLight();
   const { token } = state as {
     token: BalanceItem;
@@ -29,7 +30,7 @@ export default function CreateSendSide() {
 
   const disabled = useMemo(() => {
     let _disabled = false;
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       _disabled = true;
     } else if (!+inputAmount) {
       _disabled = true;

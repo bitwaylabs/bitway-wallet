@@ -7,6 +7,7 @@ import { useTools } from '@/ui/components/ActionComponent';
 import AtomicalsNFTPreview from '@/ui/components/AtomicalsNFTPreview';
 import { FeeRateBar } from '@/ui/components/FeeRateBar';
 import { RBFBar } from '@/ui/components/RBFBar';
+import { useNetworkType } from '@/ui/state/settings/hooks';
 import {
   useFetchUtxosCallback,
   useOrdinalsTx,
@@ -14,11 +15,9 @@ import {
 } from '@/ui/state/transactions/hooks';
 import { isValidAddress } from '@/ui/utils';
 
-import { useNavigate } from '../MainRoute';
-
 export default function SendAtomicalsInscriptionScreen() {
   const [disabled, setDisabled] = useState(true);
-  const navigate = useNavigate();
+  const networkType = useNetworkType();
 
   const { state } = useLocation();
   const { atomical } = state as {
@@ -68,7 +67,7 @@ export default function SendAtomicalsInscriptionScreen() {
       return;
     }
 
-    if (!isValidAddress(toInfo.address)) {
+    if (!isValidAddress(toInfo.address, networkType)) {
       return;
     }
 
