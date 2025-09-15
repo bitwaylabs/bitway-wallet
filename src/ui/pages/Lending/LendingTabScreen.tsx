@@ -917,7 +917,6 @@ export default function Index() {
                   <Stack
                     key={item.label}
                     sx={{
-                      borderBottom: `1px solid ${isLight ? colors.white1 : colors.grey1}`,
                       '&:not(:first-of-type)': {
                         mt: '16px'
                       }

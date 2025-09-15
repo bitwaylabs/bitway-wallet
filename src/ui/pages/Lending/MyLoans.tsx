@@ -322,6 +322,7 @@ export function HealthFactor({ loan }: { loan: Loan }) {
 
 export function LoanLTV({ loan, sx }: { loan: Loan; sx?: BoxProps['sx'] }) {
   const currentAccount = useCurrentAccount();
+  const isLight = useIsLight();
 
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
@@ -378,6 +379,7 @@ export function LoanLTV({ loan, sx }: { loan: Loan; sx?: BoxProps['sx'] }) {
       sx={{
         fontSize: '14px',
         fontWeight: 600,
+        color: isLight ? colors.black : colors.white,
         ...sx
       }}>
       -

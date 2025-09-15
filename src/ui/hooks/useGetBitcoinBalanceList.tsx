@@ -8,7 +8,7 @@ import services from '@/ui/services';
 import { useEnvironment } from '../state/environment/hooks';
 import { useFetchUtxosCallback } from '../state/transactions/hooks/index';
 import { satoshisToAmount } from '../utils';
-import { toReadableAmount, toUnitAmount } from '../utils/formatter';
+import { toUnitAmount } from '../utils/formatter';
 
 const defaultBtcBalance: BalanceItem = {
   denom: 'sat',
@@ -89,28 +89,28 @@ export default function useGetBitcoinBalanceList(address?: string) {
           }
         );
 
-        const runeBalanceList = list.map((item) => {
-          const runeDenom = `runes/${item.runeid}`;
-          const denomPrice = priceMap[runeDenom] || '0';
-          return {
-            denom: runeDenom,
-            amount: item.amount,
-            denomPrice,
-            formatAmount: toReadableAmount(item.amount, item.divisibility),
-            totalValue: BigNumber(toReadableAmount(item.amount, item.divisibility)).multipliedBy(denomPrice).toFixed(2),
-            asset: {
-              denom: `runes/${item.runeid}`,
-              chain: CHAINS_ENUM.BTC,
-              precision: item.divisibility,
-              logo: `${UNISAT_RUNE_URL}/${item.spacedRune}`,
-              name: 'Rune',
-              symbol: item.spacedRune,
-              rune: true,
-              emoji: item.symbol,
-              exponent: item.divisibility.toString()
-            }
-          } as BalanceItem;
-        });
+        // const runeBalanceList = list.map((item) => {
+        //   const runeDenom = `runes/${item.runeid}`;
+        //   const denomPrice = priceMap[runeDenom] || '0';
+        //   return {
+        //     denom: runeDenom,
+        //     amount: item.amount,
+        //     denomPrice,
+        //     formatAmount: toReadableAmount(item.amount, item.divisibility),
+        //     totalValue: BigNumber(toReadableAmount(item.amount, item.divisibility)).multipliedBy(denomPrice).toFixed(2),
+        //     asset: {
+        //       denom: `runes/${item.runeid}`,
+        //       chain: CHAINS_ENUM.BTC,
+        //       precision: item.divisibility,
+        //       logo: `${UNISAT_RUNE_URL}/${item.spacedRune}`,
+        //       name: 'Rune',
+        //       symbol: item.spacedRune,
+        //       rune: true,
+        //       emoji: item.symbol,
+        //       exponent: item.divisibility.toString()
+        //     }
+        //   } as BalanceItem;
+        // });
         let bitcoinPrice = '0';
         const symbol = 'BTCUSD';
         try {
@@ -122,7 +122,8 @@ export default function useGetBitcoinBalanceList(address?: string) {
         }
         const btcBalance = formatBitcoinItem(btcAmount.toString(), bitcoinPrice);
 
-        return [btcBalance, ...runeBalanceList];
+        // return [btcBalance, ...runeBalanceList];
+        return [btcBalance];
       } catch (err) {
         console.log(err);
       }
