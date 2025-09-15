@@ -16,7 +16,14 @@ import { Icon, IconTypes } from '../Icon';
 export const NavTabBar = function NavTabBar({ tab }: { tab: TabOption }) {
   const isLight = useIsLight();
   return (
-    <Grid columns={4} style={{ width: '100%', height: '66px', backgroundColor: isLight ? colors.white : colors.black }}>
+    <Grid
+      columns={4}
+      style={{
+        width: '100%',
+        height: '66px',
+        backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
+        boxShadow: isLight ? 'rgba(0, 0, 0, 0.25) 0px 0px 5px' : ''
+      }}>
       <TabButton tabName="home" icon="main-home" isActive={tab === 'home'} />
       <TabButton tabName="loans" icon="main-loans" isActive={tab === 'loans'} />
       <TabButton tabName="earn" icon="main-earn" isActive={tab === 'earn'} />

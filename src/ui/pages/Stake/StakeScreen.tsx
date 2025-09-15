@@ -30,7 +30,16 @@ export default function StakeScreen() {
       const pingPubValidator = bondedValidators.find((item) =>
         item.description?.moniker.toLocaleLowerCase().includes('ping')
       );
-      dispatch(stakeActions.updateStakeState({ validator: pingPubValidator || bondedValidators[0] }));
+      const f2poolValidator = bondedValidators.find((item) =>
+        item.description?.moniker.toLocaleLowerCase().includes('f2pool')
+      );
+      if (pingPubValidator) {
+        dispatch(stakeActions.updateStakeState({ validator: pingPubValidator }));
+      } else if (f2poolValidator) {
+        dispatch(stakeActions.updateStakeState({ validator: f2poolValidator }));
+      } else {
+        dispatch(stakeActions.updateStakeState({ validator: bondedValidators[0] }));
+      }
     }
   }, [bondedValidators]);
 

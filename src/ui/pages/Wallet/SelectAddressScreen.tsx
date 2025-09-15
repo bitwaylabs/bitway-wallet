@@ -223,7 +223,7 @@ export default function SelecAddressScreen() {
                 key={item.value}>
                 <Row itemsCenter>
                   <Image
-                    src={sideChain.logo}
+                    src={'https://api.bitway.com/static/token/logo/bitway-black.png'}
                     size={32}
                     style={{
                       borderRadius: '50%'

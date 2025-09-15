@@ -345,7 +345,7 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
               border: '1px solid #FFFFFF1A !important',
               borderColor: '#FFFFFF1A !important',
               borderWidth: '1px !important',
-              backgroundColor: '#000000',
+              backgroundColor: isLight ? colors.white : colors.black,
               borderRadius: '10px'
             }}>
             <Column gap="lg">
@@ -382,7 +382,7 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
     <Column gap="lg">
       <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" />
       <Row justifyCenter>
-        <Card style={{ backgroundColor: '#272626', maxWidth: 320, width: 320 }}>
+        <Card style={{ backgroundColor: isLight ? colors.white : colors.black, maxWidth: 320, width: 320 }}>
           <Column gap="lg">
             <Column>
               {rawTxInfo && (

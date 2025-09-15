@@ -25,6 +25,7 @@ export function useGetLiquidationPrice({
   const { sideChain } = useEnvironment();
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const bitcoinToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
+
   const { data } = useQuery({
     queryKey: ['getLiquidationPrice', { bitcoinAmount, borrowTokenAmount, maturity }],
     queryFn: async () => {
@@ -38,7 +39,7 @@ export function useGetLiquidationPrice({
         { baseURL: sideChain.restUrl }
       );
     },
-    enabled: !!bitcoinToken && !!borrowToken && !!maturity && !!bitcoinAmount && !!borrowTokenAmount
+    enabled: !!+borrowTokenAmount && !!+bitcoinAmount
   });
 
   return {

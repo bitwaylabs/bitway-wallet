@@ -19,8 +19,8 @@ const AirbnbSliderV2 = styled(Slider)(({ isLight }: { isLight?: boolean }) => ({
   height: '1px',
   padding: '13px 0 !important',
   '& .MuiSlider-thumb': {
-    height: 16,
-    width: 16,
+    height: 12,
+    width: 12,
     borderRadius: '0',
     border: 'none',
     backgroundColor: 'transparent',

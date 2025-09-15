@@ -9,6 +9,7 @@ import InscriptionPreview from '@/ui/components/InscriptionPreview';
 import WebsiteBar from '@/ui/components/WebsiteBar';
 import KeystoneSignScreen from '@/ui/pages/Wallet/KeystoneSignScreen';
 import { useAccountAddress, useCurrentAccount } from '@/ui/state/accounts/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { fontSizes } from '@/ui/theme/font';
 import { satoshisToAmount, shortAddress, useApproval, useWallet } from '@/ui/utils';
@@ -57,6 +58,7 @@ interface InscriptioinInfo {
 }
 
 function SignTxDetails({ decodedPsbt }: { decodedPsbt: DecodedPsbt }) {
+  const isLight = useIsLight();
   const inscriptions = useMemo(() => {
     return decodedPsbt.inputInfos.reduce<Inscription[]>((pre, cur) => cur.inscriptions.concat(pre), []);
   }, [decodedPsbt]);
@@ -85,7 +87,7 @@ function SignTxDetails({ decodedPsbt }: { decodedPsbt: DecodedPsbt }) {
     <Column gap="lg">
       <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" />
       <Row justifyCenter>
-        <Card style={{ backgroundColor: '#272626', maxWidth: 320, width: 320 }}>
+        <Card style={{ backgroundColor: isLight ? colors.white : colors.black, maxWidth: 320, width: 320 }}>
           <Column gap="lg">
             <Column>
               {inscriptions.length > 0 && (

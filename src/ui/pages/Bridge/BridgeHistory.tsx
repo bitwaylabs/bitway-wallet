@@ -56,7 +56,6 @@ export default function BridgeHistory() {
                 <Stack
                   key={item.id}
                   gap="8px"
-                  className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                   onMouseOver={() => {
                     setIsHoverId(item.txhash || item.btcTxhash);
                   }}
@@ -67,8 +66,10 @@ export default function BridgeHistory() {
                     navigate('BridgeDetail', { txHash: item.txhash || item.btcTxhash });
                   }}
                   sx={{
-                    padding: '16px 16px 0',
-                    cursor: 'pointer'
+                    padding: '16px 16px',
+                    cursor: 'pointer',
+                    backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
+                    borderRadius: '8px'
                   }}>
                   <Row full justifyBetween itemsCenter>
                     <Row itemsCenter gap="md">

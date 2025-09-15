@@ -66,14 +66,14 @@ export default function Index({
               sx={{
                 pointerEvents: 'none',
                 position: 'absolute',
-                width: '9px',
-                height: '9px',
+                width: '6px',
+                height: '6px',
                 backgroundColor:
                   +value >= +left ? (isLight ? colors.black : colors.white) : isLight ? colors.white : colors.black,
                 border: `2px solid ${+value >= +left ? (isLight ? colors.black : colors.white) : colors.grey12}`,
                 transform: 'rotate(45deg)',
                 left: `${left}%`,
-                top: '9px'
+                top: '11px'
               }}
             />
           );

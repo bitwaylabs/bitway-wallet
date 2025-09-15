@@ -114,11 +114,7 @@ export default function CreateSendSide() {
             }}
             autoFocus={true}
           />
-          <Row
-            justifyBetween
-            style={{
-              marginTop: '16px'
-            }}>
+          <Row justifyBetween>
             <Text
               text="Amount"
               color={isLight ? 'black' : 'white'}
@@ -160,8 +156,7 @@ export default function CreateSendSide() {
             color={isLight ? 'black' : 'white'}
             style={{
               fontSize: '14px',
-              lineHeight: '24px',
-              marginTop: '16px'
+              lineHeight: '24px'
             }}
           />
           <Input

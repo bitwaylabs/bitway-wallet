@@ -6,7 +6,7 @@ import { Button, Column, Content, Header, Input, Layout, Text } from '@/ui/compo
 import { useTools } from '@/ui/components/ActionComponent';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useAppDispatch } from '@/ui/state/hooks';
-import { useAutoLockTime } from '@/ui/state/settings/hooks';
+import { useAutoLockTime, useIsLight } from '@/ui/state/settings/hooks';
 import { settingsActions } from '@/ui/state/settings/reducer';
 import { useWallet } from '@/ui/utils';
 
@@ -17,6 +17,7 @@ export default function AutoLockScreen() {
   const navigate = useNavigate();
   const wallet = useWallet();
   const autoLockTime = useAutoLockTime();
+  const isLight = useIsLight();
   return (
     <Layout>
       <Header
@@ -45,7 +46,7 @@ export default function AutoLockScreen() {
 
           <Text
             preset="sub"
-            color={'white'}
+            color={isLight ? 'black' : 'white'}
             style={{
               textAlign: 'center',
               width: '200px',
