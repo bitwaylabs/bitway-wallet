@@ -57,7 +57,7 @@ export const useGetBalanceList = ({
     queryKey: ['getSideAssetsPrice', { SERVICE_BASE_URL }],
     queryFn: () => {
       return services.dex.getAssetsPrice(
-        { chain: 'side', denomList: assets.map((item) => item.denom) },
+        { chain: 'bitway', denomList: assets.map((item) => item.denom) },
         {
           baseURL: SERVICE_BASE_URL
         }

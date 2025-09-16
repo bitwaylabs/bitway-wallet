@@ -21,8 +21,9 @@ export const NavTabBar = function NavTabBar({ tab }: { tab: TabOption }) {
       style={{
         width: '100%',
         height: '66px',
-        backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
-        boxShadow: isLight ? 'rgba(0, 0, 0, 0.25) 0px 0px 5px' : ''
+        backgroundColor: isLight ? colors.white : colors.dark_bg,
+        // boxShadow: isLight ? 'rgba(0, 0, 0, 0.25) 0px 0px 5px' : ''
+        borderTop: isLight ? `1px solid ${colors.light_border}` : `1px solid ${colors.dark_border}`
       }}>
       <TabButton tabName="home" icon="main-home" isActive={tab === 'home'} />
       <TabButton tabName="loans" icon="main-loans" isActive={tab === 'loans'} />

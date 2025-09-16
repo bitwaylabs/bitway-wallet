@@ -41,7 +41,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
 
   const isBTW = token.asset.denom === sideChain?.denom;
 
-  const ibcData = token.asset.ibcData?.find((item) => !!item.sideChainChannelId);
+  const ibcData = token.asset.ibcData?.find((item) => !!item.bitwayChannelId);
 
   const navigate = useNavigate();
 

@@ -97,16 +97,25 @@ export function FeeRateBar({ readonly, onChange }: { readonly?: boolean; onChang
                 } as CSSProperties,
                 selected ? { backgroundColor: colors.primary } : {}
               )}>
-              <Text text={v.title} textCenter style={{ color: colors.black }} />
+              <Text
+                text={v.title}
+                textCenter
+                style={{ color: selected ? colors.black : isLight ? colors.black : colors.white }}
+              />
               {v.title !== 'Custom' && (
-                <Text text={`${v.feeRate} sat/vB`} size="xxs" textCenter style={{ color: colors.black }} />
+                <Text
+                  text={`${v.feeRate} sat/vB`}
+                  size="xxs"
+                  textCenter
+                  style={{ color: selected ? colors.black : isLight ? colors.black : colors.white }}
+                />
               )}
               {v.title !== 'Custom' && (
                 <Text
                   text={`${v.desc}`}
                   size="xxs"
                   textCenter
-                  style={{ color: selected ? colors.black : colors.white_muted }}
+                  style={{ color: selected ? colors.black : isLight ? colors.black : colors.white }}
                 />
               )}
             </div>

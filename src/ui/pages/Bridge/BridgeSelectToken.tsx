@@ -225,7 +225,7 @@ export default function BridgeSelectTokenScreen() {
               {chainList?.map((chain) => {
                 const ibcChannel = selectedAsset.asset.ibcData?.find(
                   (item) => item.oppositeChainId === chain.chainID
-                )?.sideChainChannelId;
+                )?.bitwayChannelId;
                 return (
                   <Stack
                     key={chain.name}

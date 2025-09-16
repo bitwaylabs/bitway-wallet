@@ -112,7 +112,7 @@ export default class DexService {
       chain,
       denomList
     }: {
-      chain: 'bitcoin' | 'side';
+      chain: 'bitcoin' | 'bitway';
       denomList: string[];
     },
     config: AxiosRequestConfig

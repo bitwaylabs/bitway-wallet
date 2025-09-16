@@ -403,9 +403,11 @@ export default function Index() {
                   <Icon icon="arrow-right" color="white_muted" size={16} />
                 </Stack>
               </Row>
+
               <BaseBox
                 sx={{
-                  p: '16px'
+                  p: '16px',
+                  mt: '12px'
                 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" alignItems="center" gap="4px">
@@ -837,7 +839,15 @@ export default function Index() {
                   alignItems: 'center',
                   gap: '12px'
                 }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    flexShrink: 0
+                  }}>
                   <path
                     d="M5.99935 7.66691L7.33268 9.00024L10.3327 6.00024M13.3327 8.00024C13.3327 11.2725 9.76338 13.6525 8.46468 14.4102C8.31708 14.4963 8.24328 14.5393 8.13914 14.5617C8.05831 14.579 7.94039 14.579 7.85956 14.5617C7.75541 14.5393 7.68162 14.4963 7.53402 14.4102C6.23532 13.6525 2.66602 11.2725 2.66602 8.00024V4.81197C2.66602 4.27897 2.66602 4.01246 2.75319 3.78338C2.8302 3.581 2.95534 3.40042 3.11779 3.25726C3.30168 3.0952 3.55121 3.00162 4.05029 2.81447L7.62482 1.47402C7.76341 1.42205 7.83271 1.39606 7.904 1.38576C7.96724 1.37662 8.03146 1.37662 8.09469 1.38576C8.16599 1.39606 8.23528 1.42205 8.37388 1.47402L11.9484 2.81447C12.4475 3.00162 12.697 3.0952 12.8809 3.25726C13.0434 3.40042 13.1685 3.581 13.2455 3.78338C13.3327 4.01246 13.3327 4.27897 13.3327 4.81197V8.00024Z"
                     stroke={isLight ? colors.black : colors.white}
@@ -854,7 +864,10 @@ export default function Index() {
                     sx={{
                       color: colors.grey12,
                       textDecoration: 'underline',
-                      textDecorationColor: colors.grey12
+                      textDecorationColor: colors.grey12,
+                      ':hover': {
+                        color: isLight ? colors.black : colors.white
+                      }
                     }}
                     target="_blank"
                     href={'https://docs.bitway.com'}>
@@ -911,19 +924,19 @@ export default function Index() {
               <BaseBox
                 sx={{
                   p: '16px',
-                  mt: '8px'
+                  mt: '12px'
                 }}>
                 {loanData.map((item) => (
                   <Stack
                     key={item.label}
                     sx={{
                       '&:not(:first-of-type)': {
-                        mt: '16px'
+                        mt: '10px'
                       }
                     }}>
                     <Typography
                       sx={{
-                        fontSize: '20px',
+                        fontSize: '18px',
                         fontWeight: 700,
                         color: isLight ? colors.black : colors.white
                       }}>
@@ -941,7 +954,7 @@ export default function Index() {
                     {item.tips && (
                       <Typography
                         sx={{
-                          fontSize: '12px',
+                          fontSize: '10px',
                           color: colors.grey12
                         }}>
                         {item.tips}
@@ -969,7 +982,7 @@ export default function Index() {
                         <LightTooltip title={item.tips} arrow placement="top">
                           <Typography
                             sx={{
-                              fontSize: '14px',
+                              fontSize: '12px',
                               color: colors.grey12,
                               textDecoration: 'dotted underline',
                               textUnderlineOffset: '2px',
@@ -985,7 +998,7 @@ export default function Index() {
                         <Stack
                           direction="row"
                           sx={{
-                            fontSize: '14px',
+                            fontSize: '12px',
                             color: isLight ? colors.black : colors.white
                           }}>
                           {item.value}

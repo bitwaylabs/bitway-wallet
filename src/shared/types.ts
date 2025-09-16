@@ -568,7 +568,7 @@ export interface IAsset {
     oppositeChainId: string;
     oppositeChainDenom: string;
     oppositeChainChannelId: string;
-    sideChainChannelId: string;
+    bitwayChannelId: string;
     portId: string;
   }> | null;
 }

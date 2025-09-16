@@ -247,72 +247,74 @@ export default function EarnTabScreen() {
               Est.APR
             </Text>
           </Row>
-          {filterData.map((item) => (
-            <Stack
-              direction="row"
-              alignItems="center"
-              gap="8px"
-              key={item.baseData.id}
-              className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
-              sx={{
-                px: '20px',
-                py: '12px',
-                cursor: 'pointer'
-              }}
-              onClick={() => {
-                navigate('EarnSupplyScreen', {
-                  poolData: item
-                });
-              }}>
-              <Image
-                src={item.token.asset.logo}
-                size={32}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%'
-                }}
-              />
-              <Text
-                color={isLight ? 'black' : 'white'}
-                size="md"
-                style={{
-                  fontWeight: 600
-                }}>
-                {item.token.asset.symbol}
-              </Text>
-              <Typography
+          <Stack gap="10px">
+            {filterData.map((item) => (
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap="8px"
+                key={item.baseData.id}
+                className={`bg-item-hover-v2 ${isLight ? 'light' : ''}`}
                 sx={{
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  color: colors.grey12,
-                  cursor: 'pointer',
-                  textDecoration: 'dashed underline',
-                  textUnderlineOffset: '2px',
-                  transition: '.4s',
-                  ':hover': {
-                    color: colors.main
-                  }
+                  px: '20px',
+                  py: '12px',
+                  cursor: 'pointer'
                 }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  window.open(`${SIDE_STATION_URL}/lending/markets/pool/${item.baseData.id}`, '_blank');
+                onClick={() => {
+                  navigate('EarnSupplyScreen', {
+                    poolData: item
+                  });
                 }}>
-                Details
-              </Typography>
+                <Image
+                  src={item.token.asset.logo}
+                  size={32}
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%'
+                  }}
+                />
+                <Text
+                  color={isLight ? 'black' : 'white'}
+                  size="md"
+                  style={{
+                    fontWeight: 600
+                  }}>
+                  {item.token.asset.symbol}
+                </Text>
+                <Typography
+                  sx={{
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: colors.grey12,
+                    cursor: 'pointer',
+                    textDecoration: 'dashed underline',
+                    textUnderlineOffset: '2px',
+                    transition: '.4s',
+                    ':hover': {
+                      color: colors.main
+                    }
+                  }}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    window.open(`${SIDE_STATION_URL}/finance/markets/pool/${item.baseData.id}`, '_blank');
+                  }}>
+                  Details
+                </Typography>
 
-              <Text
-                size="md"
-                style={{
-                  fontWeight: 600,
-                  color: colors.green,
-                  flex: 1,
-                  textAlign: 'right'
-                }}>
-                {item.supplyApy}%
-              </Text>
-            </Stack>
-          ))}
+                <Text
+                  size="md"
+                  style={{
+                    fontWeight: 600,
+                    color: colors.green,
+                    flex: 1,
+                    textAlign: 'right'
+                  }}>
+                  {item.supplyApy}%
+                </Text>
+              </Stack>
+            ))}
+          </Stack>
         </Column>
       </Content>
       <Footer px="zero" py="zero">

@@ -33,7 +33,7 @@ export function useIbc() {
         typeUrl: '/ibc.applications.transfer.v1.MsgTransfer',
         value: {
           sourcePort: ibcInfo.portId,
-          sourceChannel: fromChain.isCosmos ? ibcInfo.sideChainChannelId : ibcInfo.oppositeChainChannelId,
+          sourceChannel: fromChain.isCosmos ? ibcInfo.bitwayChannelId : ibcInfo.oppositeChainChannelId,
           token: {
             amount: parseUnitAmount(bridgeAmount, fromAsset.asset.exponent),
             denom: fromAsset.denom

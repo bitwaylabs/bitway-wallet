@@ -198,7 +198,7 @@ export default function BridgeTabScreen() {
             <Stack
               sx={{
                 position: 'relative',
-                height: '16px'
+                height: '10px'
               }}>
               <Stack
                 direction="row"
