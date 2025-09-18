@@ -48,7 +48,7 @@ const AccountSelect = () => {
           />
 
           <Text
-            color={isLight ? 'black' : 'white'}
+            color={'white_muted'}
             text={'/'}
             size="xs"
             style={{

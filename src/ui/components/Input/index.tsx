@@ -224,7 +224,7 @@ function AmountInput(props: InputProps) {
             cursor: 'pointer',
             transition: '.4s',
             ':hover': {
-              color: colors.white
+              color: isLight ? colors.black : colors.white
             }
           }}>
           Max

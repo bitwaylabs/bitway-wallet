@@ -329,10 +329,10 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
         gap="lg"
         rounded
         style={{
-          backgroundColor: '#1E1E1F',
+          backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
           paddingBottom: '12px'
         }}>
-        <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" />
+        <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" color={isLight ? 'black' : 'white'} />
         <Row
           justifyCenter
           style={{
@@ -342,9 +342,7 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
             style={{
               maxWidth: 320,
               width: 320,
-              border: '1px solid #FFFFFF1A !important',
-              borderColor: '#FFFFFF1A !important',
-              borderWidth: '1px !important',
+              border: `1px solid ${isLight ? colors.light_border : colors.dark_border} !important`,
               backgroundColor: isLight ? colors.white : colors.black,
               borderRadius: '10px'
             }}>
@@ -358,13 +356,13 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
                         // color={receivingSatoshis > sendingSatoshis ? 'white' : 'white'}
 
                         style={{
-                          color: '#94E360'
+                          color: colors.main
                         }}
                         preset="bold"
                         textCenter
                         size="xxl"
                       />
-                      <Text text="BTC" color="textDim" />
+                      <Text text="BTC" color="white_muted" />
                     </Row>
                   </Column>
                 </Column>

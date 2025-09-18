@@ -55,7 +55,7 @@ export const colors = {
   text: '#ffffff',
   textDim: '#6C7080',
   error: '#e52937',
-  danger: '#ED334B',
+  danger: '#FF4545',
   card: 'rgb(217 217 217 / 10%)',
   warning: '#FCCD94',
   primary: '#94E360',
@@ -89,7 +89,15 @@ export const colors = {
   light_bg: '#f7f7f7',
   light_bg_hover: '#2d2d2d4d',
   dark_border: '#ffffff20',
-  dark_bg: '#17171C'
+  dark_bg: '#17171C',
+  success_bg: '#48BB780D',
+  success_text: '#48BB78',
+  warn_bg: '#FEBC2F0D',
+  warn_text: '#FEBC2F',
+  error_bg: '#FF29290D',
+  error_text: '#FF2929',
+  light_default_bg: '#0000000D',
+  dark_default_bg: '#ffffff0D'
 };
 
 export type ColorTypes = keyof typeof colors;

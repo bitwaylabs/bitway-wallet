@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { DecodedPsbt, Risk, RiskType } from '@/shared/types';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
+import { Stack, Typography } from '@mui/material';
 
 import { Button } from '../Button';
 import { Column } from '../Column';
-import { Image } from '../Image';
 import { Input } from '../Input';
 import { Popover } from '../Popover';
 import { Row } from '../Row';
@@ -42,6 +43,7 @@ export const SignPsbtWithRisksPopover = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [understand, setUnderstand] = useState(false);
+  const isLight = useIsLight();
   useEffect(() => {
     if (inputValue.toUpperCase() === AGREEMENT_TEXT) {
       setUnderstand(true);
@@ -70,9 +72,35 @@ export const SignPsbtWithRisksPopover = ({
   return (
     <Popover>
       <Column justifyCenter itemsCenter>
-        <Image src="/images/icons/alert-triangle.svg" size={20} />
-        <Text text="Use at your own risk" preset="title-bold" />
-        <Text text={'Please be aware that sending the following assets involves risk:'} preset="sub" />
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          gap="8px"
+          sx={{
+            width: '100%',
+            p: '16px',
+            borderRadius: '10px',
+            bgcolor: '#FF45451A'
+          }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 0 24 21" fill="none">
+            <path
+              d="M11.9998 8.42796V12.428M11.9998 16.428H12.0098M10.6151 3.31969L2.39019 17.5263C1.93398 18.3143 1.70588 18.7083 1.73959 19.0317C1.769 19.3137 1.91677 19.57 2.14613 19.7368C2.40908 19.928 2.86435 19.928 3.77487 19.928H20.2246C21.1352 19.928 21.5904 19.928 21.8534 19.7368C22.0827 19.57 22.2305 19.3137 22.2599 19.0317C22.2936 18.7083 22.0655 18.3143 21.6093 17.5263L13.3844 3.31968C12.9299 2.53452 12.7026 2.14194 12.4061 2.01009C12.1474 1.89507 11.8521 1.89507 11.5935 2.01009C11.2969 2.14194 11.0696 2.53452 10.6151 3.31969Z"
+              stroke={colors.danger}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <Typography
+            sx={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: colors.danger
+            }}>
+            Risk Warning
+          </Typography>
+        </Stack>
 
         <Column gap="md">
           {decodedPsbt.risks.map((risk, index) => {
@@ -80,29 +108,40 @@ export const SignPsbtWithRisksPopover = ({
               <Column
                 key={'risk_' + index}
                 style={{ borderWidth: 1, borderColor: colors.border, borderRadius: 10 }}
-                px="md"
                 py="sm">
                 <Row justifyBetween justifyCenter mt="sm">
-                  <Text text={risk.title} color={risk.level === 'danger' ? 'danger' : 'warning'} />
+                  <Text text={risk.title} color={'danger'} />
                   {visibleRiskDetailTypes.includes(risk.type) ? (
                     <Text
                       text={'View>'}
                       onClick={() => {
                         setDetailRisk(risk);
                       }}
+                      color={'white_muted'}
                     />
                   ) : null}
                 </Row>
-                <Row style={{ borderBottomWidth: 1, color: colors.border }}></Row>
                 <Text text={risk.desc} preset="sub" />
               </Column>
             );
           })}
 
-          <Text text={'I understand and accept the risks associated with this transaction.'} preset="sub" />
+          <Text
+            text={'I understand and accept the risks associated with this transaction.'}
+            preset="sub"
+            color={isLight ? 'black' : 'white'}
+          />
 
           <Row itemsCenter gap="sm" mb="md">
-            <Text text={`Enter “${AGREEMENT_TEXT}” to proceed`} preset="bold" />
+            <Typography
+              sx={{
+                fontSize: '14px',
+                color: colors.white_muted
+              }}>
+              Enter “
+              <small style={{ fontSize: '100%', color: isLight ? colors.black : colors.white }}>{AGREEMENT_TEXT}</small>
+              ” to proceed
+            </Typography>
           </Row>
           <Input
             preset="text"
@@ -115,7 +154,7 @@ export const SignPsbtWithRisksPopover = ({
 
         <Row full>
           <Button
-            text={'Cancel'}
+            text={'Reject'}
             preset="default"
             full
             onClick={(e) => {
@@ -127,7 +166,7 @@ export const SignPsbtWithRisksPopover = ({
 
           <Button
             text={'Confirm'}
-            preset="primary"
+            preset="danger"
             disabled={!understand}
             full
             onClick={(e) => {

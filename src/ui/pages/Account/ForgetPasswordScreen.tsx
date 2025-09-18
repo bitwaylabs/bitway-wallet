@@ -115,8 +115,7 @@ export default function CreateHDWalletScreen() {
               padding: '16px',
               gap: '8px',
               backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
-              borderRadius: '14px',
-              marginTop: '10px'
+              borderRadius: '14px'
             }}>
             <CheckBox
               checked={checked2}
@@ -141,8 +140,7 @@ export default function CreateHDWalletScreen() {
               padding: '16px',
               gap: '8px',
               backgroundColor: isLight ? colors.light_bg : colors.dark_bg,
-              borderRadius: '14px',
-              marginTop: '10px'
+              borderRadius: '14px'
             }}>
             <CheckBox
               checked={checked3}

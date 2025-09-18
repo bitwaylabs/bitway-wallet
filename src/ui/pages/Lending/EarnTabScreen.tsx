@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import 'swiper/css';
 
+import { NetworkType } from '@/shared/types';
 import { Column, Content, Footer, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import SearchInput from '@/ui/components/Input/Search';
 import { NavTabBar } from '@/ui/components/NavTabBar';
@@ -30,6 +31,50 @@ export default function EarnTabScreen() {
       return item.token.asset.symbol.toLowerCase().includes(value.toLowerCase());
     });
   }, [data, value]);
+
+  if (networkType === NetworkType.MAINNET) {
+    return (
+      <Layout>
+        <MainHeader title={''} />
+        <Content mt="lg" classname="fadeIn-page">
+          <Column
+            gap="md"
+            px="lg"
+            full
+            itemsCenter
+            justifyCenter
+            py="md"
+            style={{
+              borderRadius: '10px'
+            }}>
+            <Text
+              text="COMING SOON"
+              color={isLight ? 'black' : 'white'}
+              style={{
+                fontWeight: 700
+              }}
+              size="xl"></Text>
+            <Text
+              text="SWITCH TO TESTNET"
+              color={isLight ? 'black' : 'white'}
+              style={{
+                fontWeight: 700
+              }}
+              onClick={() => {
+                changeEnvironment(NetworkType.TESTNET);
+                changeNetworkType(NetworkType.TESTNET);
+                reloadAccounts();
+                navigate('MainScreen');
+              }}
+              size="xl"></Text>
+          </Column>
+        </Content>
+        <Footer px="zero" py="zero">
+          <NavTabBar tab="earn" />
+        </Footer>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

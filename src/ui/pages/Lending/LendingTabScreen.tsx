@@ -931,7 +931,9 @@ export default function Index() {
                     key={item.label}
                     sx={{
                       '&:not(:first-of-type)': {
-                        mt: '10px'
+                        mt: '10px',
+                        borderTop: `1px solid ${isLight ? colors.light_border : colors.dark_border}`,
+                        pt: '10px'
                       }
                     }}>
                     <Typography

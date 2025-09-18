@@ -27,58 +27,58 @@ export const loanStatusStyle: Record<
 > = {
   Unspecified: { lightBgColor: '', lightColor: '', darkBgColor: '', darkColor: '' },
   Requested: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.grey62,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.grey62
+    darkBgColor: colors.dark_default_bg,
+    darkColor: colors.white,
+    lightBgColor: colors.light_default_bg,
+    lightColor: colors.black
   },
   Cancelled: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.grey64,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.grey64
+    darkBgColor: colors.dark_default_bg,
+    darkColor: colors.white,
+    lightBgColor: colors.light_default_bg,
+    lightColor: colors.black
   },
   Authorized: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.grey62,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.grey62
+    darkBgColor: colors.dark_default_bg,
+    darkColor: colors.white,
+    lightBgColor: colors.light_default_bg,
+    lightColor: colors.black
   },
   Rejected: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.grey64,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.grey64
+    darkBgColor: colors.error_bg,
+    darkColor: colors.error_text,
+    lightBgColor: colors.error_bg,
+    lightColor: colors.error_text
   },
   Open: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.green,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.green
+    darkBgColor: colors.success_bg,
+    darkColor: colors.success_text,
+    lightBgColor: colors.success_bg,
+    lightColor: colors.success_text
   },
   Repaid: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.green,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.green
+    darkBgColor: colors.dark_default_bg,
+    darkColor: colors.white,
+    lightBgColor: colors.light_default_bg,
+    lightColor: colors.black
   },
   Defaulted: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.red,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.red
+    darkBgColor: colors.error_bg,
+    darkColor: colors.error_text,
+    lightBgColor: colors.error_bg,
+    lightColor: colors.error_text
   },
   Liquidated: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.red,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.red
+    darkBgColor: colors.error_bg,
+    darkColor: colors.error_text,
+    lightBgColor: colors.error_bg,
+    lightColor: colors.error_text
   },
   Closed: {
-    darkBgColor: colors.dark_bg,
-    darkColor: colors.grey64,
-    lightBgColor: colors.light_bg,
-    lightColor: colors.grey64
+    darkBgColor: colors.dark_default_bg,
+    darkColor: colors.white,
+    lightBgColor: colors.light_default_bg,
+    lightColor: colors.black
   }
 };
 

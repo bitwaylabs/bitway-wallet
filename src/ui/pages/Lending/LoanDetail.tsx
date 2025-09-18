@@ -1075,7 +1075,7 @@ function StatusWithToExplorer({ text }: { text: string; url?: string }) {
         padding: '4px 8px',
         borderRadius: '4px',
         fontSize: '10px',
-        backgroundColor: colors.white1,
+        backgroundColor: isLight ? colors.light_default_bg : colors.dark_default_bg,
         color: isLight ? colors.black : colors.white
       }}>
       {text}
@@ -1091,7 +1091,7 @@ function StatusWithPending({ text, confirms }: { text: string; confirms?: number
       alignItems="center"
       sx={{
         height: '30px',
-        bgcolor: isLight ? colors.light_bg : colors.white1,
+        backgroundColor: isLight ? colors.light_default_bg : colors.dark_default_bg,
         padding: '4px 8px',
         borderRadius: '4px'
       }}>
