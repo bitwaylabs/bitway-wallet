@@ -811,7 +811,7 @@ export default function LoanDetailScreen() {
               Loan
             </Text>
             {loan.status === 'Authorized' ? (
-              <StatusWithPending text="Pending" confirms={txsConfirms[0].confirms} />
+              <StatusWithPending text="Pending" confirms={txsConfirms[0]?.confirms} />
             ) : loan.status === 'Open' ? (
               <>{!loanDetailCex?.disbursementBlockHeight && <StatusWithPending text="Pending" />}</>
             ) : ['Repaid', 'Closed'].includes(loan.status) ? (
