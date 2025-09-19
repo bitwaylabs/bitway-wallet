@@ -103,6 +103,10 @@ export function Button(props: ButtonProps) {
       backgroundColor: isLight ? colors.light_bg : colors.grey_dark
     }) as CSSProperties,
 
+    reject: Object.assign({}, $baseViewStyle, {
+      backgroundColor: isLight ? colors.black : colors.grey_dark
+    }) as CSSProperties,
+
     primary: Object.assign({}, $baseViewStyle, {
       backgroundColor: colors.blue_dark
     } as CSSProperties),

@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { ConnectedSite } from '@/background/service/permission';
 import { Card, Column, Content, Header, Image, Layout, Row, Text } from '@/ui/components';
 import { Empty } from '@/ui/components/Empty';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { fontSizes } from '@/ui/theme/font';
 import { useWallet } from '@/ui/utils';
 
 export default function ConnectedSitesScreen() {
   const wallet = useWallet();
+  const isLight = useIsLight();
 
   const [sites, setSites] = useState<ConnectedSite[]>([]);
 
@@ -39,7 +41,7 @@ export default function ConnectedSitesScreen() {
         {sites.length > 0 && (
           <Text
             preset="sub"
-            color={'white'}
+            color={isLight ? 'black' : 'white'}
             text={'The current account is connected to these sites. They can view your account details.'}></Text>
         )}
 
@@ -59,7 +61,7 @@ export default function ConnectedSitesScreen() {
                         size={fontSizes.logo}
                       />
                       <Text
-                        color={'white'}
+                        color={isLight ? 'black' : 'white'}
                         style={{
                           fontSize: '14px'
                         }}

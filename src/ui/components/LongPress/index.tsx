@@ -1,7 +1,11 @@
+import { useIsLight } from '@/ui/state/settings/hooks';
+import { colors } from '@/ui/theme/colors';
+
 import { Image } from '../Image';
 import { Text } from '../Text';
 
 export function LongPress() {
+  const isLight = useIsLight();
   return (
     <>
       <div
@@ -9,8 +13,7 @@ export function LongPress() {
           marginTop: '112px',
           display: 'flex',
           justifyContent: 'center'
-        }}
-      >
+        }}>
         <Image src="./images/img/long-press.png" size={90} />
       </div>
       <Text
@@ -18,7 +21,8 @@ export function LongPress() {
         style={{
           fontSize: '14px',
           lineHeight: '24px',
-          textAlign: 'center'
+          textAlign: 'center',
+          color: isLight ? colors.black : colors.white
         }}
       />
     </>

@@ -155,7 +155,7 @@ export const SignPsbtWithRisksPopover = ({
         <Row full>
           <Button
             text={'Reject'}
-            preset="default"
+            preset="reject"
             full
             onClick={(e) => {
               if (onClose) {

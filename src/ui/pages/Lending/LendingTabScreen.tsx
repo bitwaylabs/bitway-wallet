@@ -263,7 +263,7 @@ export default function Index() {
         healthFactor !== '-' ? (
           <Typography
             sx={{
-              fontSize: '14px',
+              fontSize: '12px',
               color:
                 healthFactor === '-'
                   ? isLight

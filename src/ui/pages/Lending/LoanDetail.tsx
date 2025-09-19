@@ -218,7 +218,7 @@ export default function LoanDetailScreen() {
                       fontSize: '10px',
                       p: '1px 6px',
                       borderRadius: '4px',
-                      backgroundColor: colors.white1,
+                      backgroundColor: isLight ? colors.light_default_bg : colors.dark_default_bg,
                       color: isLight ? colors.black : colors.white
                     }}>
                     {item.confirms > 0 ? `${item.confirms} Confirmed` : 'Unconfirmed'}
@@ -987,7 +987,16 @@ export default function LoanDetailScreen() {
               </Button>
             </Row>
           ) : loan.status === 'Requested' && hasDeposited ? (
-            <Row style={{ display: 'flex', position: 'fixed', bottom: 16, left: 16, right: 16, gap: '16px' }}>
+            <Row
+              style={{
+                display: 'flex',
+                position: 'fixed',
+                bottom: 16,
+                left: 16,
+                right: 16,
+                gap: '16px',
+                backgroundColor: isLight ? colors.white : colors.black
+              }}>
               {totalDepositUnitAmount !== claimedUnitAmount && (
                 <Button
                   preset="default"

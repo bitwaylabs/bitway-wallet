@@ -85,7 +85,7 @@ function SignTxDetails({ decodedPsbt }: { decodedPsbt: DecodedPsbt }) {
   const outputValueAmount = useMemo(() => satoshisToAmount(outputValueSaotoshis), [outputValueSaotoshis]);
   return (
     <Column gap="lg">
-      <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" />
+      <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" color={isLight ? 'black' : 'white'} />
       <Row justifyCenter>
         <Card style={{ backgroundColor: isLight ? colors.white : colors.black, maxWidth: 320, width: 320 }}>
           <Column gap="lg">

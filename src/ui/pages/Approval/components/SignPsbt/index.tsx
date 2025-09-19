@@ -378,7 +378,7 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
 
   return (
     <Column gap="lg">
-      <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" />
+      <Text text="Sign Transaction" preset="title-bold" textCenter mt="lg" color={isLight ? 'black' : 'white'} />
       <Row justifyCenter>
         <Card style={{ backgroundColor: isLight ? colors.white : colors.black, maxWidth: 320, width: 320 }}>
           <Column gap="lg">
@@ -436,9 +436,10 @@ function SignTxDetails({ txInfo, type, rawTxInfo }: { txInfo: TxInfo; rawTxInfo?
 }
 
 function Section({ title, children }: { title: string; children?: React.ReactNode }) {
+  const isLight = useIsLight();
   return (
     <Column>
-      <Text text={title} preset="bold" />
+      <Text text={title} preset="bold" color={isLight ? 'black' : 'white'} />
       <Card>
         <Row full justifyBetween itemsCenter>
           {children}
@@ -926,7 +927,11 @@ export default function SignPsbt({
             {isValidData && (
               <Column gap="xl">
                 <Column>
-                  <Text text={`Inputs: (${txInfo.decodedPsbt.inputInfos.length})`} preset="bold" />
+                  <Text
+                    text={`Inputs: (${txInfo.decodedPsbt.inputInfos.length})`}
+                    preset="bold"
+                    color={isLight ? 'black' : 'white'}
+                  />
                   <Card>
                     <Column full justifyCenter>
                       {txInfo.decodedPsbt.inputInfos.map((v, index) => {
@@ -1051,7 +1056,11 @@ export default function SignPsbt({
                 </Column>
 
                 <Column>
-                  <Text text={`Outputs: (${txInfo.decodedPsbt.outputInfos.length})`} preset="bold" />
+                  <Text
+                    text={`Outputs: (${txInfo.decodedPsbt.outputInfos.length})`}
+                    preset="bold"
+                    color={isLight ? 'black' : 'white'}
+                  />
                   <Card>
                     <Column full justifyCenter gap="lg">
                       {txInfo.decodedPsbt.outputInfos.map((v, index) => {
