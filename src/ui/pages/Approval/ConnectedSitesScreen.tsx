@@ -71,6 +71,7 @@ export default function ConnectedSitesScreen() {
                     <Column justifyCenter>
                       <Text
                         preset="disconnect"
+                        size="xs"
                         onClick={() => {
                           handleRemove(item.origin);
                         }}
