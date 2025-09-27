@@ -43,7 +43,7 @@ export default function LoanDetailScreen() {
   const isLight = useIsLight();
   const { loan_id, from } = state as { loan_id: string; from?: string };
 
-  const { sideChain, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, SIDE_STATION_URL } = useEnvironment();
+  const { bitwayChain, SERVICE_BASE_URL, BITWAY_BTC_EXPLORER, BITWAY_STATION_URL } = useEnvironment();
   const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
@@ -60,7 +60,7 @@ export default function LoanDetailScreen() {
   const { data } = useQuery({
     queryKey: ['getLoanById', { loan_id }],
     queryFn: async () => {
-      const result = await services.lending.getLoanById(loan_id!, { baseURL: sideChain.restUrl });
+      const result = await services.lending.getLoanById(loan_id!, { baseURL: bitwayChain.restUrl });
       return {
         loan: {
           ...result.loan,
@@ -197,7 +197,7 @@ export default function LoanDetailScreen() {
             }
           }}
           onClick={() => {
-            window.open(`${SIDE_BTC_EXPLORER}/address/${loan.vault_address}`);
+            window.open(`${BITWAY_BTC_EXPLORER}/address/${loan.vault_address}`);
           }}>
           {formatAddress(loan.vault_address, 6)}
         </Typography>
@@ -237,7 +237,7 @@ export default function LoanDetailScreen() {
                     }
                   }}
                   onClick={() => {
-                    window.open(`${SIDE_BTC_EXPLORER}/tx/${item.tx}`);
+                    window.open(`${BITWAY_BTC_EXPLORER}/tx/${item.tx}`);
                   }}>
                   {formatAddress(item.tx, 6)}
                 </Typography>
@@ -265,7 +265,7 @@ export default function LoanDetailScreen() {
             }}
             onClick={() => {
               if (receipent) {
-                window.open(`${SIDE_BTC_EXPLORER}/address/${receipent}`);
+                window.open(`${BITWAY_BTC_EXPLORER}/address/${receipent}`);
               }
             }}>
             {receipent ? formatAddress(receipent, 6) : '-'}
@@ -290,7 +290,7 @@ export default function LoanDetailScreen() {
           }}
           onClick={() => {
             if (loan.status === 'Liquidated') return;
-            window.open(`${SIDE_BTC_EXPLORER}/tx/${loanDetailCex?.returnBtcTxhash}`);
+            window.open(`${BITWAY_BTC_EXPLORER}/tx/${loanDetailCex?.returnBtcTxhash}`);
           }}>
           {loan.status !== 'Liquidated' ? formatAddress(loanDetailCex?.returnBtcTxhash || '', 6) : '-'}
         </Typography>
@@ -332,7 +332,7 @@ export default function LoanDetailScreen() {
               fontWeight: 500,
               color: colors.grey12
             }}>
-            {borrowToken?.asset.symbol} ({sideChain.name})
+            {borrowToken?.asset.symbol} ({bitwayChain.name})
           </Text>
         </>
       ),
@@ -404,7 +404,7 @@ export default function LoanDetailScreen() {
           }}
           onClick={() => {
             if (loanDetailCex?.disbursementBlockHeight) {
-              window.open(`${sideChain?.explorerUrl}/block/${loanDetailCex?.disbursementBlockHeight}`);
+              window.open(`${bitwayChain?.explorerUrl}/block/${loanDetailCex?.disbursementBlockHeight}`);
             }
           }}>
           {loanDetailCex?.disbursementBlockHeight || '-'}
@@ -426,7 +426,7 @@ export default function LoanDetailScreen() {
             }
           }}
           onClick={() => {
-            window.open(`${sideChain.explorerUrl}/tx/${loanDetailCex?.repaymentTxhash || ''}`);
+            window.open(`${bitwayChain.explorerUrl}/tx/${loanDetailCex?.repaymentTxhash || ''}`);
           }}>
           {formatAddress(loanDetailCex?.repaymentTxhash || '', 6)}
         </Typography>
@@ -708,7 +708,7 @@ export default function LoanDetailScreen() {
                   }
                 }}
                 onClick={() => {
-                  window.open(`${SIDE_STATION_URL}/finance/markets/loan/${loan.vault_address}`);
+                  window.open(`${BITWAY_STATION_URL}/finance/markets/loan/${loan.vault_address}`);
                 }}>
                 {formatAddress(loan.vault_address, 6)}
               </Typography>

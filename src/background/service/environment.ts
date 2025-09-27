@@ -1,5 +1,5 @@
 import { createPersistStore } from '@/background/utils';
-import { ChainType, SERVICE_BASE_URL_MAINNET, SERVICE_BASE_URL_TESTNET, SIDE_CHAIN_MAINNET } from '@/shared/constant';
+import { BITWAY_CHAIN_MAINNET, ChainType, SERVICE_BASE_URL_MAINNET, SERVICE_BASE_URL_TESTNET } from '@/shared/constant';
 import { IChain } from '@/shared/types';
 import services from '@/ui/services';
 
@@ -8,13 +8,13 @@ export type EnvironmentStore = {
   DEX_CONTRACT: string;
   DEX_ROUTER_CONTRACT: string;
   SERVICE_BASE_URL: string;
-  SIDE_BTC_EXPLORER: string;
+  BITWAY_BTC_EXPLORER: string;
   UNISAT_SERVICE_ENDPOINT: string;
   UNISAT_IO_API: string;
-  SIDE_STATION_URL: string;
-  SIDE_BRIDGEEXPLORER_URL: string;
+  BITWAY_STATION_URL: string;
+  BITWAY_BRIDGEEXPLORER_URL: string;
   EVM_COLLECTOR: string;
-  sideChain: IChain;
+  bitwayChain: IChain;
   chains: IChain[];
   DEFAUCET_REFERRAL_CODE: string;
 };
@@ -30,13 +30,13 @@ class EnvironmentService {
         DEX_CONTRACT: '',
         DEX_ROUTER_CONTRACT: '',
         SERVICE_BASE_URL: SERVICE_BASE_URL_MAINNET,
-        SIDE_BTC_EXPLORER: '',
+        BITWAY_BTC_EXPLORER: '',
         UNISAT_SERVICE_ENDPOINT: '',
         UNISAT_IO_API: '',
-        SIDE_STATION_URL: '',
-        SIDE_BRIDGEEXPLORER_URL: '',
+        BITWAY_STATION_URL: '',
+        BITWAY_BRIDGEEXPLORER_URL: '',
         EVM_COLLECTOR: '',
-        sideChain: SIDE_CHAIN_MAINNET,
+        bitwayChain: BITWAY_CHAIN_MAINNET,
         chains: [],
         DEFAUCET_REFERRAL_CODE: ''
       }
@@ -54,8 +54,8 @@ class EnvironmentService {
       if (this.store.DEX_ROUTER_CONTRACT !== config.DEX_ROUTER_CONTRACT) {
         this.store.DEX_ROUTER_CONTRACT = config.DEX_ROUTER_CONTRACT;
       }
-      if (this.store.SIDE_BTC_EXPLORER !== config.SIDE_BTC_EXPLORER) {
-        this.store.SIDE_BTC_EXPLORER = config.SIDE_BTC_EXPLORER;
+      if (this.store.BITWAY_BTC_EXPLORER !== config.BITWAY_BTC_EXPLORER) {
+        this.store.BITWAY_BTC_EXPLORER = config.BITWAY_BTC_EXPLORER;
       }
       if (this.store.UNISAT_SERVICE_ENDPOINT !== config.UNISAT_SERVICE_ENDPOINT) {
         this.store.UNISAT_SERVICE_ENDPOINT = config.UNISAT_SERVICE_ENDPOINT;
@@ -63,11 +63,11 @@ class EnvironmentService {
       if (this.store.UNISAT_IO_API !== config.UNISAT_IO_API) {
         this.store.UNISAT_IO_API = config.UNISAT_IO_API;
       }
-      if (this.store.SIDE_STATION_URL !== config.SIDE_STATION_URL) {
-        this.store.SIDE_STATION_URL = config.SIDE_STATION_URL;
+      if (this.store.BITWAY_STATION_URL !== config.BITWAY_STATION_URL) {
+        this.store.BITWAY_STATION_URL = config.BITWAY_STATION_URL;
       }
-      if (this.store.SIDE_BRIDGEEXPLORER_URL !== config.SIDE_BRIDGEEXPLORER_URL) {
-        this.store.SIDE_BRIDGEEXPLORER_URL = config.SIDE_BRIDGEEXPLORER_URL;
+      if (this.store.BITWAY_BRIDGEEXPLORER_URL !== config.BITWAY_BRIDGEEXPLORER_URL) {
+        this.store.BITWAY_BRIDGEEXPLORER_URL = config.BITWAY_BRIDGEEXPLORER_URL;
       }
       if (this.store.EVM_COLLECTOR !== config.EVM_COLLECTOR) {
         this.store.EVM_COLLECTOR = config.EVM_COLLECTOR;
@@ -75,7 +75,7 @@ class EnvironmentService {
       if (this.store.DEFAUCET_REFERRAL_CODE !== config.DEFAUCET_REFERRAL_CODE) {
         this.store.DEFAUCET_REFERRAL_CODE = config.DEFAUCET_REFERRAL_CODE;
       }
-      this.store.sideChain = config.SIDE_CHAIN;
+      this.store.bitwayChain = config.BITWAY_CHAIN;
       this.store.chains = chains;
     } catch (err) {
       console.error(err);
@@ -91,12 +91,12 @@ class EnvironmentService {
     this.store.UNISAT_RUNE_URL = config.UNISAT_RUNE_URL;
     this.store.DEX_CONTRACT = config.DEX_CONTRACT;
     this.store.DEX_ROUTER_CONTRACT = config.DEX_ROUTER_CONTRACT;
-    this.store.SIDE_BTC_EXPLORER = config.SIDE_BTC_EXPLORER;
+    this.store.BITWAY_BTC_EXPLORER = config.BITWAY_BTC_EXPLORER;
     this.store.UNISAT_SERVICE_ENDPOINT = config.UNISAT_SERVICE_ENDPOINT;
     this.store.UNISAT_IO_API = config.UNISAT_IO_API;
-    this.store.SIDE_STATION_URL = config.SIDE_STATION_URL;
-    this.store.SIDE_BRIDGEEXPLORER_URL = config.SIDE_BRIDGEEXPLORER_URL;
-    this.store.sideChain = config.SIDE_CHAIN;
+    this.store.BITWAY_STATION_URL = config.BITWAY_STATION_URL;
+    this.store.BITWAY_BRIDGEEXPLORER_URL = config.BITWAY_BRIDGEEXPLORER_URL;
+    this.store.bitwayChain = config.BITWAY_CHAIN;
     this.store.chains = chains;
     this.store.SERVICE_BASE_URL = baseURL;
     this.store.DEFAUCET_REFERRAL_CODE = config.DEFAUCET_REFERRAL_CODE;
@@ -108,13 +108,13 @@ class EnvironmentService {
       this.store.UNISAT_RUNE_URL = config.UNISAT_RUNE_URL;
       this.store.DEX_CONTRACT = config.DEX_CONTRACT;
       this.store.DEX_ROUTER_CONTRACT = config.DEX_ROUTER_CONTRACT;
-      this.store.SIDE_BTC_EXPLORER = config.SIDE_BTC_EXPLORER;
+      this.store.BITWAY_BTC_EXPLORER = config.BITWAY_BTC_EXPLORER;
       this.store.UNISAT_SERVICE_ENDPOINT = config.UNISAT_SERVICE_ENDPOINT;
       this.store.UNISAT_IO_API = config.UNISAT_IO_API;
-      this.store.SIDE_STATION_URL = config.SIDE_STATION_URL;
-      this.store.SIDE_BRIDGEEXPLORER_URL = config.SIDE_BRIDGEEXPLORER_URL;
+      this.store.BITWAY_STATION_URL = config.BITWAY_STATION_URL;
+      this.store.BITWAY_BRIDGEEXPLORER_URL = config.BITWAY_BRIDGEEXPLORER_URL;
       this.store.EVM_COLLECTOR = config.EVM_COLLECTOR;
-      this.store.sideChain = config.SIDE_CHAIN;
+      this.store.bitwayChain = config.BITWAY_CHAIN;
       this.store.chains = chains;
       this.store.DEFAUCET_REFERRAL_CODE = config.DEFAUCET_REFERRAL_CODE;
     } catch (err) {
@@ -125,13 +125,13 @@ class EnvironmentService {
       DEX_CONTRACT: this.store.DEX_CONTRACT,
       DEX_ROUTER_CONTRACT: this.store.DEX_ROUTER_CONTRACT,
       SERVICE_BASE_URL: this.store.SERVICE_BASE_URL,
-      SIDE_BTC_EXPLORER: this.store.SIDE_BTC_EXPLORER,
+      BITWAY_BTC_EXPLORER: this.store.BITWAY_BTC_EXPLORER,
       UNISAT_SERVICE_ENDPOINT: this.store.UNISAT_SERVICE_ENDPOINT,
       UNISAT_IO_API: this.store.UNISAT_IO_API,
-      SIDE_STATION_URL: this.store.SIDE_STATION_URL,
-      SIDE_BRIDGEEXPLORER_URL: this.store.SIDE_BRIDGEEXPLORER_URL,
+      BITWAY_STATION_URL: this.store.BITWAY_STATION_URL,
+      BITWAY_BRIDGEEXPLORER_URL: this.store.BITWAY_BRIDGEEXPLORER_URL,
       EVM_COLLECTOR: this.store.EVM_COLLECTOR,
-      sideChain: this.store.sideChain,
+      bitwayChain: this.store.bitwayChain,
       chains: this.store.chains,
       DEFAUCET_REFERRAL_CODE: this.store.DEFAUCET_REFERRAL_CODE
     };

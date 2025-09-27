@@ -12,7 +12,7 @@ export function useRepay() {
   const currentAccount = useCurrentAccount();
   const [loading, setLoading] = useState(false);
   const [tx, setTx] = useState('');
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
 
   const repay = async ({ loan_id }: { loan_id: string }) => {
     try {
@@ -32,7 +32,7 @@ export function useRepay() {
       while (!hashResponse) {
         try {
           hashResponse = await services.tx.getTxByHash(result.tx_response.txhash, {
-            baseURL: sideChain.restUrl
+            baseURL: bitwayChain.restUrl
           });
         } catch (err) {
           await new Promise((r) => setTimeout(r, 1000));

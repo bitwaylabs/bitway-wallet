@@ -7,10 +7,10 @@ export interface GetConstantsResponse {
     UNISAT_RUNE_URL: string;
     UNISAT_SERVICE_ENDPOINT: string;
     OPENAPI_URL: string;
-    SIDE_BTC_EXPLORER: string;
-    SIDE_STATION_URL: string;
-    SIDE_BRIDGEEXPLORER_URL: string;
-    SIDE_CHAIN: IChain;
+    BITWAY_BTC_EXPLORER: string;
+    BITWAY_STATION_URL: string;
+    BITWAY_BRIDGEEXPLORER_URL: string;
+    BITWAY_CHAIN: IChain;
     UNISAT_IO_API: string;
     EVM_COLLECTOR: string;
     DEFAUCET_REFERRAL_CODE: string;

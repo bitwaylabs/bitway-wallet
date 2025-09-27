@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 
-import { NetworkType } from '@/shared/types';
 import { CheckBox, Column, Content, Footer, Image, Layout, Row, Text } from '@/ui/components';
 import { Button } from '@/ui/components/Button';
 import { NavTabBar } from '@/ui/components/NavTabBar';
@@ -120,83 +119,68 @@ export default function LoansTabScreen() {
             sx={{
               mt: '20px'
             }}>
-            {networkType === NetworkType.MAINNET ? (
-              <Button
-                full
-                preset="default"
-                text="Switch to testnet"
-                onClick={() => {
-                  changeEnvironment(NetworkType.TESTNET);
-                  changeNetworkType(NetworkType.TESTNET);
-                  reloadAccounts();
-                  navigate('MainScreen');
-                }}></Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  navigate('LendingTabScreen');
-                }}
-                full
-                preset="primary"
-                text="Borrow Now"></Button>
-            )}
+            <Button
+              onClick={() => {
+                navigate('LendingTabScreen');
+              }}
+              full
+              preset="primary"
+              text="Borrow Now"></Button>
           </Stack>
-          {networkType === NetworkType.TESTNET && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            gap="4px"
+            className="animate__animated animate__fadeInUp animate__faster animate__delay-1s">
             <Stack
               direction="row"
-              justifyContent="center"
-              alignItems="center"
               gap="4px"
-              className="animate__animated animate__fadeInUp animate__faster animate__delay-1s">
-              <Stack
-                direction="row"
-                gap="4px"
-                sx={{
+              sx={{
+                span: {
+                  color: colors.grey12
+                },
+                p: {
+                  color: colors.grey12
+                },
+                ':hover': {
                   span: {
-                    color: colors.grey12
+                    color: isLight ? colors.black : colors.white
                   },
                   p: {
-                    color: colors.grey12
-                  },
-                  ':hover': {
-                    span: {
-                      color: isLight ? colors.black : colors.white
-                    },
-                    p: {
-                      color: isLight ? colors.black : colors.white
-                    }
+                    color: isLight ? colors.black : colors.white
                   }
+                }
+              }}>
+              <CheckBox
+                checked={!showLoanNotice}
+                onChange={(e) => {
+                  setShowLoanNotice(!e.target.checked);
+                  wallet.setShowLoanNotice(!e.target.checked);
+                }}
+                sx={{
+                  width: '16px',
+                  height: '16px',
+                  svg: {
+                    width: '14px',
+                    height: '14px'
+                  }
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  transition: '.4s'
+                }}
+                onClick={() => {
+                  setShowLoanNotice(!showLoanNotice);
+                  wallet.setShowLoanNotice(!showLoanNotice);
                 }}>
-                <CheckBox
-                  checked={!showLoanNotice}
-                  onChange={(e) => {
-                    setShowLoanNotice(!e.target.checked);
-                    wallet.setShowLoanNotice(!e.target.checked);
-                  }}
-                  sx={{
-                    width: '16px',
-                    height: '16px',
-                    svg: {
-                      width: '14px',
-                      height: '14px'
-                    }
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: '12px',
-                    cursor: 'pointer',
-                    transition: '.4s'
-                  }}
-                  onClick={() => {
-                    setShowLoanNotice(!showLoanNotice);
-                    wallet.setShowLoanNotice(!showLoanNotice);
-                  }}>
-                  Don't show this again
-                </Typography>
-              </Stack>
+                Don't show this again
+              </Typography>
             </Stack>
-          )}
+          </Stack>
         </Column>
       </Content>
 

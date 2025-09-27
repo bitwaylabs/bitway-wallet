@@ -79,9 +79,9 @@ export function useChangeNetworkTypeCallback() {
 
 export function useBlockstreamUrl(chain?: CHAINS_ENUM) {
   const networkType = useNetworkType();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   if (chain === CHAINS_ENUM.BITWAY) {
-    return sideChain.explorerUrl;
+    return bitwayChain.explorerUrl;
   }
 
   if (networkType === NetworkType.MAINNET) {

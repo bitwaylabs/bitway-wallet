@@ -16,11 +16,11 @@ import { Stack, Typography } from '@mui/material';
 export default function Index() {
   const currentAccount = useCurrentAccount();
   const isLight = useIsLight();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data } = useQuery('stakingGetRewards', () => {
     if (!currentAccount?.address) return;
     return services.staking.getRewards(currentAccount?.address, {
-      baseURL: sideChain?.restUrl
+      baseURL: bitwayChain?.restUrl
     });
   });
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);

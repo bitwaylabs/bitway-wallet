@@ -384,7 +384,7 @@ export const SERVICE_BASE_URL_TESTNET = 'https://api.bitway.com/indexer-station-
 
 // MAINNET
 export const SERVICE_BASE_URL_MAINNET = 'https://api.bitway.com/bitway-mainnet';
-export const SIDE_CHAIN_MAINNET: IChain = {
+export const BITWAY_CHAIN_MAINNET: IChain = {
   chainID: 'bitway-1',
   name: 'Bitway',
   prefix: 'bc',

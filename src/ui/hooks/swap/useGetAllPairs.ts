@@ -5,7 +5,7 @@ import { useEnvironment } from '@/ui/state/environment/hooks';
 import { CosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 
 export function useGetAllPairs() {
-  const { DEX_CONTRACT, sideChain } = useEnvironment();
+  const { DEX_CONTRACT, bitwayChain } = useEnvironment();
   const { data, isLoading: loading } = useQuery({
     queryKey: ['getAllPairs', { DEX_CONTRACT }],
     queryFn: async () => {
@@ -15,7 +15,7 @@ export function useGetAllPairs() {
         }
       };
 
-      const cosmWasmClient = await CosmWasmClient.connect(sideChain.restUrl);
+      const cosmWasmClient = await CosmWasmClient.connect(bitwayChain.restUrl);
 
       const result = await cosmWasmClient.queryContractSmart(DEX_CONTRACT, msg);
 

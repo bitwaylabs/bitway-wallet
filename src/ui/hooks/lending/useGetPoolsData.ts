@@ -33,14 +33,14 @@ export interface PoolDataItem {
 
 export function useGetPoolsData() {
   const currentAccount = useCurrentAccount();
-  const { sideChain, SERVICE_BASE_URL } = useEnvironment();
+  const { bitwayChain, SERVICE_BASE_URL } = useEnvironment();
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
   const { data: lendingParams } = useGetLendingParams();
   const { data: lendingPools, isLoading: loading } = useQuery({
-    queryKey: ['getLendingPoolsData', { sideChain, SERVICE_BASE_URL }],
+    queryKey: ['getLendingPoolsData', { bitwayChain, SERVICE_BASE_URL }],
     queryFn: async () => {
-      return services.lending.getLendingPools({}, { baseURL: sideChain.restUrl });
+      return services.lending.getLendingPools({}, { baseURL: bitwayChain.restUrl });
     }
   });
 

@@ -33,7 +33,7 @@ export default function LoanClaimScreen() {
     claimedUnitAmount: string;
   };
 
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const isLight = useIsLight();
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const collateralToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
@@ -41,7 +41,7 @@ export default function LoanClaimScreen() {
   const { data } = useQuery({
     queryKey: ['getLoanById', { loan_id }],
     queryFn: async () => {
-      return services.lending.getLoanById(loan_id, { baseURL: sideChain.restUrl });
+      return services.lending.getLoanById(loan_id, { baseURL: bitwayChain.restUrl });
     },
     refetchInterval: (data) => {
       return data?.loan.status === 'Closed' ? false : 30000;

@@ -11,8 +11,8 @@ import { formatUnitAmount } from '@/ui/utils';
 import { analyzeTransaction, AnalyzeTransactionResult } from '@/ui/utils/mempool';
 import { bitcoin } from '@unisat/wallet-sdk/lib/bitcoin-core';
 
-async function buildPsbtFromTxHex(txid: string, SIDE_BTC_EXPLORER: string, networkType: NetworkType) {
-  const txHex = await services.bridge.getTxHex(txid, SIDE_BTC_EXPLORER);
+async function buildPsbtFromTxHex(txid: string, BITWAY_BTC_EXPLORER: string, networkType: NetworkType) {
+  const txHex = await services.bridge.getTxHex(txid, BITWAY_BTC_EXPLORER);
   const tx = bitcoin.Transaction.fromHex(txHex);
   const psbt = new bitcoin.Psbt({
     network: networkType === NetworkType.MAINNET ? bitcoin.networks.bitcoin : bitcoin.networks.testnet
@@ -50,7 +50,7 @@ async function buildPsbtFromTxHex(txid: string, SIDE_BTC_EXPLORER: string, netwo
 }
 
 export function useGetDepositInfo(loan?: Loan) {
-  const { SIDE_BTC_EXPLORER } = useEnvironment();
+  const { BITWAY_BTC_EXPLORER } = useEnvironment();
   const networkType = useNetworkType();
   const queryClient = useQueryClient();
   const collateralUnitAmount = loan?.collateral_amount || '0';
@@ -63,8 +63,8 @@ export function useGetDepositInfo(loan?: Loan) {
   } = useQuery({
     queryKey: ['getDepositTxByCollateralAddress', { collateralAddress: loan?.vault_address, collateralUnitAmount }],
     queryFn: async () => {
-      const txs = await services.bridge.getMemPoolTxs(loan!.vault_address, SIDE_BTC_EXPLORER);
-      const addressSummary = await services.bridge.getMemPoolAddress(loan!.vault_address, SIDE_BTC_EXPLORER);
+      const txs = await services.bridge.getMemPoolTxs(loan!.vault_address, BITWAY_BTC_EXPLORER);
+      const addressSummary = await services.bridge.getMemPoolAddress(loan!.vault_address, BITWAY_BTC_EXPLORER);
 
       let realCollateralAmount =
           addressSummary.chain_stats.funded_txo_sum +
@@ -83,7 +83,7 @@ export function useGetDepositInfo(loan?: Loan) {
           txs.map(async (tx) => {
             const txData = analyzeTransaction(tx, loan!.vault_address);
             const txid = tx.txid;
-            const txHex = await services.bridge.getTxHex(txid, SIDE_BTC_EXPLORER);
+            const txHex = await services.bridge.getTxHex(txid, BITWAY_BTC_EXPLORER);
             return {
               txHex,
               txid,
@@ -94,7 +94,7 @@ export function useGetDepositInfo(loan?: Loan) {
 
         txBase64s = await Promise.all(
           txsResult.map(async ({ txid }) => {
-            const psbt = await buildPsbtFromTxHex(txid, SIDE_BTC_EXPLORER, networkType);
+            const psbt = await buildPsbtFromTxHex(txid, BITWAY_BTC_EXPLORER, networkType);
             return psbt.toBase64();
           })
         );

@@ -5,11 +5,11 @@ import { Loan } from '@/ui/services/lending/types';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 
 export function useGetDlcMeta(loan?: Loan) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data: dlcMetaData, isLoading: loading } = useQuery({
     queryKey: ['getDlcMeta', { loan_id: loan?.vault_address }],
     queryFn: async () => {
-      return services.lending.getLiquidationDlcMeta({ loan_id: loan!.vault_address }, { baseURL: sideChain.restUrl });
+      return services.lending.getLiquidationDlcMeta({ loan_id: loan!.vault_address }, { baseURL: bitwayChain.restUrl });
     },
     refetchInterval: (data) => {
       return data?.dlc_meta?.liquidation_cet?.borrower_adaptor_signatures &&

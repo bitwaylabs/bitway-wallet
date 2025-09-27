@@ -22,14 +22,14 @@ export default function RepayLoanScreen() {
   const { loan_id } = state as { loan_id: string };
   const isLight = useIsLight();
 
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const { data } = useQuery({
     queryKey: ['getLoanById', { loan_id }],
     queryFn: async () => {
-      return services.lending.getLoanById(loan_id!, { baseURL: sideChain.restUrl });
+      return services.lending.getLoanById(loan_id!, { baseURL: bitwayChain.restUrl });
     },
     refetchInterval: (data) => {
       return data?.loan.status === 'Closed' ? false : 30000;

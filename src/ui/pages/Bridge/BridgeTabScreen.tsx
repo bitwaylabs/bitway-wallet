@@ -22,7 +22,7 @@ import { useNavigate } from '../MainRoute';
 export default function BridgeTabScreen() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { SIDE_STATION_URL } = useEnvironment();
+  const { BITWAY_STATION_URL } = useEnvironment();
   const [isFromHover, setIsFromHover] = useState(false);
   const [isToHover, setIsToHover] = useState(false);
   const isLight = useIsLight();
@@ -342,7 +342,7 @@ export default function BridgeTabScreen() {
                   }
                 }}
                 onClick={() => {
-                  window.open(`${SIDE_STATION_URL}/transfer/peg`);
+                  window.open(`${BITWAY_STATION_URL}/transfer/peg`);
                 }}>
                 Bridge on web app
               </Typography>

@@ -4,11 +4,11 @@ import services from '@/ui/services';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 
 export default function useGetAttestationByEventId({ eventId }: { eventId?: string }) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data } = useQuery({
     queryKey: ['getAttestationByEventId', eventId],
     queryFn: async () => {
-      return services.lending.getDlcAttestationById(eventId!, { baseURL: sideChain.restUrl });
+      return services.lending.getDlcAttestationById(eventId!, { baseURL: bitwayChain.restUrl });
     },
     enabled: !!eventId
   });

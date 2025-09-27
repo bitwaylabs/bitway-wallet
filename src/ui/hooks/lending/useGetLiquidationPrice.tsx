@@ -22,7 +22,7 @@ export function useGetLiquidationPrice({
   maturity?: string;
 }) {
   const currentAccount = useCurrentAccount();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
   const bitcoinToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
 
@@ -36,7 +36,7 @@ export function useGetLiquidationPrice({
           pool_id: poolId,
           maturity: maturity!
         },
-        { baseURL: sideChain.restUrl }
+        { baseURL: bitwayChain.restUrl }
       );
     },
     enabled: !!+borrowTokenAmount && !!+bitcoinAmount

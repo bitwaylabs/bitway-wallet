@@ -18,12 +18,12 @@ import Undelegate from './Undelegate';
 export default function StakeScreen() {
   const dispatch = useAppDispatch();
   const { validator, operateType } = useStakeState();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const isLight = useIsLight();
 
-  const { validators: bondedValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_BONDED');
-  const { validators: unBondingValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_UNBONDING');
-  const { validators: unBondedValidators } = useGetValidators(sideChain?.restUrl, 'BOND_STATUS_UNBONDED');
+  const { validators: bondedValidators } = useGetValidators(bitwayChain?.restUrl, 'BOND_STATUS_BONDED');
+  const { validators: unBondingValidators } = useGetValidators(bitwayChain?.restUrl, 'BOND_STATUS_UNBONDING');
+  const { validators: unBondedValidators } = useGetValidators(bitwayChain?.restUrl, 'BOND_STATUS_UNBONDED');
 
   useEffect(() => {
     if (!validator && bondedValidators.length > 0) {

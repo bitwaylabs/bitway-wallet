@@ -33,7 +33,7 @@ interface LoanDepositLocationState {
 }
 
 export default function LoanDepositScreen() {
-  const { SIDE_BTC_EXPLORER } = useEnvironment();
+  const { BITWAY_BTC_EXPLORER } = useEnvironment();
   const setUiState = useUpdateUiTxCreateScreen();
   const isLight = useIsLight();
   const { borrowAmount, collateralAmount, loanId, from } = useLocationState<LoanDepositLocationState>();
@@ -259,7 +259,7 @@ export default function LoanDepositScreen() {
                   }
                 }}
                 onClick={() => {
-                  window.open(`${SIDE_BTC_EXPLORER}/address/${toInfo.address}`);
+                  window.open(`${BITWAY_BTC_EXPLORER}/address/${toInfo.address}`);
                 }}>
                 <Typography
                   sx={{

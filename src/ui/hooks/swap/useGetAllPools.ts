@@ -11,20 +11,20 @@ import { useGetBitwayBalanceList } from '../useGetBitwayBalanceList';
 import { useGetAllPairs } from './useGetAllPairs';
 
 export function useGetAllPools() {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const currentAccount = useCurrentAccount();
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { data: pairs } = useGetAllPairs();
   const dispatch = useAppDispatch();
 
   const { data, isLoading: loading } = useQuery({
-    queryKey: ['getAllPools', { sideChain }],
+    queryKey: ['getAllPools', { bitwayChain }],
     enabled: !!pairs.length,
     queryFn: async () => {
       // debugger;
       if (!currentAccount?.address) return;
       // debugger;
-      const cosmWasmClient = await CosmWasmClient.connect(sideChain.restUrl);
+      const cosmWasmClient = await CosmWasmClient.connect(bitwayChain.restUrl);
 
       // debugger;
       const pools = await Promise.all(

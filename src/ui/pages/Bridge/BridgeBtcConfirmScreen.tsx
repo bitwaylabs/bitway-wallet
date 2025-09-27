@@ -54,7 +54,7 @@ export default function BridgeBtcConfirmScreen() {
   const dispatch = useAppDispatch();
   const isLight = useIsLight();
 
-  const { SIDE_BTC_EXPLORER, sideChain } = useEnvironment();
+  const { BITWAY_BTC_EXPLORER, bitwayChain } = useEnvironment();
   const { bridgeAmount, fee, feeSummary, params, fromChain, toChain, fromAsset, toAsset, toAddress } = useBridgeState();
   const { bridge, loading } = useBridgeBtc();
   const { estimateNetworkFee } = useEstimateNetworkFee();
@@ -69,7 +69,7 @@ export default function BridgeBtcConfirmScreen() {
   useEffect(() => {
     const bridgeUnitAmount = +parseUnitAmount(bridgeAmount, fromAsset?.asset.exponent || 8);
     services.bridge
-      .getBridgeWithdrawFee(currentAccount.address, `${bridgeUnitAmount}sat`, sideChain.restUrl)
+      .getBridgeWithdrawFee(currentAccount.address, `${bridgeUnitAmount}sat`, bitwayChain.restUrl)
       .then((result) => {
         setWithdrawFee(formatUnitAmount(result, fromAsset?.asset.exponent || 8));
       });
@@ -101,7 +101,7 @@ export default function BridgeBtcConfirmScreen() {
           channel_id,
           recipient_address: toAddress
         },
-        sideChain.restUrl
+        bitwayChain.restUrl
       );
       return result.script;
     },
@@ -522,7 +522,7 @@ export default function BridgeBtcConfirmScreen() {
                         }
                       }}
                       onClick={() => {
-                        window.open(`${SIDE_BTC_EXPLORER}/tx/${item?.txid}`, '_blank');
+                        window.open(`${BITWAY_BTC_EXPLORER}/tx/${item?.txid}`, '_blank');
                       }}>
                       {formatAddress(item.txid || '-', 3)}
                     </Typography>

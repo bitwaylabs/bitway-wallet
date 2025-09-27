@@ -1,4 +1,4 @@
-import { SIDE_CHAIN_MAINNET } from '@/shared/constant';
+import { BITWAY_CHAIN_MAINNET } from '@/shared/constant';
 import { NetworkType } from '@/shared/types';
 import { CheckBox, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
@@ -60,7 +60,7 @@ export default function NetworkTypeScreen() {
               navigate('MainScreen');
             }}>
             <Row itemsCenter>
-              <Text text={`${SIDE_CHAIN_MAINNET.name} & Bitcoin (Mainnet)`} color={isLight ? 'black' : 'white'} />
+              <Text text={`${BITWAY_CHAIN_MAINNET.name} & Bitcoin (Mainnet)`} color={isLight ? 'black' : 'white'} />
             </Row>
             {networkType === NetworkType.MAINNET && (
               <Column>
@@ -99,7 +99,7 @@ export default function NetworkTypeScreen() {
               navigate('MainScreen');
             }}>
             <Row itemsCenter>
-              <Text text={`${SIDE_CHAIN_MAINNET.name} & Bitcoin (Testnet)`} color={isLight ? 'black' : 'white'} />
+              <Text text={`${BITWAY_CHAIN_MAINNET.name} & Bitcoin (Testnet)`} color={isLight ? 'black' : 'white'} />
             </Row>
             {networkType === NetworkType.TESTNET && (
               <Column>

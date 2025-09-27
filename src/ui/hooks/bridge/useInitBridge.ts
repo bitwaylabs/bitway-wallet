@@ -15,7 +15,7 @@ import { useGetAllBridgeChains } from './useGetAllBridgeChains';
 export function useInitBridge() {
   const currentAccount = useCurrentAccount();
   const dispatch = useAppDispatch();
-  const { UNISAT_IO_API, UNISAT_SERVICE_ENDPOINT, sideChain } = useEnvironment();
+  const { UNISAT_IO_API, UNISAT_SERVICE_ENDPOINT, bitwayChain } = useEnvironment();
   const { fromAsset, fromAddress } = useBridgeState();
   const allBridgeChains = useGetAllBridgeChains();
 
@@ -45,7 +45,7 @@ export function useInitBridge() {
       dispatch(
         BridgeActions.update({
           fromChain: allBridgeChains.find((item) => item.isBitcoin),
-          toChain: sideChain,
+          toChain: bitwayChain,
           fromAsset: btcAsset,
           toAsset: sbtcAsset,
           toAddress: currentAccount.address,

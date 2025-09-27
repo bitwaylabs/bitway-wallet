@@ -1,4 +1,4 @@
-import { SERVICE_BASE_URL_MAINNET, SIDE_CHAIN_MAINNET } from '@/shared/constant';
+import { BITWAY_CHAIN_MAINNET, SERVICE_BASE_URL_MAINNET } from '@/shared/constant';
 import { IChain } from '@/shared/types';
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -9,13 +9,13 @@ export interface EnvironmentState {
   DEX_CONTRACT: string;
   DEX_ROUTER_CONTRACT: string;
   SERVICE_BASE_URL: string;
-  SIDE_BTC_EXPLORER: string;
+  BITWAY_BTC_EXPLORER: string;
   UNISAT_SERVICE_ENDPOINT: string;
   UNISAT_IO_API: string;
-  SIDE_STATION_URL: string;
-  SIDE_BRIDGEEXPLORER_URL: string;
+  BITWAY_STATION_URL: string;
+  BITWAY_BRIDGEEXPLORER_URL: string;
   EVM_COLLECTOR: string;
-  sideChain: IChain;
+  bitwayChain: IChain;
   chains: IChain[];
   DEFAUCET_REFERRAL_CODE: string;
 }
@@ -25,13 +25,13 @@ export const initialState: EnvironmentState = {
   DEX_CONTRACT: '',
   DEX_ROUTER_CONTRACT: '',
   SERVICE_BASE_URL: SERVICE_BASE_URL_MAINNET,
-  SIDE_BTC_EXPLORER: '',
+  BITWAY_BTC_EXPLORER: '',
   UNISAT_SERVICE_ENDPOINT: '',
   UNISAT_IO_API: '',
-  SIDE_STATION_URL: '',
-  SIDE_BRIDGEEXPLORER_URL: '',
+  BITWAY_STATION_URL: '',
+  BITWAY_BRIDGEEXPLORER_URL: '',
   EVM_COLLECTOR: '',
-  sideChain: SIDE_CHAIN_MAINNET,
+  bitwayChain: BITWAY_CHAIN_MAINNET,
   chains: [],
   DEFAUCET_REFERRAL_CODE: ''
 };
@@ -51,13 +51,13 @@ const slice = createSlice({
           DEX_CONTRACT?: string;
           DEX_ROUTER_CONTRACT?: string;
           SERVICE_BASE_URL?: string;
-          SIDE_BTC_EXPLORER?: string;
+          BITWAY_BTC_EXPLORER?: string;
           UNISAT_SERVICE_ENDPOINT?: string;
           UNISAT_IO_API?: string;
-          SIDE_STATION_URL?: string;
-          SIDE_BRIDGEEXPLORER_URL?: string;
+          BITWAY_STATION_URL?: string;
+          BITWAY_BRIDGEEXPLORER_URL?: string;
           EVM_COLLECTOR?: string;
-          sideChain?: IChain;
+          bitwayChain?: IChain;
           chains?: IChain[];
           DEFAUCET_REFERRAL_CODE?: string;
         };

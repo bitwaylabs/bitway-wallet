@@ -22,7 +22,7 @@ export default function BridgeTabScreen() {
   const currentAccount = useCurrentAccount();
   const dispatch = useAppDispatch();
 
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { bridgeAmount, fee, feeSummary, params, fromChain, fromAsset, toAsset } = useBridgeState();
   const { bridgeRune, loading } = useBridge();
 
@@ -36,7 +36,7 @@ export default function BridgeTabScreen() {
     const bridgeUnitAmount = +parseUnitAmount(bridgeAmount, fromAsset?.asset.exponent || 8);
     const runeId = fromAsset?.denom.split('/')[1];
     services.bridge
-      .getBridgeWithdrawFee(currentAccount.address, `${bridgeUnitAmount}runes/${runeId}`, sideChain.restUrl)
+      .getBridgeWithdrawFee(currentAccount.address, `${bridgeUnitAmount}runes/${runeId}`, bitwayChain.restUrl)
       .then((result) => {
         setWithdrawFee(formatUnitAmount(result, fromAsset?.asset.exponent || 8));
       });

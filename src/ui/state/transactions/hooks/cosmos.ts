@@ -91,7 +91,7 @@ enum BroadcastMode {
 
 export function useSignAndBroadcastTxRaw() {
   const wallet = useWallet();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const currentAccount = useCurrentAccount();
 
   const mockSignAmino = async (tx: CosmosTransaction): Promise<TxRaw> => {
@@ -165,7 +165,7 @@ export function useSignAndBroadcastTxRaw() {
     };
 
     // get string
-    return await fetch(`${sideChain.restUrl}/cosmos/tx/v1beta1/simulate`, {
+    return await fetch(`${bitwayChain.restUrl}/cosmos/tx/v1beta1/simulate`, {
       method: 'POST',
       body: JSON.stringify(txRaw)
     })
@@ -192,14 +192,14 @@ export function useSignAndBroadcastTxRaw() {
     feeAmount?: string;
     feeDenom?: string;
   }): Promise<{ tx: CosmosTransaction }> => {
-    const acc = await fetch(`${sideChain.restUrl}/cosmos/auth/v1beta1/accounts/${currentAccount.address}`).then(
+    const acc = await fetch(`${bitwayChain.restUrl}/cosmos/auth/v1beta1/accounts/${currentAccount.address}`).then(
       async (res) => {
         const json = await res.json();
         return json.account;
       }
     );
     let tx: CosmosTransaction = {
-      chainId: sideChain.chainID,
+      chainId: bitwayChain.chainID,
       signerAddress: currentAccount.address,
       messages,
       fee: {
@@ -210,7 +210,7 @@ export function useSignAndBroadcastTxRaw() {
       signerData: {
         accountNumber: acc.account_number,
         sequence: acc.sequence,
-        chainId: sideChain.chainID
+        chainId: bitwayChain.chainID
       }
     };
 
@@ -230,7 +230,7 @@ export function useSignAndBroadcastTxRaw() {
     const validGasUsed = typeof gasUsed === 'string' && BigNumber(gasUsed || '0').gt(0);
 
     const gasPrice = await services.node.getGasPrice({
-      baseURL: sideChain.restUrl
+      baseURL: bitwayChain.restUrl
     });
 
     const feeEstimate = BigNumber(gasPrice.minimum_gas_price || '0.0001')
@@ -363,7 +363,7 @@ export function useSignAndBroadcastTxRaw() {
       tx_bytes: txString,
       mode
     };
-    const result = await fetch(`${sideChain.restUrl}/cosmos/tx/v1beta1/txs`, {
+    const result = await fetch(`${bitwayChain.restUrl}/cosmos/tx/v1beta1/txs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/plain',

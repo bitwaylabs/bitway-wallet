@@ -19,7 +19,7 @@ export default function SelecAddressScreen() {
   // TODO: set select network
 
   const wallet = useWallet();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const currentKeyring = useCurrentKeyring();
   const account = useCurrentAccount();
   const { state } = useLocation();

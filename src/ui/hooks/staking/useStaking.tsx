@@ -16,14 +16,14 @@ import { useNavigate } from '../../pages/MainRoute';
 export function useStaking() {
   const navigate = useNavigate();
   const currentAccount = useCurrentAccount();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { validator, validatorDst, amount } = useStakeState();
   const { signAndBroadcastTxRaw } = useSignAndBroadcastTxRaw();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const { balanceList } = useGetBitwayBalanceList(currentAccount?.address);
 
-  const delegateToken = balanceList.find((item) => item.denom === sideChain?.denom);
+  const delegateToken = balanceList.find((item) => item.denom === bitwayChain?.denom);
   const balanceView = delegateToken?.formatAmount || '0';
 
   const { data: delegationInfo } = useQuery({
@@ -42,7 +42,7 @@ export function useStaking() {
           delegatorAddress: currentAccount?.address
         },
         {
-          baseURL: sideChain?.restUrl
+          baseURL: bitwayChain?.restUrl
         }
       );
     },
@@ -65,7 +65,7 @@ export function useStaking() {
           delegatorAddress: currentAccount?.address
         },
         {
-          baseURL: sideChain?.restUrl
+          baseURL: bitwayChain?.restUrl
         }
       );
     },
@@ -81,7 +81,7 @@ export function useStaking() {
         validatorAddress: validator.operator_address,
         amount: {
           amount: parseUnitAmount(amount, 6),
-          denom: sideChain?.denom
+          denom: bitwayChain?.denom
         }
       }
     };
@@ -97,7 +97,7 @@ export function useStaking() {
         validatorAddress: validator.operator_address,
         amount: {
           amount: parseUnitAmount(amount, 6),
-          denom: sideChain?.denom
+          denom: bitwayChain?.denom
         }
       }
     };
@@ -114,7 +114,7 @@ export function useStaking() {
         validatorDstAddress: validatorDst.operator_address,
         amount: {
           amount: parseUnitAmount(amount, 6),
-          denom: sideChain?.denom
+          denom: bitwayChain?.denom
         }
       }
     };
@@ -132,7 +132,7 @@ export function useStaking() {
       while (!hashResponse) {
         try {
           hashResponse = await services.tx.getTxByHash(result.tx_response.txhash, {
-            baseURL: sideChain?.restUrl
+            baseURL: bitwayChain?.restUrl
           });
         } catch (err) {
           await new Promise((r) => setTimeout(r, 1000));

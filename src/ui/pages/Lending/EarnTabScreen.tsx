@@ -1,29 +1,23 @@
 import { useMemo, useState } from 'react';
 import 'swiper/css';
 
-import { NetworkType } from '@/shared/types';
 import { Column, Content, Footer, Icon, Image, Layout, Row, Text } from '@/ui/components';
 import SearchInput from '@/ui/components/Input/Search';
 import { NavTabBar } from '@/ui/components/NavTabBar';
 import { useGetPoolsData } from '@/ui/hooks/lending';
 import MainHeader from '@/ui/pages/Main/MainHeader';
-import { useReloadAccounts } from '@/ui/state/accounts/hooks';
-import { useChangeEnvironmentCallback, useEnvironment } from '@/ui/state/environment/hooks';
-import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
+import { useEnvironment } from '@/ui/state/environment/hooks';
+import { useIsLight } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Stack, Typography } from '@mui/material';
 
 import { useNavigate } from '../MainRoute';
 
 export default function EarnTabScreen() {
-  const networkType = useNetworkType();
   const [value, setValue] = useState('');
   const { data } = useGetPoolsData();
   const navigate = useNavigate();
-  const { SIDE_STATION_URL } = useEnvironment();
-  const changeEnvironment = useChangeEnvironmentCallback();
-  const changeNetworkType = useChangeNetworkTypeCallback();
-  const reloadAccounts = useReloadAccounts();
+  const { BITWAY_STATION_URL } = useEnvironment();
   const isLight = useIsLight();
 
   const filterData = useMemo(() => {
@@ -31,50 +25,6 @@ export default function EarnTabScreen() {
       return item.token.asset.symbol.toLowerCase().includes(value.toLowerCase());
     });
   }, [data, value]);
-
-  if (networkType === NetworkType.MAINNET) {
-    return (
-      <Layout>
-        <MainHeader title={''} />
-        <Content mt="lg" classname="fadeIn-page">
-          <Column
-            gap="md"
-            px="lg"
-            full
-            itemsCenter
-            justifyCenter
-            py="md"
-            style={{
-              borderRadius: '10px'
-            }}>
-            <Text
-              text="COMING SOON"
-              color={isLight ? 'black' : 'white'}
-              style={{
-                fontWeight: 700
-              }}
-              size="xl"></Text>
-            <Text
-              text="SWITCH TO TESTNET"
-              color={isLight ? 'black' : 'white'}
-              style={{
-                fontWeight: 700
-              }}
-              onClick={() => {
-                changeEnvironment(NetworkType.TESTNET);
-                changeNetworkType(NetworkType.TESTNET);
-                reloadAccounts();
-                navigate('MainScreen');
-              }}
-              size="xl"></Text>
-          </Column>
-        </Content>
-        <Footer px="zero" py="zero">
-          <NavTabBar tab="earn" />
-        </Footer>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
@@ -271,7 +221,7 @@ export default function EarnTabScreen() {
                 }
               }}
               onClick={() => {
-                window.open(`${SIDE_STATION_URL}/transfer/peg`, '_blank');
+                window.open(`${BITWAY_STATION_URL}/transfer/peg`, '_blank');
               }}>
               Bridge Here
             </Stack>
@@ -342,7 +292,7 @@ export default function EarnTabScreen() {
                   }}
                   onClick={(event) => {
                     event.stopPropagation();
-                    window.open(`${SIDE_STATION_URL}/finance/markets/pool/${item.baseData.id}`, '_blank');
+                    window.open(`${BITWAY_STATION_URL}/finance/markets/pool/${item.baseData.id}`, '_blank');
                   }}>
                   Details
                 </Typography>

@@ -16,7 +16,7 @@ export function useIbc() {
   const [loading, setLoading] = useState(false);
   const currentAccount = useCurrentAccount();
   const { signAndBroadcastTxRaw } = useSignAndBroadcastTxRaw();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const navigate = useNavigate();
 
   const sendIbc = async () => {
@@ -55,7 +55,7 @@ export function useIbc() {
       while (!hashResponse) {
         try {
           hashResponse = await services.tx.getTxByHash(result.tx_response.txhash, {
-            baseURL: sideChain.restUrl
+            baseURL: bitwayChain.restUrl
           });
         } catch (err) {
           await new Promise((r) => setTimeout(r, 1000));

@@ -11,7 +11,7 @@ import { Coin } from '@cosmjs/amino';
 import { Box } from '@mui/material';
 
 export function useSupply() {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
 
   const [loading, setLoading] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
@@ -61,13 +61,16 @@ export function useSupply() {
     try {
       setLoading(true);
       const result = await services.tx.getTxByHash(txHash, {
-        baseURL: sideChain.restUrl
+        baseURL: bitwayChain.restUrl
       });
       setLoading(false);
 
       if (result.tx_response.code === 0) {
         toast.custom((t) => (
-          <ToastView toaster={t} type="success" txHashUrl={`${sideChain.explorerUrl}/tx/${result.tx_response.txhash}`}>
+          <ToastView
+            toaster={t}
+            type="success"
+            txHashUrl={`${bitwayChain.explorerUrl}/tx/${result.tx_response.txhash}`}>
             <Box
               sx={{
                 mb: '6px',

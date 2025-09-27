@@ -4,11 +4,11 @@ import services from '@/ui/services';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 
 export function useGetDlcEventById(id?: string) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data: dlcEvent, isLoading: loading } = useQuery({
-    queryKey: ['getDlcEventById', { id, sideChain }],
+    queryKey: ['getDlcEventById', { id, bitwayChain }],
     queryFn: async () => {
-      return services.lending.getDlcEventById(id!, { baseURL: sideChain.restUrl });
+      return services.lending.getDlcEventById(id!, { baseURL: bitwayChain.restUrl });
     },
     enabled: !!id,
     refetchIntervalInBackground: true

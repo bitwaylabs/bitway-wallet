@@ -13,7 +13,7 @@ import { Box } from '@mui/material';
 export function useWithdraw() {
   const [loading, setLoading] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const [tx, setTx] = useState('');
 
   const currentAccount = useCurrentAccount();
@@ -58,7 +58,7 @@ export function useWithdraw() {
     try {
       setLoading(true);
       const result = await services.tx.getTxByHash(txHash, {
-        baseURL: sideChain.restUrl
+        baseURL: bitwayChain.restUrl
       });
       setLoading(false);
       if (result.tx_response.code === 0) {

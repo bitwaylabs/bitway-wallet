@@ -4,11 +4,11 @@ import services from '@/ui/services';
 import { useEnvironment } from '@/ui/state/environment/hooks';
 
 export function useGetPoolDataById({ poolId }: { poolId?: string }) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data: lendingPool, isLoading: loading } = useQuery({
-    queryKey: ['getLendingPoolsData', { poolId, sideChain }],
+    queryKey: ['getLendingPoolsData', { poolId, bitwayChain }],
     queryFn: async () => {
-      return services.lending.getLeadingPoolById(poolId!, { baseURL: sideChain.restUrl });
+      return services.lending.getLeadingPoolById(poolId!, { baseURL: bitwayChain.restUrl });
     },
     enabled: !!poolId
   });

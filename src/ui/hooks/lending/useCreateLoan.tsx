@@ -15,7 +15,7 @@ import { fromHex } from '@cosmjs/encoding';
 import { Box } from '@mui/material';
 
 export function useCreateLoan() {
-  const { sideChain, SERVICE_BASE_URL, DEFAUCET_REFERRAL_CODE } = useEnvironment();
+  const { bitwayChain, SERVICE_BASE_URL, DEFAUCET_REFERRAL_CODE } = useEnvironment();
 
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +42,7 @@ export function useCreateLoan() {
       if (!currentAccount.address) return;
       setLoading(true);
 
-      const activeAgencies = await services.lending.getDlcDcms({ status: 0 }, { baseURL: sideChain.restUrl });
+      const activeAgencies = await services.lending.getDlcDcms({ status: 0 }, { baseURL: bitwayChain.restUrl });
 
       const dcm = activeAgencies?.dcms?.[0];
 
@@ -65,7 +65,7 @@ export function useCreateLoan() {
       while (!hashResponse) {
         try {
           hashResponse = await services.tx.getTxByHash(result.tx_response.txhash, {
-            baseURL: sideChain.restUrl
+            baseURL: bitwayChain.restUrl
           });
         } catch (err) {
           await new Promise((r) => setTimeout(r, 1000));
@@ -89,7 +89,7 @@ export function useCreateLoan() {
           <ToastView
             toaster={t}
             type="success"
-            txHashUrl={`${sideChain.explorerUrl}/tx/${hashResponse.tx_response.txhash}`}>
+            txHashUrl={`${bitwayChain.explorerUrl}/tx/${hashResponse.tx_response.txhash}`}>
             <Box
               sx={{
                 mb: '6px',

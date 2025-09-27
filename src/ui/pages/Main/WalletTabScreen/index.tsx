@@ -29,7 +29,7 @@ export default function WalletTabScreen() {
 
   const wallet = useWallet();
   const dispatch = useAppDispatch();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const accountBalanceByUSD = useGetAccountBalanceByUSD();
   const addressSummary = useAddressSummary();
 
@@ -109,7 +109,7 @@ export default function WalletTabScreen() {
         </svg>
       ),
       onClick: () => {
-        window.open(`${sideChain.explorerUrl}/address/${currentAccount.address}`, '_blank');
+        window.open(`${bitwayChain.explorerUrl}/address/${currentAccount.address}`, '_blank');
       }
     },
     {

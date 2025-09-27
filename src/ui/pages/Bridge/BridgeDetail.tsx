@@ -19,7 +19,7 @@ export default function BridgeDetail() {
   const { state } = useLocation();
   const isLight = useIsLight();
   const { txHash } = state as { txHash: string };
-  const { sideChain, chains, SERVICE_BASE_URL, SIDE_BTC_EXPLORER, UNISAT_IO_API } = useEnvironment();
+  const { bitwayChain, chains, SERVICE_BASE_URL, BITWAY_BTC_EXPLORER, UNISAT_IO_API } = useEnvironment();
 
   const { balanceList: bitwayBalanceList } = useGetBitwayBalanceList(currentAccount?.address);
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
@@ -252,7 +252,7 @@ export default function BridgeDetail() {
             }
           }}
           onClick={() => {
-            window.open(`${SIDE_BTC_EXPLORER}/tx/${data.btcTxhash}`);
+            window.open(`${BITWAY_BTC_EXPLORER}/tx/${data.btcTxhash}`);
           }}>
           {formatAddress(data.btcTxhash, 6)}
         </Typography>
@@ -273,7 +273,7 @@ export default function BridgeDetail() {
             }
           }}
           onClick={() => {
-            window.open(`${sideChain.explorerUrl}/tx/${data.txhash}`);
+            window.open(`${bitwayChain.explorerUrl}/tx/${data.txhash}`);
           }}>
           {formatAddress(data.txhash, 6)}
         </Typography>

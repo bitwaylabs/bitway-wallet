@@ -10,14 +10,14 @@ export function useGetLoansData() {
   const currentAccount = useCurrentAccount();
   const [pageSize, setPageSize] = useState(500);
   const [pageNum, setPageNum] = useState(0);
-  const { sideChain, SERVICE_BASE_URL } = useEnvironment();
+  const { bitwayChain, SERVICE_BASE_URL } = useEnvironment();
 
   const { data, isLoading: loading } = useQuery({
     queryKey: ['getLoansData'],
     queryFn: async () => {
       const result = await services.lending.getLoans(
         { 'pagination.limit': `${pageSize}`, 'pagination.offset': `${pageNum}` },
-        { baseURL: sideChain.restUrl }
+        { baseURL: bitwayChain.restUrl }
       );
       const loans = result.loans.filter((item) => item.borrower === currentAccount.address);
 

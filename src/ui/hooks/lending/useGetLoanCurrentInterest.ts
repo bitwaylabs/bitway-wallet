@@ -14,14 +14,14 @@ export function useGetLoanCurrentInterest({
   loanStatus?: LoanStatus;
   tag?: string;
 }) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const [isChange, setIsChange] = useState(false);
   const [previousData, setPreviousData] = useState<GetLoanInterestResponse | undefined>(undefined);
 
   const { data, isLoading: loading } = useQuery({
     queryKey: ['getLoanCurrentInterest', { loan_id, loanStatus }, tag],
     queryFn: async () => {
-      const newData = await services.lending.getLoanCurrentInterest(loan_id!, { baseURL: sideChain.restUrl });
+      const newData = await services.lending.getLoanCurrentInterest(loan_id!, { baseURL: bitwayChain.restUrl });
       if (previousData && previousData.interest.amount !== newData?.interest.amount) {
         setIsChange(true);
         setTimeout(() => {

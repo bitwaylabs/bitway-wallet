@@ -79,25 +79,25 @@ export default class BridgeService {
     return parseFloat(result.fee).toFixed(0);
   }
 
-  async getTxHex(txid: string, SIDE_BTC_EXPLORER: string): Promise<string> {
+  async getTxHex(txid: string, BITWAY_BTC_EXPLORER: string): Promise<string> {
     return this.apiClient
       .get<string>(`/api/tx/${txid}/hex`, {
-        baseURL: SIDE_BTC_EXPLORER
+        baseURL: BITWAY_BTC_EXPLORER
       })
       .catch(() => {
         return '';
       });
   }
 
-  async getMemPoolTxs(address: string, SIDE_BTC_EXPLORER: string): Promise<UTXOBridge[]> {
+  async getMemPoolTxs(address: string, BITWAY_BTC_EXPLORER: string): Promise<UTXOBridge[]> {
     const txs = await this.apiClient.get<UTXOBridge[]>(`/api/address/${address}/txs`, {
-      baseURL: SIDE_BTC_EXPLORER
+      baseURL: BITWAY_BTC_EXPLORER
     });
     return filterBTCTransactions(txs);
   }
-  async getMemPoolAddress(address: string, SIDE_BTC_EXPLORER: string): Promise<AddressInfo> {
+  async getMemPoolAddress(address: string, BITWAY_BTC_EXPLORER: string): Promise<AddressInfo> {
     return this.apiClient.get<AddressInfo>(`/api/address/${address}`, {
-      baseURL: SIDE_BTC_EXPLORER
+      baseURL: BITWAY_BTC_EXPLORER
     });
   }
 

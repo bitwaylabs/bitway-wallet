@@ -22,7 +22,7 @@ export function useGetLiquidationEvent({
   maturity?: string;
 }) {
   const currentAccount = useCurrentAccount();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { balanceList: bitcoinBalanceList } = useGetBitcoinBalanceList(currentAccount?.address);
 
   const bitcoinToken = bitcoinBalanceList.find((item) => item.denom === 'sat');
@@ -30,7 +30,7 @@ export function useGetLiquidationEvent({
   const { data, refetch, isLoading } = useQuery({
     queryKey: [
       'getLiquidationEvent',
-      { bitcoinAmount, borrowTokenAmount, bitcoinPrice: bitcoinToken?.denomPrice, maturity, sideChain }
+      { bitcoinAmount, borrowTokenAmount, bitcoinPrice: bitcoinToken?.denomPrice, maturity, bitwayChain }
     ],
     queryFn: async () => {
       return services.lending.getLiquidationEvent(
@@ -40,7 +40,7 @@ export function useGetLiquidationEvent({
           pool_id: poolId,
           maturity: maturity!
         },
-        { baseURL: sideChain.restUrl }
+        { baseURL: bitwayChain.restUrl }
       );
     },
     enabled: !!bitcoinToken && !!borrowToken && !!+bitcoinAmount && !!maturity && !!poolId && !!+borrowTokenAmount

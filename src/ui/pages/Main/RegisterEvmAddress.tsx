@@ -15,7 +15,7 @@ import { Stack, Typography } from '@mui/material';
 export default function RegisterEvmAddress() {
   const setUiState = useUpdateUiTxCreateSendSideScreen();
   const reset = useResetUiTxCreateScreen();
-  const { EVM_COLLECTOR, sideChain } = useEnvironment();
+  const { EVM_COLLECTOR, bitwayChain } = useEnvironment();
   const isLight = useIsLight();
   const networkType = useNetworkType();
 
@@ -103,7 +103,7 @@ export default function RegisterEvmAddress() {
                 }
               }}
               onClick={() => {
-                window.open(`${sideChain.explorerUrl}/address/${toInfo.address}`, '_blank');
+                window.open(`${bitwayChain.explorerUrl}/address/${toInfo.address}`, '_blank');
               }}>
               {toInfo.address}
             </Typography>

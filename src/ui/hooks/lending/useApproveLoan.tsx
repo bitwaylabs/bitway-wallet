@@ -22,7 +22,7 @@ export function useApproveLoan(loan?: Loan) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [tx, setTx] = useState('');
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
 
   const currentAccount = useCurrentAccount();
 
@@ -66,7 +66,7 @@ export function useApproveLoan(loan?: Loan) {
           loan_id: loan.vault_address,
           collateral_amount: `${realCollateralAmount}${'sat'}`
         },
-        { baseURL: sideChain.restUrl }
+        { baseURL: bitwayChain.restUrl }
       );
 
       if (!cetInfos) {
@@ -119,7 +119,7 @@ export function useApproveLoan(loan?: Loan) {
       while (!hashResponse) {
         try {
           hashResponse = await services.tx.getTxByHash(result.tx_response.txhash, {
-            baseURL: sideChain.restUrl
+            baseURL: bitwayChain.restUrl
           });
         } catch (err) {
           await new Promise((r) => setTimeout(r, 1000));

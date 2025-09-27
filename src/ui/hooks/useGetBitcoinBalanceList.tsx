@@ -51,7 +51,7 @@ function formatBitcoinItem(balance: string, denomPrice: string): BalanceItem {
 
 export default function useGetBitcoinBalanceList(address?: string) {
   const fetchUtxos = useFetchUtxosCallback();
-  const { UNISAT_RUNE_URL, UNISAT_SERVICE_ENDPOINT, SERVICE_BASE_URL, sideChain } = useEnvironment();
+  const { UNISAT_RUNE_URL, UNISAT_SERVICE_ENDPOINT, SERVICE_BASE_URL, bitwayChain } = useEnvironment();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: [
@@ -114,7 +114,7 @@ export default function useGetBitcoinBalanceList(address?: string) {
         let bitcoinPrice = '0';
         const symbol = 'BTCUSD';
         try {
-          const { price } = await services.lending.getDlcPrice(symbol, { baseURL: sideChain?.restUrl });
+          const { price } = await services.lending.getDlcPrice(symbol, { baseURL: bitwayChain?.restUrl });
           bitcoinPrice = price;
         } catch (error) {
           bitcoinPrice = priceMap['sat'];

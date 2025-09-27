@@ -22,7 +22,7 @@ function formateTokenList(tokens: IAsset[], UNISAT_RUNE_URL: string) {
 }
 
 export function useGetBitwayBalanceList(address?: string) {
-  const { UNISAT_RUNE_URL, sideChain, SERVICE_BASE_URL } = useEnvironment();
+  const { UNISAT_RUNE_URL, bitwayChain, SERVICE_BASE_URL } = useEnvironment();
   const { data, isLoading } = useQuery({
     queryKey: ['getSideAssets', { SERVICE_BASE_URL }],
     queryFn: async () => {
@@ -34,7 +34,7 @@ export function useGetBitwayBalanceList(address?: string) {
 
   const { balanceList, refetchBalances, allCoinBalances, priceMap } = useGetBalanceList({
     assets: data ? formateTokenList(data, UNISAT_RUNE_URL) : [],
-    restUrl: sideChain.restUrl,
+    restUrl: bitwayChain.restUrl,
     address
   });
 

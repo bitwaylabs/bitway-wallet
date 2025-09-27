@@ -32,7 +32,7 @@ export default function BridgeSelectTokenScreen() {
   const { state } = useLocation();
   const { type } = state as { type: 'from' | 'to'; fromAsset?: BalanceItem; toAsset?: BalanceItem };
   const allBridgeChains = useGetAllBridgeChains();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { fromAsset, fromChain } = useBridgeState();
   const isLight = useIsLight();
 
@@ -100,7 +100,7 @@ export default function BridgeSelectTokenScreen() {
         chainList = [bitcoinChain];
       } else {
         // 如果选中是 sbtc，必须展示 bitway
-        chainList = [sideChain];
+        chainList = [bitwayChain];
         // 如果选中有 ibc，则需要展示 ibc链
         if (selectedAsset.asset.ibcData) {
           selectedAsset.asset.ibcData.forEach((item) => {
@@ -240,7 +240,7 @@ export default function BridgeSelectTokenScreen() {
 
                         if (selectedAsset.denom === 'sat' || selectedAsset.denom.includes('rune')) {
                           if (chain.isBitcoin) {
-                            toChain = sideChain;
+                            toChain = bitwayChain;
                             toAsset = bitwayBalanceList.find((item) => item.denom === selectedAsset.denom);
                           } else {
                             toChain = bitcoinChain;

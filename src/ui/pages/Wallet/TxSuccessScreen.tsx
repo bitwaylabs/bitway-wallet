@@ -21,7 +21,7 @@ interface LocationState {
 export default function TxSuccessScreen() {
   const { txid, chain, type, text, title } = useLocationState<LocationState>();
   const navigate = useNavigate();
-  const { SIDE_BRIDGEEXPLORER_URL } = useEnvironment();
+  const { BITWAY_BRIDGEEXPLORER_URL } = useEnvironment();
   const blockstream = useBlockstreamUrl(chain);
   const isLight = useIsLight();
   const [isHover, setIsHover] = useState(false);
@@ -59,7 +59,7 @@ export default function TxSuccessScreen() {
               setIsHover(false);
             }}
             onClick={() => {
-              window.open(type === 'bridge' ? `${SIDE_BRIDGEEXPLORER_URL}/${txid}` : `${blockstream}/tx/${txid}`);
+              window.open(type === 'bridge' ? `${BITWAY_BRIDGEEXPLORER_URL}/${txid}` : `${blockstream}/tx/${txid}`);
             }}>
             <Typography
               sx={{

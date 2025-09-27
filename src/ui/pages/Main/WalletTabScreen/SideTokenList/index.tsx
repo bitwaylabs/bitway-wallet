@@ -35,11 +35,11 @@ function customSort(data: Array<BalanceItem>) {
 }
 
 export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balanceVisible: boolean }) {
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const isIbc = token.asset.denom.includes('ibc/');
   const isLight = useIsLight();
 
-  const isBTW = token.asset.denom === sideChain?.denom;
+  const isBTW = token.asset.denom === bitwayChain?.denom;
 
   const ibcData = token.asset.ibcData?.find((item) => !!item.bitwayChannelId);
 
@@ -100,7 +100,7 @@ export function TokenItem({ token, balanceVisible }: { token: BalanceItem; balan
             }}>
             <Text color={isLight ? 'black' : 'white'} text={token?.asset?.symbol}></Text>
 
-            <Row itemsCenter style={{ position: 'relative' }}>
+            <Row itemsCenter style={{ position: 'relative', gap: '4px' }}>
               <Text color={'white_muted'} size="xs" text={token?.asset?.name}></Text>
 
               {isIbc && (

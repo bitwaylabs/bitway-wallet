@@ -6,11 +6,11 @@ import { useEnvironment } from '@/ui/state/environment/hooks';
 
 export function useGetBridgeRateLimitByAddress() {
   const currentAccount = useCurrentAccount();
-  const { sideChain } = useEnvironment();
+  const { bitwayChain } = useEnvironment();
   const { data, isLoading } = useQuery({
     queryKey: ['getBridgeRateLimitByAddress', { address: currentAccount.address }],
     queryFn: async () => {
-      return services.bridge.getRateLimitByAddress(currentAccount.address, sideChain.restUrl);
+      return services.bridge.getRateLimitByAddress(currentAccount.address, bitwayChain.restUrl);
     }
   });
 
