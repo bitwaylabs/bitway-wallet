@@ -1,6 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
 
-import { NetworkType } from '@/shared/types';
 import { useNavigate } from '@/ui/pages/MainRoute';
 import { useUnreadAppSummary } from '@/ui/state/accounts/hooks';
 import { TabOption } from '@/ui/state/global/reducer';
@@ -74,7 +73,7 @@ const TabButton = function TabButton({
         } else if (tabName === 'bridge') {
           navigate('BridgeTabScreen');
         } else if (tabName === 'loans') {
-          if (showLoanNotice || networkType === NetworkType.MAINNET) {
+          if (showLoanNotice) {
             navigate('LoansTabScreen');
           } else {
             navigate('LendingTabScreen');

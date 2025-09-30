@@ -824,7 +824,7 @@ export default function Index() {
                         color: isLight ? colors.black : colors.white,
                         fontWeight: 500
                       }}>
-                      {poolData?.token.asset.symbol || 'BTC'}
+                      {poolData?.token.asset.symbol || 'USDC'}
                     </Typography>
                     <Icon icon="down" size={10} color={isLight ? 'black' : 'white'}></Icon>
                   </Stack>
