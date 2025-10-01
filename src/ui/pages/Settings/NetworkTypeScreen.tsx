@@ -3,6 +3,8 @@ import { NetworkType } from '@/shared/types';
 import { CheckBox, Column, Content, Header, Layout, Row, Text } from '@/ui/components';
 import { useReloadAccounts } from '@/ui/state/accounts/hooks';
 import { useChangeEnvironmentCallback } from '@/ui/state/environment/hooks';
+import { useAppDispatch } from '@/ui/state/hooks';
+import { LendingActions } from '@/ui/state/lending/reducer';
 import { useChangeNetworkTypeCallback, useIsLight, useNetworkType } from '@/ui/state/settings/hooks';
 import { colors } from '@/ui/theme/colors';
 import { Stack } from '@mui/material';
@@ -16,6 +18,7 @@ export default function NetworkTypeScreen() {
   const reloadAccounts = useReloadAccounts();
   const navigate = useNavigate();
   const isLight = useIsLight();
+  const dispatch = useAppDispatch();
   return (
     <Layout>
       <Header
@@ -57,6 +60,11 @@ export default function NetworkTypeScreen() {
               await changeEnvironment(NetworkType.MAINNET);
               await changeNetworkType(NetworkType.MAINNET);
               reloadAccounts();
+              dispatch(
+                LendingActions.update({
+                  poolTokenDenom: 'ibc/B9E4FD154C92D3A23BEA029906C4C5FF2FE74CB7E3A058290B77197A263CF88B'
+                })
+              );
               navigate('MainScreen');
             }}>
             <Row itemsCenter>
@@ -96,6 +104,7 @@ export default function NetworkTypeScreen() {
               await changeEnvironment(NetworkType.TESTNET);
               await changeNetworkType(NetworkType.TESTNET);
               reloadAccounts();
+              dispatch(LendingActions.update({ poolTokenDenom: 'uusdc' }));
               navigate('MainScreen');
             }}>
             <Row itemsCenter>

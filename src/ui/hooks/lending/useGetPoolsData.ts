@@ -86,7 +86,13 @@ export function useGetPoolsData() {
         borrowApy: minBorrowApy?.toString() || '0',
         borrowApyMax: maxBorrowApy?.toString() || '0',
         token,
-        baseData: item,
+        baseData: {
+          ...item,
+          config: {
+            ...item.config,
+            max_ltv: item.config.max_ltv - 0.05
+          }
+        },
         lendingParams: lendingParams.params,
         totalSupplyInUsd: lendingPoolBase?.totalSupplyInDollar || '0',
         totalBorrowInUsd: lendingPoolBase?.totalBorrowInDollar || '0',

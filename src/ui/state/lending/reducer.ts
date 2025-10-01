@@ -7,7 +7,7 @@ export interface LendingState {
 }
 
 export const initialState: LendingState = {
-  poolTokenDenom: 'uusdc'
+  poolTokenDenom: 'ibc/B9E4FD154C92D3A23BEA029906C4C5FF2FE74CB7E3A058290B77197A263CF88B'
 };
 
 const slice = createSlice({
